@@ -34,7 +34,7 @@ macro_rules! uint {
 
             fn from_str(src: &str) -> Result<Self, Self::Err> {
                 Self::new(
-                    src.parse::<$primitive>().map_err(|_| format!("value is not an integer"))?,
+                    src.parse::<$primitive>().map_err(|e| e.to_string())?,
                 )
             }
         }
