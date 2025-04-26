@@ -90,9 +90,7 @@ macro_rules! uint {
             type Err = String;
 
             fn from_str(src: &str) -> Result<Self, Self::Err> {
-                Self::new(
-                    src.parse::<$primitive>().map_err(|_| format!("value is not an integer"))?,
-                )
+                Self::new(src.parse::<$primitive>().map_err(|e| e.to_string())?)
             }
         }
 
@@ -167,9 +165,7 @@ macro_rules! uint {
             type Err = String;
 
             fn from_str(src: &str) -> Result<Self, Self::Err> {
-                Self::new(
-                    src.parse::<$primitive>().map_err(|_| format!("value is not an integer"))?,
-                )
+                Self::new(src.parse::<$primitive>().map_err(|e| e.to_string())?)
             }
         }
 
