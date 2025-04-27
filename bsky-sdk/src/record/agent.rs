@@ -49,6 +49,7 @@ where
             KnownRecord::AppBskyGraphListblock(record) => record.data.create(self).await,
             KnownRecord::AppBskyGraphListitem(record) => record.data.create(self).await,
             KnownRecord::AppBskyGraphStarterpack(record) => record.data.create(self).await,
+            KnownRecord::AppBskyGraphVerification(record) => record.data.create(self).await,
             KnownRecord::AppBskyLabelerService(record) => record.data.create(self).await,
             KnownRecord::ChatBskyActorDeclaration(record) => record.data.create(self).await,
             KnownRecord::ComAtprotoLexiconSchema(record) => record.data.create(self).await,

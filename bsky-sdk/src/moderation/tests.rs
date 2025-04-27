@@ -64,6 +64,7 @@ fn profile_view_basic(
         display_name: display_name.map(String::from),
         handle: handle.parse().expect("invalid handle"),
         labels,
+        verification: None,
         viewer: None,
     }
     .into()

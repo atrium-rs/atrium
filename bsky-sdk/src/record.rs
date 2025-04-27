@@ -265,6 +265,11 @@ record_impl!(
     atrium_api::app::bsky::graph::starterpack::RecordData
 );
 record_impl!(
+    atrium_api::app::bsky::graph::Verification,
+    atrium_api::app::bsky::graph::verification::Record,
+    atrium_api::app::bsky::graph::verification::RecordData
+);
+record_impl!(
     atrium_api::app::bsky::labeler::Service,
     atrium_api::app::bsky::labeler::service::Record,
     atrium_api::app::bsky::labeler::service::RecordData
