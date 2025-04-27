@@ -201,6 +201,8 @@ pub struct ProfileViewData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub verification: core::option::Option<VerificationState>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<ViewerState>,
 }
 pub type ProfileView = crate::types::Object<ProfileViewData>;
@@ -219,6 +221,8 @@ pub struct ProfileViewBasicData {
     pub handle: crate::types::string::Handle,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub verification: core::option::Option<VerificationState>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<ViewerState>,
 }
@@ -256,6 +260,8 @@ pub struct ProfileViewDetailedData {
     pub pinned_post: core::option::Option<crate::com::atproto::repo::strong_ref::Main>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub posts_count: core::option::Option<i64>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub verification: core::option::Option<VerificationState>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<ViewerState>,
 }
@@ -295,6 +301,41 @@ pub struct ThreadViewPrefData {
     pub sort: core::option::Option<String>,
 }
 pub type ThreadViewPref = crate::types::Object<ThreadViewPrefData>;
+///Preferences for how verified accounts appear in the app.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct VerificationPrefsData {
+    ///Hide the blue check badges for verified accounts and trusted verifiers.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub hide_badges: core::option::Option<bool>,
+}
+pub type VerificationPrefs = crate::types::Object<VerificationPrefsData>;
+///Represents the verification information about the user this object is attached to.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct VerificationStateData {
+    ///The user's status as a trusted verifier.
+    pub trusted_verifier_status: String,
+    ///All verifications issued by trusted verifiers on behalf of this user. Verifications by untrusted verifiers are not included.
+    pub verifications: Vec<VerificationView>,
+    ///The user's status as a verified account.
+    pub verified_status: String,
+}
+pub type VerificationState = crate::types::Object<VerificationStateData>;
+///An individual verification for an associated subject.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct VerificationViewData {
+    ///Timestamp when the verification was created.
+    pub created_at: crate::types::string::Datetime,
+    ///True if the verification passes validation, otherwise false.
+    pub is_valid: bool,
+    ///The user who issued this verification.
+    pub issuer: crate::types::string::Did,
+    ///The AT-URI of the verification record.
+    pub uri: String,
+}
+pub type VerificationView = crate::types::Object<VerificationViewData>;
 ///Metadata about the requesting account's relationship with the subject account. Only has meaningful content for authed requests.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -374,4 +415,6 @@ pub enum PreferencesItem {
     LabelersPref(Box<LabelersPref>),
     #[serde(rename = "app.bsky.actor.defs#postInteractionSettingsPref")]
     PostInteractionSettingsPref(Box<PostInteractionSettingsPref>),
+    #[serde(rename = "app.bsky.actor.defs#verificationPrefs")]
+    VerificationPrefs(Box<VerificationPrefs>),
 }

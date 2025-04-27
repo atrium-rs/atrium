@@ -9,7 +9,7 @@ pub struct ProfileViewBasicData {
     >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub avatar: core::option::Option<String>,
-    ///Set to true when the actor cannot actively participate in converations
+    ///Set to true when the actor cannot actively participate in conversations
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub chat_disabled: core::option::Option<bool>,
     pub did: crate::types::string::Did,
@@ -18,6 +18,10 @@ pub struct ProfileViewBasicData {
     pub handle: crate::types::string::Handle,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub verification: core::option::Option<
+        crate::app::bsky::actor::defs::VerificationState,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<crate::app::bsky::actor::defs::ViewerState>,
 }

@@ -57,6 +57,10 @@ pub enum KnownRecord {
     AppBskyGraphStarterpack(Box<crate::app::bsky::graph::starterpack::Record>),
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
     #[cfg(feature = "namespace-appbsky")]
+    #[serde(rename = "app.bsky.graph.verification")]
+    AppBskyGraphVerification(Box<crate::app::bsky::graph::verification::Record>),
+    #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+    #[cfg(feature = "namespace-appbsky")]
     #[serde(rename = "app.bsky.labeler.service")]
     AppBskyLabelerService(Box<crate::app::bsky::labeler::service::Record>),
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-chatbsky")))]
@@ -246,6 +250,20 @@ impl From<crate::app::bsky::graph::starterpack::Record> for KnownRecord {
 impl From<crate::app::bsky::graph::starterpack::RecordData> for KnownRecord {
     fn from(record_data: crate::app::bsky::graph::starterpack::RecordData) -> Self {
         KnownRecord::AppBskyGraphStarterpack(Box::new(record_data.into()))
+    }
+}
+#[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+#[cfg(feature = "namespace-appbsky")]
+impl From<crate::app::bsky::graph::verification::Record> for KnownRecord {
+    fn from(record: crate::app::bsky::graph::verification::Record) -> Self {
+        KnownRecord::AppBskyGraphVerification(Box::new(record))
+    }
+}
+#[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+#[cfg(feature = "namespace-appbsky")]
+impl From<crate::app::bsky::graph::verification::RecordData> for KnownRecord {
+    fn from(record_data: crate::app::bsky::graph::verification::RecordData) -> Self {
+        KnownRecord::AppBskyGraphVerification(Box::new(record_data.into()))
     }
 }
 #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]

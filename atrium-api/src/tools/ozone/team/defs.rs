@@ -25,3 +25,5 @@ pub const ROLE_ADMIN: &str = "tools.ozone.team.defs#roleAdmin";
 pub const ROLE_MODERATOR: &str = "tools.ozone.team.defs#roleModerator";
 ///Triage role. Mostly intended for monitoring and escalating issues.
 pub const ROLE_TRIAGE: &str = "tools.ozone.team.defs#roleTriage";
+///Verifier role. Only allowed to issue verifications.
+pub const ROLE_VERIFIER: &str = "tools.ozone.team.defs#roleVerifier";

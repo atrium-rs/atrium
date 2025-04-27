@@ -20,6 +20,36 @@ pub struct SkeletonSearchStarterPackData {
 pub type SkeletonSearchStarterPack = crate::types::Object<SkeletonSearchStarterPackData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
+pub struct SkeletonTrendData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub category: core::option::Option<String>,
+    pub dids: Vec<crate::types::string::Did>,
+    pub display_name: String,
+    pub link: String,
+    pub post_count: i64,
+    pub started_at: crate::types::string::Datetime,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub status: core::option::Option<String>,
+    pub topic: String,
+}
+pub type SkeletonTrend = crate::types::Object<SkeletonTrendData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct TrendViewData {
+    pub actors: Vec<crate::app::bsky::actor::defs::ProfileViewBasic>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub category: core::option::Option<String>,
+    pub display_name: String,
+    pub link: String,
+    pub post_count: i64,
+    pub started_at: crate::types::string::Datetime,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub status: core::option::Option<String>,
+    pub topic: String,
+}
+pub type TrendView = crate::types::Object<TrendViewData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct TrendingTopicData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub description: core::option::Option<String>,

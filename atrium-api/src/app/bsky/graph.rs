@@ -28,6 +28,7 @@ pub mod starterpack;
 pub mod unmute_actor;
 pub mod unmute_actor_list;
 pub mod unmute_thread;
+pub mod verification;
 #[derive(Debug)]
 pub struct Block;
 impl crate::types::Collection for Block {
@@ -63,4 +64,10 @@ pub struct Starterpack;
 impl crate::types::Collection for Starterpack {
     const NSID: &'static str = "app.bsky.graph.starterpack";
     type Record = starterpack::Record;
+}
+#[derive(Debug)]
+pub struct Verification;
+impl crate::types::Collection for Verification {
+    const NSID: &'static str = "app.bsky.graph.verification";
+    type Record = verification::Record;
 }

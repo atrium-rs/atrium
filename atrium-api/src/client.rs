@@ -284,15 +284,26 @@ pub mod tools {
             T: atrium_xrpc::XrpcClient + Send + Sync,
         {
             pub communication: communication::Service<T>,
+            pub hosting: hosting::Service<T>,
             pub moderation: moderation::Service<T>,
             pub server: server::Service<T>,
             pub set: set::Service<T>,
             pub setting: setting::Service<T>,
             pub signature: signature::Service<T>,
             pub team: team::Service<T>,
+            pub verification: verification::Service<T>,
             pub(crate) _phantom: core::marker::PhantomData<T>,
         }
         pub mod communication {
+            pub struct Service<T>
+            where
+                T: atrium_xrpc::XrpcClient + Send + Sync,
+            {
+                pub(crate) xrpc: std::sync::Arc<T>,
+                pub(crate) _phantom: core::marker::PhantomData<T>,
+            }
+        }
+        pub mod hosting {
             pub struct Service<T>
             where
                 T: atrium_xrpc::XrpcClient + Send + Sync,
@@ -347,6 +358,15 @@ pub mod tools {
             }
         }
         pub mod team {
+            pub struct Service<T>
+            where
+                T: atrium_xrpc::XrpcClient + Send + Sync,
+            {
+                pub(crate) xrpc: std::sync::Arc<T>,
+                pub(crate) _phantom: core::marker::PhantomData<T>,
+            }
+        }
+        pub mod verification {
             pub struct Service<T>
             where
                 T: atrium_xrpc::XrpcClient + Send + Sync,
@@ -2077,6 +2097,190 @@ where
             _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
         }
     }
+    ///Get a list of suggested feeds
+    pub async fn get_suggested_feeds(
+        &self,
+        params: crate::app::bsky::unspecced::get_suggested_feeds::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::app::bsky::unspecced::get_suggested_feeds::Output,
+        crate::app::bsky::unspecced::get_suggested_feeds::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::app::bsky::unspecced::get_suggested_feeds::NSID.into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Get a skeleton of suggested feeds. Intended to be called and hydrated by app.bsky.unspecced.getSuggestedFeeds
+    pub async fn get_suggested_feeds_skeleton(
+        &self,
+        params: crate::app::bsky::unspecced::get_suggested_feeds_skeleton::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::app::bsky::unspecced::get_suggested_feeds_skeleton::Output,
+        crate::app::bsky::unspecced::get_suggested_feeds_skeleton::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::app::bsky::unspecced::get_suggested_feeds_skeleton::NSID
+                        .into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Get a list of suggested starterpacks
+    pub async fn get_suggested_starter_packs(
+        &self,
+        params: crate::app::bsky::unspecced::get_suggested_starter_packs::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::app::bsky::unspecced::get_suggested_starter_packs::Output,
+        crate::app::bsky::unspecced::get_suggested_starter_packs::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::app::bsky::unspecced::get_suggested_starter_packs::NSID
+                        .into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Get a skeleton of suggested starterpacks. Intended to be called and hydrated by app.bsky.unspecced.getSuggestedStarterpacks
+    pub async fn get_suggested_starter_packs_skeleton(
+        &self,
+        params: crate::app::bsky::unspecced::get_suggested_starter_packs_skeleton::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::app::bsky::unspecced::get_suggested_starter_packs_skeleton::Output,
+        crate::app::bsky::unspecced::get_suggested_starter_packs_skeleton::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::app::bsky::unspecced::get_suggested_starter_packs_skeleton::NSID
+                        .into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Get a list of suggested users
+    pub async fn get_suggested_users(
+        &self,
+        params: crate::app::bsky::unspecced::get_suggested_users::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::app::bsky::unspecced::get_suggested_users::Output,
+        crate::app::bsky::unspecced::get_suggested_users::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::app::bsky::unspecced::get_suggested_users::NSID.into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Get a skeleton of suggested users. Intended to be called and hydrated by app.bsky.unspecced.getSuggestedUsers
+    pub async fn get_suggested_users_skeleton(
+        &self,
+        params: crate::app::bsky::unspecced::get_suggested_users_skeleton::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::app::bsky::unspecced::get_suggested_users_skeleton::Output,
+        crate::app::bsky::unspecced::get_suggested_users_skeleton::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::app::bsky::unspecced::get_suggested_users_skeleton::NSID
+                        .into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
     ///Get a skeleton of suggested actors. Intended to be called and then hydrated through app.bsky.actor.getSuggestions
     pub async fn get_suggestions_skeleton(
         &self,
@@ -2158,6 +2362,66 @@ where
                 &atrium_xrpc::XrpcRequest {
                     method: http::Method::GET,
                     nsid: crate::app::bsky::unspecced::get_trending_topics::NSID.into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Get the current trends on the network
+    pub async fn get_trends(
+        &self,
+        params: crate::app::bsky::unspecced::get_trends::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::app::bsky::unspecced::get_trends::Output,
+        crate::app::bsky::unspecced::get_trends::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::app::bsky::unspecced::get_trends::NSID.into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Get the skeleton of trends on the network. Intended to be called and then hydrated through app.bsky.unspecced.getTrends
+    pub async fn get_trends_skeleton(
+        &self,
+        params: crate::app::bsky::unspecced::get_trends_skeleton::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::app::bsky::unspecced::get_trends_skeleton::Output,
+        crate::app::bsky::unspecced::get_trends_skeleton::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::app::bsky::unspecced::get_trends_skeleton::NSID.into(),
                     parameters: Some(params),
                     input: None,
                     encoding: None,
@@ -3497,6 +3761,37 @@ where
                 &atrium_xrpc::XrpcRequest {
                     method: http::Method::POST,
                     nsid: crate::com::atproto::admin::update_account_password::NSID
+                        .into(),
+                    parameters: None,
+                    input: Some(atrium_xrpc::InputDataOrBytes::Data(input)),
+                    encoding: Some(String::from("application/json")),
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Bytes(_) => Ok(()),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Administrative action to update an account's signing key in their Did document.
+    pub async fn update_account_signing_key(
+        &self,
+        input: crate::com::atproto::admin::update_account_signing_key::Input,
+    ) -> atrium_xrpc::Result<
+        (),
+        crate::com::atproto::admin::update_account_signing_key::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                (),
+                _,
+                (),
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::POST,
+                    nsid: crate::com::atproto::admin::update_account_signing_key::NSID
                         .into(),
                     parameters: None,
                     input: Some(atrium_xrpc::InputDataOrBytes::Data(input)),
@@ -5073,6 +5368,36 @@ where
             _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
         }
     }
+    ///Returns information about a specified upstream host, as consumed by the server. Implemented by relays.
+    pub async fn get_host_status(
+        &self,
+        params: crate::com::atproto::sync::get_host_status::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::com::atproto::sync::get_host_status::Output,
+        crate::com::atproto::sync::get_host_status::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::com::atproto::sync::get_host_status::NSID.into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
     ///Get the current commit CID & revision of the specified repo. Does not require auth.
     pub async fn get_latest_commit(
         &self,
@@ -5206,6 +5531,36 @@ where
                 &atrium_xrpc::XrpcRequest {
                     method: http::Method::GET,
                     nsid: crate::com::atproto::sync::list_blobs::NSID.into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Enumerates upstream hosts (eg, PDS or relay instances) that this service consumes from. Implemented by relays.
+    pub async fn list_hosts(
+        &self,
+        params: crate::com::atproto::sync::list_hosts::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::com::atproto::sync::list_hosts::Output,
+        crate::com::atproto::sync::list_hosts::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::com::atproto::sync::list_hosts::NSID.into(),
                     parameters: Some(params),
                     input: None,
                     encoding: None,
@@ -5489,6 +5844,7 @@ where
             communication: tools::ozone::communication::Service::new(
                 std::sync::Arc::clone(&xrpc),
             ),
+            hosting: tools::ozone::hosting::Service::new(std::sync::Arc::clone(&xrpc)),
             moderation: tools::ozone::moderation::Service::new(
                 std::sync::Arc::clone(&xrpc),
             ),
@@ -5499,6 +5855,9 @@ where
                 std::sync::Arc::clone(&xrpc),
             ),
             team: tools::ozone::team::Service::new(std::sync::Arc::clone(&xrpc)),
+            verification: tools::ozone::verification::Service::new(
+                std::sync::Arc::clone(&xrpc),
+            ),
             _phantom: core::marker::PhantomData,
         }
     }
@@ -5630,6 +5989,49 @@ where
                     parameters: None,
                     input: Some(atrium_xrpc::InputDataOrBytes::Data(input)),
                     encoding: Some(String::from("application/json")),
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+}
+#[cfg(feature = "namespace-toolsozone")]
+impl<T> tools::ozone::hosting::Service<T>
+where
+    T: atrium_xrpc::XrpcClient + Send + Sync,
+{
+    #[allow(unused_variables)]
+    pub(crate) fn new(xrpc: std::sync::Arc<T>) -> Self {
+        Self {
+            xrpc,
+            _phantom: core::marker::PhantomData,
+        }
+    }
+    ///Get account history, e.g. log of updated email addresses or other identity information.
+    pub async fn get_account_history(
+        &self,
+        params: crate::tools::ozone::hosting::get_account_history::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::tools::ozone::hosting::get_account_history::Output,
+        crate::tools::ozone::hosting::get_account_history::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::tools::ozone::hosting::get_account_history::NSID.into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
                 },
             )
             .await?;
@@ -6537,6 +6939,112 @@ where
                 &atrium_xrpc::XrpcRequest {
                     method: http::Method::POST,
                     nsid: crate::tools::ozone::team::update_member::NSID.into(),
+                    parameters: None,
+                    input: Some(atrium_xrpc::InputDataOrBytes::Data(input)),
+                    encoding: Some(String::from("application/json")),
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+}
+#[cfg(feature = "namespace-toolsozone")]
+impl<T> tools::ozone::verification::Service<T>
+where
+    T: atrium_xrpc::XrpcClient + Send + Sync,
+{
+    #[allow(unused_variables)]
+    pub(crate) fn new(xrpc: std::sync::Arc<T>) -> Self {
+        Self {
+            xrpc,
+            _phantom: core::marker::PhantomData,
+        }
+    }
+    ///Grant verifications to multiple subjects. Allows batch processing of up to 100 verifications at once.
+    pub async fn grant_verifications(
+        &self,
+        input: crate::tools::ozone::verification::grant_verifications::Input,
+    ) -> atrium_xrpc::Result<
+        crate::tools::ozone::verification::grant_verifications::Output,
+        crate::tools::ozone::verification::grant_verifications::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                (),
+                _,
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::POST,
+                    nsid: crate::tools::ozone::verification::grant_verifications::NSID
+                        .into(),
+                    parameters: None,
+                    input: Some(atrium_xrpc::InputDataOrBytes::Data(input)),
+                    encoding: Some(String::from("application/json")),
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///List verifications
+    pub async fn list_verifications(
+        &self,
+        params: crate::tools::ozone::verification::list_verifications::Parameters,
+    ) -> atrium_xrpc::Result<
+        crate::tools::ozone::verification::list_verifications::Output,
+        crate::tools::ozone::verification::list_verifications::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                _,
+                (),
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::GET,
+                    nsid: crate::tools::ozone::verification::list_verifications::NSID
+                        .into(),
+                    parameters: Some(params),
+                    input: None,
+                    encoding: None,
+                },
+            )
+            .await?;
+        match response {
+            atrium_xrpc::OutputDataOrBytes::Data(data) => Ok(data),
+            _ => Err(atrium_xrpc::Error::UnexpectedResponseType),
+        }
+    }
+    ///Revoke previously granted verifications in batches of up to 100.
+    pub async fn revoke_verifications(
+        &self,
+        input: crate::tools::ozone::verification::revoke_verifications::Input,
+    ) -> atrium_xrpc::Result<
+        crate::tools::ozone::verification::revoke_verifications::Output,
+        crate::tools::ozone::verification::revoke_verifications::Error,
+    > {
+        let response = self
+            .xrpc
+            .send_xrpc::<
+                (),
+                _,
+                _,
+                _,
+            >(
+                &atrium_xrpc::XrpcRequest {
+                    method: http::Method::POST,
+                    nsid: crate::tools::ozone::verification::revoke_verifications::NSID
+                        .into(),
                     parameters: None,
                     input: Some(atrium_xrpc::InputDataOrBytes::Data(input)),
                     encoding: Some(String::from("application/json")),

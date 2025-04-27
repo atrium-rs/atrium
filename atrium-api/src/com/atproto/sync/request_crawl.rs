@@ -10,9 +10,19 @@ pub struct InputData {
 pub type Input = crate::types::Object<InputData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "error", content = "message")]
-pub enum Error {}
+pub enum Error {
+    HostBanned(Option<String>),
+}
 impl std::fmt::Display for Error {
     fn fmt(&self, _f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Error::HostBanned(msg) => {
+                write!(_f, "HostBanned")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+        }
         Ok(())
     }
 }

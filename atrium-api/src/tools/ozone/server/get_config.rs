@@ -12,6 +12,9 @@ pub struct OutputData {
     pub chat: core::option::Option<ServiceConfig>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub pds: core::option::Option<ServiceConfig>,
+    ///The did of the verifier used for verification.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub verifier_did: core::option::Option<crate::types::string::Did>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<ViewerConfig>,
 }

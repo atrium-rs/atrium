@@ -14,4 +14,5 @@ pub mod send_email;
 pub mod update_account_email;
 pub mod update_account_handle;
 pub mod update_account_password;
+pub mod update_account_signing_key;
 pub mod update_subject_status;
