@@ -11,4 +11,4 @@ atrium-xrpc-client = { path = "../../atrium-xrpc-client" }
 
 clap.workspace = true
 futures.workspace = true
-tokio = { version = "1.36.0", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.44.2", features = ["macros", "rt-multi-thread"] }
