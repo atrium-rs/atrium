@@ -699,7 +699,7 @@ mod tests {
     fn valid_nsid() {
         // From https://atproto.com/specs/nsid#examples
         for valid in
-            ["com.example.fooBar", "net.users.bob.ping", "a-0.b-1.c", "a.b.c", "cn.8.lex.stuff"]
+            ["com.example.fooBar", "net.users.bob.ping", "a-0.b-1.c", "a.b.c", "com.example.fooBarV2", "cn.8.lex.stuff"]
         {
             assert!(
                 from_str::<Nsid>(&format!("\"{}\"", valid)).is_ok(),
@@ -712,7 +712,7 @@ mod tests {
     #[test]
     fn invalid_nsid() {
         // From https://atproto.com/specs/nsid#examples
-        for invalid in ["com.exa💩ple.thing", "com.example"] {
+        for invalid in ["com.exa💩ple.thing", "com.example", "com.example.3"] {
             assert!(
                 from_str::<Nsid>(&format!("\"{}\"", invalid)).is_err(),
                 "invalid NSID `{}` parsed as valid",
