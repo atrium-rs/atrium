@@ -362,7 +362,7 @@ impl Nsid {
         if nsid.len() > 317 {
             Err("NSID too long")
         } else if !RE_NSID
-            .get_or_init(|| Regex::new(r"^[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(\.[a-zA-Z]([a-zA-Z]{0,61}[a-zA-Z])?)$").unwrap())
+            .get_or_init(|| Regex::new(r"^[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(\.[a-zA-Z]([a-zA-Z0-9]{0,61}[a-zA-Z0-9])?)$").unwrap())
             .is_match(&nsid)
         {
             Err("Invalid NSID")
