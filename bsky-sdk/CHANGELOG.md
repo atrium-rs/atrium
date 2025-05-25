@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.20](https://github.com/atrium-rs/atrium/compare/bsky-sdk-v0.1.19...bsky-sdk-v0.1.20) - 2025-05-25
+
+### Other
+
+- updated the following local packages: atrium-api
+
 ## [0.1.19](https://github.com/atrium-rs/atrium/compare/bsky-sdk-v0.1.18...bsky-sdk-v0.1.19) - 2025-04-27
 
 ### Added
