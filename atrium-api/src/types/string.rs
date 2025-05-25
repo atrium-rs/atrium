@@ -362,7 +362,7 @@ impl Nsid {
         if nsid.len() > 317 {
             Err("NSID too long")
         } else if !RE_NSID
-            .get_or_init(|| Regex::new(r"^[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(\.[a-zA-Z]([a-zA-Z]{0,61}[a-zA-Z])?)$").unwrap())
+            .get_or_init(|| Regex::new(r"^[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(\.[a-zA-Z][a-zA-Z0-9]{0,62})$").unwrap())
             .is_match(&nsid)
         {
             Err("Invalid NSID")
@@ -698,9 +698,14 @@ mod tests {
     #[test]
     fn valid_nsid() {
         // From https://atproto.com/specs/nsid#examples
-        for valid in
-            ["com.example.fooBar", "net.users.bob.ping", "a-0.b-1.c", "a.b.c", "cn.8.lex.stuff"]
-        {
+        for valid in [
+            "com.example.fooBar",
+            "net.users.bob.ping",
+            "a-0.b-1.c",
+            "a.b.c",
+            "com.example.fooBarV2",
+            "cn.8.lex.stuff",
+        ] {
             assert!(
                 from_str::<Nsid>(&format!("\"{}\"", valid)).is_ok(),
                 "valid NSID `{}` parsed as invalid",
@@ -712,7 +717,7 @@ mod tests {
     #[test]
     fn invalid_nsid() {
         // From https://atproto.com/specs/nsid#examples
-        for invalid in ["com.exa💩ple.thing", "com.example"] {
+        for invalid in ["com.exa💩ple.thing", "com.example", "com.example.3"] {
             assert!(
                 from_str::<Nsid>(&format!("\"{}\"", invalid)).is_err(),
                 "invalid NSID `{}` parsed as valid",
