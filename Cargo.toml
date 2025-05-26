@@ -100,6 +100,7 @@ trait-variant = "0.1.2"
 
 # Others
 base64ct = "=1.6.0"
+idna_adapter = "=1.2.0"
 litemap = "=0.7.4"
 native-tls = "=0.2.13"
 zerofrom = "=0.1.5"

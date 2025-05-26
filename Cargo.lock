@@ -430,6 +430,7 @@ dependencies = [
  "atrium-common",
  "atrium-xrpc-client",
  "chrono",
+ "idna_adapter",
  "ipld-core",
  "litemap",
  "native-tls",
