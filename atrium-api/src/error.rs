@@ -6,6 +6,8 @@ use thiserror::Error;
 pub enum Error {
     #[error(transparent)]
     IpldCoreSerde(#[from] ipld_core::serde::SerdeError),
+    #[error(transparent)]
+    SerdeJson(#[from] serde_json::Error),
     #[error("not allowed in ATProtocol")]
     NotAllowed,
 }
