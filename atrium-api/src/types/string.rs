@@ -404,7 +404,7 @@ impl Language {
 
     /// Returns a [`LanguageTag`] referencing this tag.
     #[inline]
-    pub fn as_ref(&self) -> LanguageTag {
+    pub fn as_ref(&self) -> LanguageTag<'_> {
         self.0.as_ref()
     }
 }
