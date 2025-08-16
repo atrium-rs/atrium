@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6](https://github.com/atrium-rs/atrium/compare/atrium-identity-v0.1.5...atrium-identity-v0.1.6) - 2025-08-16
+
+### Other
+
+- trim https-well-known-method handle response ([#322](https://github.com/atrium-rs/atrium/pull/322))
+
 ## [0.1.5](https://github.com/atrium-rs/atrium/compare/atrium-identity-v0.1.4...atrium-identity-v0.1.5) - 2025-05-25
 
 ### Other
