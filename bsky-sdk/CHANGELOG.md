@@ -1,4 +1,18 @@
 # Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.1.21](https://github.com/atrium-rs/atrium/compare/bsky-sdk-v0.1.20...bsky-sdk-v0.1.21) - 2025-08-16
+
+### Other
+
+- updated the following local packages: atrium-api
+# Changelog
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
