@@ -40,8 +40,10 @@ where
             .await
             .map_err(Error::HttpClient)?;
         if res.status().is_success() {
-            let text = String::from_utf8_lossy(res.body()).to_string();
-            text.parse::<Did>().map_err(|e| Error::Did(e.to_string()))
+            String::from_utf8_lossy(res.body())
+                .trim() // strip whitespace for best compatibility. https://atproto.com/specs/handle#https-well-known-method
+                .parse::<Did>()
+                .map_err(|e| Error::Did(e.to_string()))
         } else {
             Err(Error::HttpStatus(res.status()))
         }
