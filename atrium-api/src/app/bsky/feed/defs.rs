@@ -39,6 +39,9 @@ pub struct FeedViewPostData {
     pub reason: core::option::Option<crate::types::Union<FeedViewPostReasonRefs>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub reply: core::option::Option<ReplyRef>,
+    ///Unique identifier per request that may be passed back alongside interactions.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub req_id: core::option::Option<String>,
 }
 pub type FeedViewPost = crate::types::Object<FeedViewPostData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -87,6 +90,9 @@ pub struct InteractionData {
     pub feed_context: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub item: core::option::Option<String>,
+    ///Unique identifier per request that may be passed back alongside interactions.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub req_id: core::option::Option<String>,
 }
 pub type Interaction = crate::types::Object<InteractionData>;
 ///User liked the feed item
@@ -112,6 +118,8 @@ pub type NotFoundPost = crate::types::Object<NotFoundPostData>;
 #[serde(rename_all = "camelCase")]
 pub struct PostViewData {
     pub author: crate::app::bsky::actor::defs::ProfileViewBasic,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub bookmark_count: core::option::Option<i64>,
     pub cid: crate::types::string::Cid,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub embed: core::option::Option<crate::types::Union<PostViewEmbedRefs>>,
@@ -142,7 +150,11 @@ pub type ReasonPin = crate::types::Object<ReasonPinData>;
 #[serde(rename_all = "camelCase")]
 pub struct ReasonRepostData {
     pub by: crate::app::bsky::actor::defs::ProfileViewBasic,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub cid: core::option::Option<crate::types::string::Cid>,
     pub indexed_at: crate::types::string::Datetime,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub uri: core::option::Option<String>,
 }
 pub type ReasonRepost = crate::types::Object<ReasonRepostData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -221,6 +233,8 @@ pub type ThreadgateView = crate::types::Object<ThreadgateViewData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ViewerStateData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub bookmarked: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub embedding_disabled: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]

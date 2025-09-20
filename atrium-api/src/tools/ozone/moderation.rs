@@ -2,6 +2,7 @@
 //!Definitions for the `tools.ozone.moderation` namespace.
 pub mod defs;
 pub mod emit_event;
+pub mod get_account_timeline;
 pub mod get_event;
 pub mod get_record;
 pub mod get_records;

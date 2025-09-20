@@ -9,6 +9,10 @@ pub enum KnownRecord {
     AppBskyActorProfile(Box<crate::app::bsky::actor::profile::Record>),
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
     #[cfg(feature = "namespace-appbsky")]
+    #[serde(rename = "app.bsky.actor.status")]
+    AppBskyActorStatus(Box<crate::app::bsky::actor::status::Record>),
+    #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+    #[cfg(feature = "namespace-appbsky")]
     #[serde(rename = "app.bsky.feed.generator")]
     AppBskyFeedGenerator(Box<crate::app::bsky::feed::generator::Record>),
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
@@ -63,6 +67,12 @@ pub enum KnownRecord {
     #[cfg(feature = "namespace-appbsky")]
     #[serde(rename = "app.bsky.labeler.service")]
     AppBskyLabelerService(Box<crate::app::bsky::labeler::service::Record>),
+    #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+    #[cfg(feature = "namespace-appbsky")]
+    #[serde(rename = "app.bsky.notification.declaration")]
+    AppBskyNotificationDeclaration(
+        Box<crate::app::bsky::notification::declaration::Record>,
+    ),
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-chatbsky")))]
     #[cfg(feature = "namespace-chatbsky")]
     #[serde(rename = "chat.bsky.actor.declaration")]
@@ -82,6 +92,20 @@ impl From<crate::app::bsky::actor::profile::Record> for KnownRecord {
 impl From<crate::app::bsky::actor::profile::RecordData> for KnownRecord {
     fn from(record_data: crate::app::bsky::actor::profile::RecordData) -> Self {
         KnownRecord::AppBskyActorProfile(Box::new(record_data.into()))
+    }
+}
+#[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+#[cfg(feature = "namespace-appbsky")]
+impl From<crate::app::bsky::actor::status::Record> for KnownRecord {
+    fn from(record: crate::app::bsky::actor::status::Record) -> Self {
+        KnownRecord::AppBskyActorStatus(Box::new(record))
+    }
+}
+#[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+#[cfg(feature = "namespace-appbsky")]
+impl From<crate::app::bsky::actor::status::RecordData> for KnownRecord {
+    fn from(record_data: crate::app::bsky::actor::status::RecordData) -> Self {
+        KnownRecord::AppBskyActorStatus(Box::new(record_data.into()))
     }
 }
 #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
@@ -278,6 +302,22 @@ impl From<crate::app::bsky::labeler::service::Record> for KnownRecord {
 impl From<crate::app::bsky::labeler::service::RecordData> for KnownRecord {
     fn from(record_data: crate::app::bsky::labeler::service::RecordData) -> Self {
         KnownRecord::AppBskyLabelerService(Box::new(record_data.into()))
+    }
+}
+#[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+#[cfg(feature = "namespace-appbsky")]
+impl From<crate::app::bsky::notification::declaration::Record> for KnownRecord {
+    fn from(record: crate::app::bsky::notification::declaration::Record) -> Self {
+        KnownRecord::AppBskyNotificationDeclaration(Box::new(record))
+    }
+}
+#[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+#[cfg(feature = "namespace-appbsky")]
+impl From<crate::app::bsky::notification::declaration::RecordData> for KnownRecord {
+    fn from(
+        record_data: crate::app::bsky::notification::declaration::RecordData,
+    ) -> Self {
+        KnownRecord::AppBskyNotificationDeclaration(Box::new(record_data.into()))
     }
 }
 #[cfg_attr(docsrs, doc(cfg(feature = "namespace-chatbsky")))]

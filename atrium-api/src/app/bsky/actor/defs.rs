@@ -164,6 +164,10 @@ pub type Preferences = Vec<crate::types::Union<PreferencesItem>>;
 #[serde(rename_all = "camelCase")]
 pub struct ProfileAssociatedData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub activity_subscription: core::option::Option<
+        ProfileAssociatedActivitySubscription,
+    >,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub chat: core::option::Option<ProfileAssociatedChat>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub feedgens: core::option::Option<i64>,
@@ -175,6 +179,14 @@ pub struct ProfileAssociatedData {
     pub starter_packs: core::option::Option<i64>,
 }
 pub type ProfileAssociated = crate::types::Object<ProfileAssociatedData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ProfileAssociatedActivitySubscriptionData {
+    pub allow_subscriptions: String,
+}
+pub type ProfileAssociatedActivitySubscription = crate::types::Object<
+    ProfileAssociatedActivitySubscriptionData,
+>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ProfileAssociatedChatData {
@@ -201,6 +213,10 @@ pub struct ProfileViewData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub pronouns: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub status: core::option::Option<StatusView>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub verification: core::option::Option<VerificationState>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<ViewerState>,
@@ -221,6 +237,10 @@ pub struct ProfileViewBasicData {
     pub handle: crate::types::string::Handle,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub pronouns: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub status: core::option::Option<StatusView>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub verification: core::option::Option<VerificationState>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -261,9 +281,15 @@ pub struct ProfileViewDetailedData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub posts_count: core::option::Option<i64>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub pronouns: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub status: core::option::Option<StatusView>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub verification: core::option::Option<VerificationState>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<ViewerState>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub website: core::option::Option<String>,
 }
 pub type ProfileViewDetailed = crate::types::Object<ProfileViewDetailedData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -290,6 +316,23 @@ pub struct SavedFeedsPrefV2Data {
     pub items: Vec<crate::app::bsky::actor::defs::SavedFeed>,
 }
 pub type SavedFeedsPrefV2 = crate::types::Object<SavedFeedsPrefV2Data>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct StatusViewData {
+    ///An optional embed associated with the status.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub embed: core::option::Option<crate::types::Union<StatusViewEmbedRefs>>,
+    ///The date when this status will expire. The application might choose to no longer return the status after expiration.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub expires_at: core::option::Option<crate::types::string::Datetime>,
+    ///True if the status is not expired, false if it is expired. Only present if expiration was set.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub is_active: core::option::Option<bool>,
+    pub record: crate::types::Unknown,
+    ///The status for the account.
+    pub status: String,
+}
+pub type StatusView = crate::types::Object<StatusViewData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ThreadViewPrefData {
@@ -340,6 +383,11 @@ pub type VerificationView = crate::types::Object<VerificationViewData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ViewerStateData {
+    ///This property is present only in selected cases, as an optimization.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub activity_subscription: core::option::Option<
+        crate::app::bsky::notification::defs::ActivitySubscription,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub blocked_by: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -352,6 +400,7 @@ pub struct ViewerStateData {
     pub followed_by: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub following: core::option::Option<String>,
+    ///This property is present only in selected cases, as an optimization.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub known_followers: core::option::Option<KnownFollowers>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -417,4 +466,10 @@ pub enum PreferencesItem {
     PostInteractionSettingsPref(Box<PostInteractionSettingsPref>),
     #[serde(rename = "app.bsky.actor.defs#verificationPrefs")]
     VerificationPrefs(Box<VerificationPrefs>),
+}
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(tag = "$type")]
+pub enum StatusViewEmbedRefs {
+    #[serde(rename = "app.bsky.embed.external#view")]
+    AppBskyEmbedExternalView(Box<crate::app::bsky::embed::external::View>),
 }

@@ -6,6 +6,8 @@ pub const NSID: &str = "app.bsky.unspecced.getConfig";
 pub struct OutputData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub check_email_confirmed: core::option::Option<bool>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub live_now: core::option::Option<Vec<LiveNowConfig>>,
 }
 pub type Output = crate::types::Object<OutputData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -16,3 +18,10 @@ impl std::fmt::Display for Error {
         Ok(())
     }
 }
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct LiveNowConfigData {
+    pub did: crate::types::string::Did,
+    pub domains: Vec<String>,
+}
+pub type LiveNowConfig = crate::types::Object<LiveNowConfigData>;

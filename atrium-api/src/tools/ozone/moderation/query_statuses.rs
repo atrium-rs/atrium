@@ -4,6 +4,9 @@ pub const NSID: &str = "tools.ozone.moderation.queryStatuses";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ParametersData {
+    ///If specified, only subjects with the given age assurance state will be returned.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub age_assurance_state: core::option::Option<String>,
     ///Get subjects in unresolved appealed status
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub appealed: core::option::Option<bool>,

@@ -18,6 +18,9 @@ pub struct OutputData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub cursor: core::option::Option<String>,
     pub feed: Vec<crate::app::bsky::feed::defs::SkeletonFeedPost>,
+    ///Unique identifier per request that may be passed back alongside interactions.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub req_id: core::option::Option<String>,
 }
 pub type Output = crate::types::Object<OutputData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
