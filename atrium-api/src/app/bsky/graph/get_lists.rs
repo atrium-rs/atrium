@@ -10,6 +10,9 @@ pub struct ParametersData {
     pub cursor: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub limit: core::option::Option<crate::types::LimitedNonZeroU8<100u8>>,
+    ///Optional filter by list purpose. If not specified, all supported types are returned.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub purposes: core::option::Option<Vec<String>>,
 }
 pub type Parameters = crate::types::Object<ParametersData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]

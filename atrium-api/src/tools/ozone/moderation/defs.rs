@@ -50,6 +50,40 @@ pub struct AccountStatsData {
     pub takedown_count: core::option::Option<i64>,
 }
 pub type AccountStats = crate::types::Object<AccountStatsData>;
+///Age assurance info coming directly from users. Only works on DID subjects.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct AgeAssuranceEventData {
+    ///The unique identifier for this instance of the age assurance flow, in UUID format.
+    pub attempt_id: String,
+    ///The IP address used when completing the AA flow.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub complete_ip: core::option::Option<String>,
+    ///The user agent used when completing the AA flow.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub complete_ua: core::option::Option<String>,
+    ///The date and time of this write operation.
+    pub created_at: crate::types::string::Datetime,
+    ///The IP address used when initiating the AA flow.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub init_ip: core::option::Option<String>,
+    ///The user agent used when initiating the AA flow.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub init_ua: core::option::Option<String>,
+    ///The status of the age assurance process.
+    pub status: String,
+}
+pub type AgeAssuranceEvent = crate::types::Object<AgeAssuranceEventData>;
+///Age assurance status override by moderators. Only works on DID subjects.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct AgeAssuranceOverrideEventData {
+    ///Comment describing the reason for the override.
+    pub comment: String,
+    ///The status to be set for the user decided by a moderator, overriding whatever value the user had previously. Use reset to default to original state.
+    pub status: String,
+}
+pub type AgeAssuranceOverrideEvent = crate::types::Object<AgeAssuranceOverrideEventData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct BlobViewData {
@@ -265,6 +299,8 @@ pub struct ModEventViewData {
     pub creator_handle: core::option::Option<String>,
     pub event: crate::types::Union<ModEventViewEventRefs>,
     pub id: i64,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub mod_tool: core::option::Option<ModTool>,
     pub subject: crate::types::Union<ModEventViewSubjectRefs>,
     pub subject_blob_cids: Vec<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -278,10 +314,23 @@ pub struct ModEventViewDetailData {
     pub created_by: crate::types::string::Did,
     pub event: crate::types::Union<ModEventViewDetailEventRefs>,
     pub id: i64,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub mod_tool: core::option::Option<ModTool>,
     pub subject: crate::types::Union<ModEventViewDetailSubjectRefs>,
     pub subject_blobs: Vec<BlobView>,
 }
 pub type ModEventViewDetail = crate::types::Object<ModEventViewDetailData>;
+///Moderation tool information for tracing the source of the action
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ModToolData {
+    ///Additional arbitrary metadata about the source
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub meta: core::option::Option<crate::types::Unknown>,
+    ///Name/identifier of the source (e.g., 'automod', 'ozone/workspace')
+    pub name: String,
+}
+pub type ModTool = crate::types::Object<ModToolData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ModerationData {
@@ -474,6 +523,16 @@ pub const REVIEW_ESCALATED: &str = "tools.ozone.moderation.defs#reviewEscalated"
 pub const REVIEW_NONE: &str = "tools.ozone.moderation.defs#reviewNone";
 ///Moderator review status of a subject: Open. Indicates that the subject needs to be reviewed by a moderator
 pub const REVIEW_OPEN: &str = "tools.ozone.moderation.defs#reviewOpen";
+///Account credentials revocation by moderators. Only works on DID subjects.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct RevokeAccountCredentialsEventData {
+    ///Comment describing the reason for the revocation.
+    pub comment: String,
+}
+pub type RevokeAccountCredentialsEvent = crate::types::Object<
+    RevokeAccountCredentialsEventData,
+>;
 pub type SubjectReviewState = String;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -481,6 +540,12 @@ pub struct SubjectStatusViewData {
     ///Statistics related to the account subject
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub account_stats: core::option::Option<AccountStats>,
+    ///Current age assurance state of the subject.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub age_assurance_state: core::option::Option<String>,
+    ///Whether or not the last successful update to age assurance was made by the user or admin.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub age_assurance_updated_by: core::option::Option<String>,
     ///True indicates that the a previously taken moderator action was appealed against, by the author of the content. False indicates last appeal was resolved by moderators.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub appealed: core::option::Option<bool>,
@@ -543,6 +608,12 @@ pub struct SubjectViewData {
     pub r#type: crate::com::atproto::moderation::defs::SubjectType,
 }
 pub type SubjectView = crate::types::Object<SubjectViewData>;
+///Moderation event timeline event for a PLC create operation
+pub const TIMELINE_EVENT_PLC_CREATE: &str = "tools.ozone.moderation.defs#timelineEventPlcCreate";
+///Moderation event timeline event for generic PLC operation
+pub const TIMELINE_EVENT_PLC_OPERATION: &str = "tools.ozone.moderation.defs#timelineEventPlcOperation";
+///Moderation event timeline event for a PLC tombstone operation
+pub const TIMELINE_EVENT_PLC_TOMBSTONE: &str = "tools.ozone.moderation.defs#timelineEventPlcTombstone";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct VideoDetailsData {
@@ -600,6 +671,12 @@ pub enum ModEventViewDetailEventRefs {
     RecordEvent(Box<RecordEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#modEventPriorityScore")]
     ModEventPriorityScore(Box<ModEventPriorityScore>),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssuranceEvent")]
+    AgeAssuranceEvent(Box<AgeAssuranceEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssuranceOverrideEvent")]
+    AgeAssuranceOverrideEvent(Box<AgeAssuranceOverrideEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#revokeAccountCredentialsEvent")]
+    RevokeAccountCredentialsEvent(Box<RevokeAccountCredentialsEvent>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]
@@ -654,6 +731,12 @@ pub enum ModEventViewEventRefs {
     RecordEvent(Box<RecordEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#modEventPriorityScore")]
     ModEventPriorityScore(Box<ModEventPriorityScore>),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssuranceEvent")]
+    AgeAssuranceEvent(Box<AgeAssuranceEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssuranceOverrideEvent")]
+    AgeAssuranceOverrideEvent(Box<AgeAssuranceOverrideEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#revokeAccountCredentialsEvent")]
+    RevokeAccountCredentialsEvent(Box<RevokeAccountCredentialsEvent>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]
@@ -680,6 +763,8 @@ pub enum SubjectStatusViewSubjectRefs {
     ComAtprotoAdminDefsRepoRef(Box<crate::com::atproto::admin::defs::RepoRef>),
     #[serde(rename = "com.atproto.repo.strongRef")]
     ComAtprotoRepoStrongRefMain(Box<crate::com::atproto::repo::strong_ref::Main>),
+    #[serde(rename = "chat.bsky.convo.defs#messageRef")]
+    ChatBskyConvoDefsMessageRef(Box<crate::chat::bsky::convo::defs::MessageRef>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]

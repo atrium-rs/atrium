@@ -5,5 +5,7 @@
 pub struct RecordData {
     pub created_at: crate::types::string::Datetime,
     pub subject: crate::com::atproto::repo::strong_ref::Main,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub via: core::option::Option<crate::com::atproto::repo::strong_ref::Main>,
 }
 pub type Record = crate::types::Object<RecordData>;
