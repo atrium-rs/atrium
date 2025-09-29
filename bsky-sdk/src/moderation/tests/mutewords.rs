@@ -58,6 +58,7 @@ fn moderation_prefs(
 
 fn viewer_state(following: Option<String>) -> ViewerState {
     ViewerStateData {
+        activity_subscription: None,
         blocked_by: None,
         blocking: None,
         blocking_by_list: None,

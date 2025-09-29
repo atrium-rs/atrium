@@ -84,6 +84,7 @@ impl TestUser {
             _ => Definition::default(),
         };
         ViewerStateData {
+            activity_subscription: None,
             blocked_by: if def.blocked_by { Some(true) } else { None },
             blocking: if def.blocking || def.blocking_by_list {
                 Some(String::from("at://did:web:self.test/app.bsky.graph.block/fake"))

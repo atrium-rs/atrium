@@ -53,6 +53,8 @@ where
             KnownRecord::AppBskyLabelerService(record) => record.data.create(self).await,
             KnownRecord::ChatBskyActorDeclaration(record) => record.data.create(self).await,
             KnownRecord::ComAtprotoLexiconSchema(record) => record.data.create(self).await,
+            KnownRecord::AppBskyActorStatus(record) => record.data.create(self).await,
+            KnownRecord::AppBskyNotificationDeclaration(record) => record.data.create(self).await,
         }
     }
     /// Delete a record with AT URI.
