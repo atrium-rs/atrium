@@ -4,9 +4,7 @@
 #[serde(rename_all = "camelCase")]
 pub struct ProfileViewBasicData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub associated: core::option::Option<
-        crate::app::bsky::actor::defs::ProfileAssociated,
-    >,
+    pub associated: core::option::Option<crate::app::bsky::actor::defs::ProfileAssociated>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub avatar: core::option::Option<String>,
     ///Set to true when the actor cannot actively participate in conversations
@@ -19,9 +17,7 @@ pub struct ProfileViewBasicData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub verification: core::option::Option<
-        crate::app::bsky::actor::defs::VerificationState,
-    >,
+    pub verification: core::option::Option<crate::app::bsky::actor::defs::VerificationState>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<crate::app::bsky::actor::defs::ViewerState>,
 }

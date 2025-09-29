@@ -58,6 +58,4 @@ pub struct SubjectActivitySubscriptionData {
     pub activity_subscription: ActivitySubscription,
     pub subject: crate::types::string::Did,
 }
-pub type SubjectActivitySubscription = crate::types::Object<
-    SubjectActivitySubscriptionData,
->;
+pub type SubjectActivitySubscription = crate::types::Object<SubjectActivitySubscriptionData>;

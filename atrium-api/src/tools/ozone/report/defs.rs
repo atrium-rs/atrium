@@ -5,21 +5,26 @@ pub const REASON_APPEAL: &str = "tools.ozone.report.defs#reasonAppeal";
 ///Child sexual abuse material (CSAM). These reports will be sent only be sent to the application's Moderation Authority.
 pub const REASON_CHILD_SAFETY_CSAM: &str = "tools.ozone.report.defs#reasonChildSafetyCSAM";
 ///Child endangerment. These reports will be sent only be sent to the application's Moderation Authority.
-pub const REASON_CHILD_SAFETY_ENDANGERMENT: &str = "tools.ozone.report.defs#reasonChildSafetyEndangerment";
+pub const REASON_CHILD_SAFETY_ENDANGERMENT: &str =
+    "tools.ozone.report.defs#reasonChildSafetyEndangerment";
 ///Grooming or predatory behavior. These reports will be sent only be sent to the application's Moderation Authority.
 pub const REASON_CHILD_SAFETY_GROOM: &str = "tools.ozone.report.defs#reasonChildSafetyGroom";
 ///Harassment or bullying of minors
-pub const REASON_CHILD_SAFETY_HARASSMENT: &str = "tools.ozone.report.defs#reasonChildSafetyHarassment";
+pub const REASON_CHILD_SAFETY_HARASSMENT: &str =
+    "tools.ozone.report.defs#reasonChildSafetyHarassment";
 ///Privacy violation involving a minor
-pub const REASON_CHILD_SAFETY_MINOR_PRIVACY: &str = "tools.ozone.report.defs#reasonChildSafetyMinorPrivacy";
+pub const REASON_CHILD_SAFETY_MINOR_PRIVACY: &str =
+    "tools.ozone.report.defs#reasonChildSafetyMinorPrivacy";
 ///Other child safety. These reports will be sent only be sent to the application's Moderation Authority.
 pub const REASON_CHILD_SAFETY_OTHER: &str = "tools.ozone.report.defs#reasonChildSafetyOther";
 ///Promotion of child exploitation. These reports will be sent only be sent to the application's Moderation Authority.
-pub const REASON_CHILD_SAFETY_PROMOTION: &str = "tools.ozone.report.defs#reasonChildSafetyPromotion";
+pub const REASON_CHILD_SAFETY_PROMOTION: &str =
+    "tools.ozone.report.defs#reasonChildSafetyPromotion";
 ///Disclosure & transparency violations
 pub const REASON_CIVIC_DISCLOSURE: &str = "tools.ozone.report.defs#reasonCivicDisclosure";
 ///Electoral process violations
-pub const REASON_CIVIC_ELECTORAL_PROCESS: &str = "tools.ozone.report.defs#reasonCivicElectoralProcess";
+pub const REASON_CIVIC_ELECTORAL_PROCESS: &str =
+    "tools.ozone.report.defs#reasonCivicElectoralProcess";
 ///Impersonation of electoral officials/entities
 pub const REASON_CIVIC_IMPERSONATION: &str = "tools.ozone.report.defs#reasonCivicImpersonation";
 ///Voter intimidation or interference
@@ -29,7 +34,8 @@ pub const REASON_CIVIC_MISINFORMATION: &str = "tools.ozone.report.defs#reasonCiv
 ///Doxxing
 pub const REASON_HARASSMENT_DOXXING: &str = "tools.ozone.report.defs#reasonHarassmentDoxxing";
 ///Hate speech
-pub const REASON_HARASSMENT_HATE_SPEECH: &str = "tools.ozone.report.defs#reasonHarassmentHateSpeech";
+pub const REASON_HARASSMENT_HATE_SPEECH: &str =
+    "tools.ozone.report.defs#reasonHarassmentHateSpeech";
 ///Other harassing or hateful content
 pub const REASON_HARASSMENT_OTHER: &str = "tools.ozone.report.defs#reasonHarassmentOther";
 ///Targeted harassment
@@ -39,9 +45,11 @@ pub const REASON_HARASSMENT_TROLL: &str = "tools.ozone.report.defs#reasonHarassm
 ///Fake account or bot
 pub const REASON_MISLEADING_BOT: &str = "tools.ozone.report.defs#reasonMisleadingBot";
 ///Impersonation
-pub const REASON_MISLEADING_IMPERSONATION: &str = "tools.ozone.report.defs#reasonMisleadingImpersonation";
+pub const REASON_MISLEADING_IMPERSONATION: &str =
+    "tools.ozone.report.defs#reasonMisleadingImpersonation";
 ///Harmful false claims
-pub const REASON_MISLEADING_MISINFORMATION: &str = "tools.ozone.report.defs#reasonMisleadingMisinformation";
+pub const REASON_MISLEADING_MISINFORMATION: &str =
+    "tools.ozone.report.defs#reasonMisleadingMisinformation";
 ///Other misleading content
 pub const REASON_MISLEADING_OTHER: &str = "tools.ozone.report.defs#reasonMisleadingOther";
 ///Scam
@@ -49,7 +57,8 @@ pub const REASON_MISLEADING_SCAM: &str = "tools.ozone.report.defs#reasonMisleadi
 ///Spam
 pub const REASON_MISLEADING_SPAM: &str = "tools.ozone.report.defs#reasonMisleadingSpam";
 ///Unlabelled gen-AI or synthetic content
-pub const REASON_MISLEADING_SYNTHETIC_CONTENT: &str = "tools.ozone.report.defs#reasonMisleadingSyntheticContent";
+pub const REASON_MISLEADING_SYNTHETIC_CONTENT: &str =
+    "tools.ozone.report.defs#reasonMisleadingSyntheticContent";
 ///Banned user returning
 pub const REASON_RULE_BAN_EVASION: &str = "tools.ozone.report.defs#reasonRuleBanEvasion";
 ///Other
@@ -76,13 +85,17 @@ pub const REASON_SEXUAL_SEXTORTION: &str = "tools.ozone.report.defs#reasonSexual
 pub const REASON_SEXUAL_UNLABELED: &str = "tools.ozone.report.defs#reasonSexualUnlabeled";
 pub type ReasonType = String;
 ///Animal welfare violations
-pub const REASON_VIOLENCE_ANIMAL_WELFARE: &str = "tools.ozone.report.defs#reasonViolenceAnimalWelfare";
+pub const REASON_VIOLENCE_ANIMAL_WELFARE: &str =
+    "tools.ozone.report.defs#reasonViolenceAnimalWelfare";
 ///Extremist content. These reports will be sent only be sent to the application's Moderation Authority.
-pub const REASON_VIOLENCE_EXTREMIST_CONTENT: &str = "tools.ozone.report.defs#reasonViolenceExtremistContent";
+pub const REASON_VIOLENCE_EXTREMIST_CONTENT: &str =
+    "tools.ozone.report.defs#reasonViolenceExtremistContent";
 ///Glorification of violence
-pub const REASON_VIOLENCE_GLORIFICATION: &str = "tools.ozone.report.defs#reasonViolenceGlorification";
+pub const REASON_VIOLENCE_GLORIFICATION: &str =
+    "tools.ozone.report.defs#reasonViolenceGlorification";
 ///Graphic violent content
-pub const REASON_VIOLENCE_GRAPHIC_CONTENT: &str = "tools.ozone.report.defs#reasonViolenceGraphicContent";
+pub const REASON_VIOLENCE_GRAPHIC_CONTENT: &str =
+    "tools.ozone.report.defs#reasonViolenceGraphicContent";
 ///Other violent content
 pub const REASON_VIOLENCE_OTHER: &str = "tools.ozone.report.defs#reasonViolenceOther";
 ///Self harm

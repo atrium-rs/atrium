@@ -17,9 +17,7 @@ pub struct AccountViewData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub invited_by: core::option::Option<crate::com::atproto::server::defs::InviteCode>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub invites: core::option::Option<
-        Vec<crate::com::atproto::server::defs::InviteCode>,
-    >,
+    pub invites: core::option::Option<Vec<crate::com::atproto::server::defs::InviteCode>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub invites_disabled: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]

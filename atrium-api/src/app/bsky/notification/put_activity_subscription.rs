@@ -12,9 +12,8 @@ pub type Input = crate::types::Object<InputData>;
 #[serde(rename_all = "camelCase")]
 pub struct OutputData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub activity_subscription: core::option::Option<
-        crate::app::bsky::notification::defs::ActivitySubscription,
-    >,
+    pub activity_subscription:
+        core::option::Option<crate::app::bsky::notification::defs::ActivitySubscription>,
     pub subject: crate::types::string::Did,
 }
 pub type Output = crate::types::Object<OutputData>;

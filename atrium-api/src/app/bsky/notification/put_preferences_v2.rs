@@ -7,49 +7,29 @@ pub struct InputData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub chat: core::option::Option<crate::app::bsky::notification::defs::ChatPreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub follow: core::option::Option<
-        crate::app::bsky::notification::defs::FilterablePreference,
-    >,
+    pub follow: core::option::Option<crate::app::bsky::notification::defs::FilterablePreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub like: core::option::Option<
-        crate::app::bsky::notification::defs::FilterablePreference,
-    >,
+    pub like: core::option::Option<crate::app::bsky::notification::defs::FilterablePreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub like_via_repost: core::option::Option<
-        crate::app::bsky::notification::defs::FilterablePreference,
-    >,
+    pub like_via_repost:
+        core::option::Option<crate::app::bsky::notification::defs::FilterablePreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub mention: core::option::Option<
-        crate::app::bsky::notification::defs::FilterablePreference,
-    >,
+    pub mention: core::option::Option<crate::app::bsky::notification::defs::FilterablePreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub quote: core::option::Option<
-        crate::app::bsky::notification::defs::FilterablePreference,
-    >,
+    pub quote: core::option::Option<crate::app::bsky::notification::defs::FilterablePreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub reply: core::option::Option<
-        crate::app::bsky::notification::defs::FilterablePreference,
-    >,
+    pub reply: core::option::Option<crate::app::bsky::notification::defs::FilterablePreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub repost: core::option::Option<
-        crate::app::bsky::notification::defs::FilterablePreference,
-    >,
+    pub repost: core::option::Option<crate::app::bsky::notification::defs::FilterablePreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub repost_via_repost: core::option::Option<
-        crate::app::bsky::notification::defs::FilterablePreference,
-    >,
+    pub repost_via_repost:
+        core::option::Option<crate::app::bsky::notification::defs::FilterablePreference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub starterpack_joined: core::option::Option<
-        crate::app::bsky::notification::defs::Preference,
-    >,
+    pub starterpack_joined: core::option::Option<crate::app::bsky::notification::defs::Preference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub subscribed_post: core::option::Option<
-        crate::app::bsky::notification::defs::Preference,
-    >,
+    pub subscribed_post: core::option::Option<crate::app::bsky::notification::defs::Preference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub unverified: core::option::Option<
-        crate::app::bsky::notification::defs::Preference,
-    >,
+    pub unverified: core::option::Option<crate::app::bsky::notification::defs::Preference>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub verified: core::option::Option<crate::app::bsky::notification::defs::Preference>,
 }

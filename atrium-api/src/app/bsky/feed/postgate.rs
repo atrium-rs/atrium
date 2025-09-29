@@ -9,9 +9,7 @@ pub struct RecordData {
     pub detached_embedding_uris: core::option::Option<Vec<String>>,
     ///List of rules defining who can embed this post. If value is an empty array or is undefined, no particular rules apply and anyone can embed.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub embedding_rules: core::option::Option<
-        Vec<crate::types::Union<RecordEmbeddingRulesItem>>,
-    >,
+    pub embedding_rules: core::option::Option<Vec<crate::types::Union<RecordEmbeddingRulesItem>>>,
     ///Reference (AT-URI) to the post record.
     pub post: String,
 }

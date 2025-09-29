@@ -450,9 +450,8 @@ pub struct RepoViewData {
     pub moderation: Moderation,
     pub related_records: Vec<crate::types::Unknown>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub threat_signatures: core::option::Option<
-        Vec<crate::com::atproto::admin::defs::ThreatSignature>,
-    >,
+    pub threat_signatures:
+        core::option::Option<Vec<crate::com::atproto::admin::defs::ThreatSignature>>,
 }
 pub type RepoView = crate::types::Object<RepoViewData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -472,9 +471,7 @@ pub struct RepoViewDetailData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub invited_by: core::option::Option<crate::com::atproto::server::defs::InviteCode>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub invites: core::option::Option<
-        Vec<crate::com::atproto::server::defs::InviteCode>,
-    >,
+    pub invites: core::option::Option<Vec<crate::com::atproto::server::defs::InviteCode>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub invites_disabled: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -482,9 +479,8 @@ pub struct RepoViewDetailData {
     pub moderation: ModerationDetail,
     pub related_records: Vec<crate::types::Unknown>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub threat_signatures: core::option::Option<
-        Vec<crate::com::atproto::admin::defs::ThreatSignature>,
-    >,
+    pub threat_signatures:
+        core::option::Option<Vec<crate::com::atproto::admin::defs::ThreatSignature>>,
 }
 pub type RepoViewDetail = crate::types::Object<RepoViewDetailData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -530,9 +526,7 @@ pub struct RevokeAccountCredentialsEventData {
     ///Comment describing the reason for the revocation.
     pub comment: String,
 }
-pub type RevokeAccountCredentialsEvent = crate::types::Object<
-    RevokeAccountCredentialsEventData,
->;
+pub type RevokeAccountCredentialsEvent = crate::types::Object<RevokeAccountCredentialsEventData>;
 pub type SubjectReviewState = String;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -611,9 +605,11 @@ pub type SubjectView = crate::types::Object<SubjectViewData>;
 ///Moderation event timeline event for a PLC create operation
 pub const TIMELINE_EVENT_PLC_CREATE: &str = "tools.ozone.moderation.defs#timelineEventPlcCreate";
 ///Moderation event timeline event for generic PLC operation
-pub const TIMELINE_EVENT_PLC_OPERATION: &str = "tools.ozone.moderation.defs#timelineEventPlcOperation";
+pub const TIMELINE_EVENT_PLC_OPERATION: &str =
+    "tools.ozone.moderation.defs#timelineEventPlcOperation";
 ///Moderation event timeline event for a PLC tombstone operation
-pub const TIMELINE_EVENT_PLC_TOMBSTONE: &str = "tools.ozone.moderation.defs#timelineEventPlcTombstone";
+pub const TIMELINE_EVENT_PLC_TOMBSTONE: &str =
+    "tools.ozone.moderation.defs#timelineEventPlcTombstone";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct VideoDetailsData {

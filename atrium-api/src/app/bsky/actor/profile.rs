@@ -17,9 +17,7 @@ pub struct RecordData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub display_name: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub joined_via_starter_pack: core::option::Option<
-        crate::com::atproto::repo::strong_ref::Main,
-    >,
+    pub joined_via_starter_pack: core::option::Option<crate::com::atproto::repo::strong_ref::Main>,
     ///Self-label values, specific to the Bluesky application, on the overall account.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<crate::types::Union<RecordLabelsRefs>>,

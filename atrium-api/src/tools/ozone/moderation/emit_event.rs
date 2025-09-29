@@ -71,9 +71,7 @@ pub enum InputEventRefs {
         Box<crate::tools::ozone::moderation::defs::ModEventReport>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#modEventMute")]
-    ToolsOzoneModerationDefsModEventMute(
-        Box<crate::tools::ozone::moderation::defs::ModEventMute>,
-    ),
+    ToolsOzoneModerationDefsModEventMute(Box<crate::tools::ozone::moderation::defs::ModEventMute>),
     #[serde(rename = "tools.ozone.moderation.defs#modEventUnmute")]
     ToolsOzoneModerationDefsModEventUnmute(
         Box<crate::tools::ozone::moderation::defs::ModEventUnmute>,
@@ -103,21 +101,15 @@ pub enum InputEventRefs {
         Box<crate::tools::ozone::moderation::defs::ModEventDivert>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#modEventTag")]
-    ToolsOzoneModerationDefsModEventTag(
-        Box<crate::tools::ozone::moderation::defs::ModEventTag>,
-    ),
+    ToolsOzoneModerationDefsModEventTag(Box<crate::tools::ozone::moderation::defs::ModEventTag>),
     #[serde(rename = "tools.ozone.moderation.defs#accountEvent")]
-    ToolsOzoneModerationDefsAccountEvent(
-        Box<crate::tools::ozone::moderation::defs::AccountEvent>,
-    ),
+    ToolsOzoneModerationDefsAccountEvent(Box<crate::tools::ozone::moderation::defs::AccountEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#identityEvent")]
     ToolsOzoneModerationDefsIdentityEvent(
         Box<crate::tools::ozone::moderation::defs::IdentityEvent>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#recordEvent")]
-    ToolsOzoneModerationDefsRecordEvent(
-        Box<crate::tools::ozone::moderation::defs::RecordEvent>,
-    ),
+    ToolsOzoneModerationDefsRecordEvent(Box<crate::tools::ozone::moderation::defs::RecordEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#modEventPriorityScore")]
     ToolsOzoneModerationDefsModEventPriorityScore(
         Box<crate::tools::ozone::moderation::defs::ModEventPriorityScore>,

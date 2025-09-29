@@ -80,9 +80,7 @@ pub type ThreadItemBlocked = crate::types::Object<ThreadItemBlockedData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ThreadItemNoUnauthenticatedData {}
-pub type ThreadItemNoUnauthenticated = crate::types::Object<
-    ThreadItemNoUnauthenticatedData,
->;
+pub type ThreadItemNoUnauthenticated = crate::types::Object<ThreadItemNoUnauthenticatedData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ThreadItemNotFoundData {}

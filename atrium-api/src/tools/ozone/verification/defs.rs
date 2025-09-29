@@ -13,13 +13,10 @@ pub struct VerificationViewData {
     ///The user who issued this verification.
     pub issuer: crate::types::string::Did,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub issuer_profile: core::option::Option<
-        crate::types::Union<VerificationViewIssuerProfileRefs>,
-    >,
+    pub issuer_profile:
+        core::option::Option<crate::types::Union<VerificationViewIssuerProfileRefs>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub issuer_repo: core::option::Option<
-        crate::types::Union<VerificationViewIssuerRepoRefs>,
-    >,
+    pub issuer_repo: core::option::Option<crate::types::Union<VerificationViewIssuerRepoRefs>>,
     ///Describes the reason for revocation, also indicating that the verification is no longer valid.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub revoke_reason: core::option::Option<String>,
@@ -32,13 +29,10 @@ pub struct VerificationViewData {
     ///The subject of the verification.
     pub subject: crate::types::string::Did,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub subject_profile: core::option::Option<
-        crate::types::Union<VerificationViewSubjectProfileRefs>,
-    >,
+    pub subject_profile:
+        core::option::Option<crate::types::Union<VerificationViewSubjectProfileRefs>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub subject_repo: core::option::Option<
-        crate::types::Union<VerificationViewSubjectRepoRefs>,
-    >,
+    pub subject_repo: core::option::Option<crate::types::Union<VerificationViewSubjectRepoRefs>>,
     ///The AT-URI of the verification record.
     pub uri: String,
 }

@@ -39,7 +39,5 @@ pub type ThreadItem = crate::types::Object<ThreadItemData>;
 #[serde(tag = "$type")]
 pub enum ThreadItemValueRefs {
     #[serde(rename = "app.bsky.unspecced.defs#threadItemPost")]
-    AppBskyUnspeccedDefsThreadItemPost(
-        Box<crate::app::bsky::unspecced::defs::ThreadItemPost>,
-    ),
+    AppBskyUnspeccedDefsThreadItemPost(Box<crate::app::bsky::unspecced::defs::ThreadItemPost>),
 }

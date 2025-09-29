@@ -5,13 +5,9 @@
 pub struct ConvoViewData {
     pub id: String,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub last_message: core::option::Option<
-        crate::types::Union<ConvoViewLastMessageRefs>,
-    >,
+    pub last_message: core::option::Option<crate::types::Union<ConvoViewLastMessageRefs>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub last_reaction: core::option::Option<
-        crate::types::Union<ConvoViewLastReactionRefs>,
-    >,
+    pub last_reaction: core::option::Option<crate::types::Union<ConvoViewLastReactionRefs>>,
     pub members: Vec<crate::chat::bsky::actor::defs::ProfileViewBasic>,
     pub muted: bool,
     pub rev: String,
