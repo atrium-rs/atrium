@@ -20,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.25.6](https://github.com/atrium-rs/atrium/compare/atrium-api-v0.25.5...atrium-api-v0.25.6) - 2025-10-01
+
+### Other
+
+- Update for latest lexicon ([#327](https://github.com/atrium-rs/atrium/pull/327))
+
 ## [0.25.4](https://github.com/atrium-rs/atrium/compare/atrium-api-v0.25.3...atrium-api-v0.25.4) - 2025-05-25
 
 ### Other

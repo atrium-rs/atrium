@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7](https://github.com/atrium-rs/atrium/compare/atrium-identity-v0.1.6...atrium-identity-v0.1.7) - 2025-10-01
+
+### Other
+
+- updated the following local packages: atrium-api
+
 ## [0.1.6](https://github.com/atrium-rs/atrium/compare/atrium-identity-v0.1.5...atrium-identity-v0.1.6) - 2025-08-16
 
 ### Other

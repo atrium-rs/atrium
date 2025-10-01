@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5](https://github.com/atrium-rs/atrium/compare/atrium-oauth-v0.1.4...atrium-oauth-v0.1.5) - 2025-10-01
+
+### Fixed
+
+- Apply clippy suggestions and skip stable clippy in CI ([#330](https://github.com/atrium-rs/atrium/pull/330))
+
 ## [0.1.4](https://github.com/atrium-rs/atrium/compare/atrium-oauth-v0.1.3...atrium-oauth-v0.1.4) - 2025-08-16
 
 ### Other

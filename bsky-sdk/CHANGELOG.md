@@ -20,6 +20,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.22](https://github.com/atrium-rs/atrium/compare/bsky-sdk-v0.1.21...bsky-sdk-v0.1.22) - 2025-10-01
+
+### Fixed
+
+- Apply clippy suggestions and skip stable clippy in CI ([#330](https://github.com/atrium-rs/atrium/pull/330))
+
+### Other
+
+- Update for latest lexicon ([#327](https://github.com/atrium-rs/atrium/pull/327))
+
 ## [0.1.20](https://github.com/atrium-rs/atrium/compare/bsky-sdk-v0.1.19...bsky-sdk-v0.1.20) - 2025-05-25
 
 ### Other

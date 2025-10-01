@@ -20,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6](https://github.com/atrium-rs/atrium/compare/atrium-repo-v0.1.5...atrium-repo-v0.1.6) - 2025-10-01
+
+### Fixed
+
+- Apply clippy suggestions and skip stable clippy in CI ([#330](https://github.com/atrium-rs/atrium/pull/330))
+
 ## [0.1.4](https://github.com/atrium-rs/atrium/compare/atrium-repo-v0.1.3...atrium-repo-v0.1.4) - 2025-05-25
 
 ### Other
