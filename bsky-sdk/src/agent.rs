@@ -41,7 +41,6 @@ use std::{collections::HashMap, ops::Deref, sync::Arc};
 ///    let agent = BskyAgent::builder().build().await.expect("failed to build agent");
 /// }
 /// ```
-
 #[cfg(feature = "default-client")]
 #[derive(Clone)]
 pub struct BskyAgent<T = ReqwestClient, S = MemorySessionStore>

@@ -13,7 +13,7 @@ use atrium_api::xrpc::XrpcClient;
 use atrium_xrpc_client::reqwest::ReqwestClient;
 use std::sync::Arc;
 
-/// A builder for creating a [`BskyAtpAgent`].
+/// A builder for creating a [`BskyAgent`].
 pub struct BskyAtpAgentBuilder<T, S = MemorySessionStore>
 where
     T: XrpcClient + Send + Sync,

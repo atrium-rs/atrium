@@ -36,7 +36,7 @@ pub fn has_muted_word(
     let exception = langs
         .as_ref()
         .and_then(|langs| langs.first())
-        .map_or(false, |lang| LANGUAGE_EXCEPTIONS.contains(&lang.as_ref().as_str()));
+        .is_some_and(|lang| LANGUAGE_EXCEPTIONS.contains(&lang.as_ref().as_str()));
     let mut tags = Vec::new();
     if let Some(outline_tags) = outline_tags {
         tags.extend(outline_tags.iter().map(|t| t.to_lowercase()));

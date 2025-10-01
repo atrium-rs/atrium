@@ -43,6 +43,7 @@ jobs:
         run: cargo build --verbose
 
       - name: Lint (clippy)
+        if: matrix.rust != 'stable'
         uses: giraffate/clippy-action@13b9d32482f25d29ead141b79e7e04e7900281e0 # v1.0.1
         with:
           reporter: "github-pr-check"

@@ -180,8 +180,7 @@ Calculating string lengths:
 ```rust
 use bsky_sdk::rich_text::RichText;
 
-fn main() {
-    let rt = RichText::new("👨‍👩‍👧‍👧", None);
-    assert_eq!(rt.text.len(), 25);
-    assert_eq!(rt.grapheme_len(), 1);
-}
+let rt = RichText::new("👨‍👩‍👧‍👧", None);
+assert_eq!(rt.text.len(), 25);
+assert_eq!(rt.grapheme_len(), 1);
+```

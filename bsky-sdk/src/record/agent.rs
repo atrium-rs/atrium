@@ -14,7 +14,7 @@ where
     S::Error: std::error::Error + Send + Sync + 'static,
 {
     /// Create a record with various types of data.
-    /// For example, the Record families defined in [`KnownRecord`](atrium_api::record::KnownRecord) are supported.
+    /// For example, the Record families defined in [`KnownRecord`] are supported.
     ///
     /// # Example
     ///
@@ -84,7 +84,7 @@ where
             .collect::<Vec<_>>();
         let repo = parts[0].parse().or(Err(Error::InvalidAtUri))?;
         let collection = parts[1].parse().or(Err(Error::InvalidAtUri))?;
-        let rkey = parts[2].parse::<RecordKey>().or(Err(Error::InvalidAtUri))?.into();
+        let rkey = parts[2].parse::<RecordKey>().or(Err(Error::InvalidAtUri))?;
         Ok(self
             .api
             .com
