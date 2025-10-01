@@ -148,8 +148,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
     println!("{:?}", limits.data);
     if !limits.can_upload
-        || limits.remaining_daily_bytes.map_or(false, |remain| remain < data.len() as i64)
-        || limits.remaining_daily_videos.map_or(false, |remain| remain <= 0)
+        || limits.remaining_daily_bytes.is_some_and(|remain| remain < data.len() as i64)
+        || limits.remaining_daily_videos.is_some_and(|remain| remain <= 0)
     {
         eprintln!("You cannot upload a video: {:?}", limits.data);
         return Ok(());

@@ -58,8 +58,7 @@ pub fn detect_facets(text: &str) -> Vec<FacetWithoutResolution> {
         for capture in re.captures_iter(text) {
             let m = capture.get(1).expect("invalid capture");
             let mut uri = if let Some(domain) = capture.name("domain") {
-                if !psl::suffix(domain.as_str().as_bytes())
-                    .map_or(false, |suffix| suffix.is_known())
+                if !psl::suffix(domain.as_str().as_bytes()).is_some_and(|suffix| suffix.is_known())
                 {
                     continue;
                 }

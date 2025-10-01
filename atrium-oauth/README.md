@@ -31,38 +31,36 @@ impl DnsTxtResolver for SomeDnsTxtResolver {
     }
 }
 
-fn main() {
-    let http_client = Arc::new(DefaultHttpClient::default());
-    let config = OAuthClientConfig {
-        client_metadata: AtprotoLocalhostClientMetadata {
-            redirect_uris: Some(vec![String::from("http://127.0.0.1/callback")]),
-            scopes: Some(vec![
-                Scope::Known(KnownScope::Atproto),
-                Scope::Known(KnownScope::TransitionGeneric),
-            ]),
-        },
-        keys: None,
-        resolver: OAuthResolverConfig {
-            did_resolver: CommonDidResolver::new(CommonDidResolverConfig {
-                plc_directory_url: DEFAULT_PLC_DIRECTORY_URL.to_string(),
-                http_client: Arc::clone(&http_client),
-            }),
-            handle_resolver: AtprotoHandleResolver::new(AtprotoHandleResolverConfig {
-                dns_txt_resolver: SomeDnsTxtResolver,
-                http_client: Arc::clone(&http_client),
-            }),
-            authorization_server_metadata: Default::default(),
-            protected_resource_metadata: Default::default(),
-        },
-        // A store for saving state data while the user is being redirected to the authorization server.
-        state_store: MemoryStateStore::default(),
-        // A store for saving session data.
-        session_store: MemorySessionStore::default(),
-    };
-    let Ok(client) = OAuthClient::new(config) else {
-        panic!("failed to create oauth client");
-    };
-}
+let http_client = Arc::new(DefaultHttpClient::default());
+let config = OAuthClientConfig {
+    client_metadata: AtprotoLocalhostClientMetadata {
+        redirect_uris: Some(vec![String::from("http://127.0.0.1/callback")]),
+        scopes: Some(vec![
+            Scope::Known(KnownScope::Atproto),
+            Scope::Known(KnownScope::TransitionGeneric),
+        ]),
+    },
+    keys: None,
+    resolver: OAuthResolverConfig {
+        did_resolver: CommonDidResolver::new(CommonDidResolverConfig {
+            plc_directory_url: DEFAULT_PLC_DIRECTORY_URL.to_string(),
+            http_client: Arc::clone(&http_client),
+        }),
+        handle_resolver: AtprotoHandleResolver::new(AtprotoHandleResolverConfig {
+            dns_txt_resolver: SomeDnsTxtResolver,
+            http_client: Arc::clone(&http_client),
+        }),
+        authorization_server_metadata: Default::default(),
+        protected_resource_metadata: Default::default(),
+    },
+    // A store for saving state data while the user is being redirected to the authorization server.
+    state_store: MemoryStateStore::default(),
+    // A store for saving session data.
+    session_store: MemorySessionStore::default(),
+};
+let Ok(client) = OAuthClient::new(config) else {
+    panic!("failed to create oauth client");
+};
 ```
 
 ### Authentication

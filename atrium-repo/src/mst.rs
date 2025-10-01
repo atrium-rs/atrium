@@ -970,7 +970,7 @@ impl Node {
 
             node.entries.push(schema::TreeEntry {
                 prefix_len: prefix,
-                key_suffix: leaf.key[prefix..].as_bytes().to_vec(),
+                key_suffix: leaf.key.as_bytes()[prefix..].to_vec(),
                 value: leaf.value,
                 tree: tree.cloned(),
             });

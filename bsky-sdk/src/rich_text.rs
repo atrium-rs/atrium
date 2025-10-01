@@ -203,7 +203,7 @@ impl RichText {
         }
     }
     /// Detect facets in the text and set them.
-    pub async fn detect_facets(&mut self, client: impl XrpcClient + Send + Sync) -> Result<()> {
+    pub async fn detect_facets(&mut self, client: impl XrpcClient + Sync) -> Result<()> {
         let agent = BskyAtpAgentBuilder::new(client)
             .config(Config { endpoint: PUBLIC_API_ENDPOINT.into(), ..Default::default() })
             .build()
