@@ -7,24 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.25.5](https://github.com/atrium-rs/atrium/compare/atrium-api-v0.25.4...atrium-api-v0.25.5) - 2025-08-16
-
-### Fixed
-
-- Add explicit lifetime annotation to Language::as_ref return type ([#323](https://github.com/atrium-rs/atrium/pull/323))
-# Changelog
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
 ## [0.25.6](https://github.com/atrium-rs/atrium/compare/atrium-api-v0.25.5...atrium-api-v0.25.6) - 2025-10-01
 
 ### Other
 
 - Update for latest lexicon ([#327](https://github.com/atrium-rs/atrium/pull/327))
+
+## [0.25.5](https://github.com/atrium-rs/atrium/compare/atrium-api-v0.25.4...atrium-api-v0.25.5) - 2025-08-16
+
+### Fixed
+
+- Add explicit lifetime annotation to Language::as_ref return type ([#323](https://github.com/atrium-rs/atrium/pull/323))
 
 ## [0.25.4](https://github.com/atrium-rs/atrium/compare/atrium-api-v0.25.3...atrium-api-v0.25.4) - 2025-05-25
 
