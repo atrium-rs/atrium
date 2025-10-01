@@ -64,6 +64,8 @@ fn profile_view_basic(
         display_name: display_name.map(String::from),
         handle: handle.parse().expect("invalid handle"),
         labels,
+        pronouns: None,
+        status: None,
         verification: None,
         viewer: None,
     }
@@ -73,6 +75,7 @@ fn profile_view_basic(
 fn post_view(author: &ProfileViewBasic, text: &str, labels: Option<Vec<Label>>) -> PostView {
     PostViewData {
         author: author.clone(),
+        bookmark_count: None,
         cid: FAKE_CID.parse().expect("invalid cid"),
         embed: None,
         indexed_at: Datetime::now(),

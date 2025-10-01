@@ -279,6 +279,16 @@ record_impl!(
     atrium_api::chat::bsky::actor::declaration::Record,
     atrium_api::chat::bsky::actor::declaration::RecordData
 );
+record_impl!(
+    atrium_api::app::bsky::actor::Status,
+    atrium_api::app::bsky::actor::status::Record,
+    atrium_api::app::bsky::actor::status::RecordData
+);
+record_impl!(
+    atrium_api::app::bsky::notification::Declaration,
+    atrium_api::app::bsky::notification::declaration::Record,
+    atrium_api::app::bsky::notification::declaration::RecordData
+);
 
 #[cfg(test)]
 mod tests {
@@ -339,6 +349,8 @@ mod tests {
             joined_via_starter_pack: None,
             labels: None,
             pinned_post: None,
+            pronouns: None,
+            website: None,
         }
         .create(&agent)
         .await?;

@@ -6,6 +6,11 @@ pub const NSID: &str = "tools.ozone.moderation.emitEvent";
 pub struct InputData {
     pub created_by: crate::types::string::Did,
     pub event: crate::types::Union<InputEventRefs>,
+    ///An optional external ID for the event, used to deduplicate events from external systems. Fails when an event of same type with the same external ID exists for the same subject.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub external_id: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub mod_tool: core::option::Option<crate::tools::ozone::moderation::defs::ModTool>,
     pub subject: crate::types::Union<InputSubjectRefs>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub subject_blob_cids: core::option::Option<Vec<crate::types::string::Cid>>,
@@ -16,12 +21,20 @@ pub type Output = crate::tools::ozone::moderation::defs::ModEventView;
 #[serde(tag = "error", content = "message")]
 pub enum Error {
     SubjectHasAction(Option<String>),
+    ///An event with the same external ID already exists for the subject.
+    DuplicateExternalId(Option<String>),
 }
 impl std::fmt::Display for Error {
     fn fmt(&self, _f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             Error::SubjectHasAction(msg) => {
                 write!(_f, "SubjectHasAction")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::DuplicateExternalId(msg) => {
+                write!(_f, "DuplicateExternalId")?;
                 if let Some(msg) = msg {
                     write!(_f, ": {msg}")?;
                 }
@@ -58,9 +71,7 @@ pub enum InputEventRefs {
         Box<crate::tools::ozone::moderation::defs::ModEventReport>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#modEventMute")]
-    ToolsOzoneModerationDefsModEventMute(
-        Box<crate::tools::ozone::moderation::defs::ModEventMute>,
-    ),
+    ToolsOzoneModerationDefsModEventMute(Box<crate::tools::ozone::moderation::defs::ModEventMute>),
     #[serde(rename = "tools.ozone.moderation.defs#modEventUnmute")]
     ToolsOzoneModerationDefsModEventUnmute(
         Box<crate::tools::ozone::moderation::defs::ModEventUnmute>,
@@ -90,24 +101,30 @@ pub enum InputEventRefs {
         Box<crate::tools::ozone::moderation::defs::ModEventDivert>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#modEventTag")]
-    ToolsOzoneModerationDefsModEventTag(
-        Box<crate::tools::ozone::moderation::defs::ModEventTag>,
-    ),
+    ToolsOzoneModerationDefsModEventTag(Box<crate::tools::ozone::moderation::defs::ModEventTag>),
     #[serde(rename = "tools.ozone.moderation.defs#accountEvent")]
-    ToolsOzoneModerationDefsAccountEvent(
-        Box<crate::tools::ozone::moderation::defs::AccountEvent>,
-    ),
+    ToolsOzoneModerationDefsAccountEvent(Box<crate::tools::ozone::moderation::defs::AccountEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#identityEvent")]
     ToolsOzoneModerationDefsIdentityEvent(
         Box<crate::tools::ozone::moderation::defs::IdentityEvent>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#recordEvent")]
-    ToolsOzoneModerationDefsRecordEvent(
-        Box<crate::tools::ozone::moderation::defs::RecordEvent>,
-    ),
+    ToolsOzoneModerationDefsRecordEvent(Box<crate::tools::ozone::moderation::defs::RecordEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#modEventPriorityScore")]
     ToolsOzoneModerationDefsModEventPriorityScore(
         Box<crate::tools::ozone::moderation::defs::ModEventPriorityScore>,
+    ),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssuranceEvent")]
+    ToolsOzoneModerationDefsAgeAssuranceEvent(
+        Box<crate::tools::ozone::moderation::defs::AgeAssuranceEvent>,
+    ),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssuranceOverrideEvent")]
+    ToolsOzoneModerationDefsAgeAssuranceOverrideEvent(
+        Box<crate::tools::ozone::moderation::defs::AgeAssuranceOverrideEvent>,
+    ),
+    #[serde(rename = "tools.ozone.moderation.defs#revokeAccountCredentialsEvent")]
+    ToolsOzoneModerationDefsRevokeAccountCredentialsEvent(
+        Box<crate::tools::ozone::moderation::defs::RevokeAccountCredentialsEvent>,
     ),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]

@@ -4,6 +4,8 @@ pub const NSID: &str = "com.atproto.moderation.createReport";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct InputData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub mod_tool: core::option::Option<ModTool>,
     ///Additional context about the content and violation.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub reason: core::option::Option<String>,
@@ -32,6 +34,17 @@ impl std::fmt::Display for Error {
         Ok(())
     }
 }
+///Moderation tool information for tracing the source of the action
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ModToolData {
+    ///Additional arbitrary metadata about the source
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub meta: core::option::Option<crate::types::Unknown>,
+    ///Name/identifier of the source (e.g., 'bsky-app/android', 'bsky-web/chrome')
+    pub name: String,
+}
+pub type ModTool = crate::types::Object<ModToolData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]
 pub enum InputSubjectRefs {

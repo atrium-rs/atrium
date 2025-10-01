@@ -14,9 +14,7 @@ pub struct RecordData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub description: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub description_facets: core::option::Option<
-        Vec<crate::app::bsky::richtext::facet::Main>,
-    >,
+    pub description_facets: core::option::Option<Vec<crate::app::bsky::richtext::facet::Main>>,
     pub did: crate::types::string::Did,
     pub display_name: String,
     ///Self-label values

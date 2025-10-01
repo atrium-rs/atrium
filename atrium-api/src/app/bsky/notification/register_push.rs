@@ -4,6 +4,9 @@ pub const NSID: &str = "app.bsky.notification.registerPush";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct InputData {
+    ///Set to true when the actor is age restricted
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub age_restricted: core::option::Option<bool>,
     pub app_id: String,
     pub platform: String,
     pub service_did: crate::types::string::Did,

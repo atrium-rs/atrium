@@ -32,8 +32,6 @@ impl std::fmt::Display for Error {
 pub struct RelatedAccountData {
     pub account: crate::com::atproto::admin::defs::AccountView,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub similarities: core::option::Option<
-        Vec<crate::tools::ozone::signature::defs::SigDetail>,
-    >,
+    pub similarities: core::option::Option<Vec<crate::tools::ozone::signature::defs::SigDetail>>,
 }
 pub type RelatedAccount = crate::types::Object<RelatedAccountData>;

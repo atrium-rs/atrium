@@ -2,5 +2,60 @@
 //!Definitions for the `app.bsky.notification.defs` namespace.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
+pub struct ActivitySubscriptionData {
+    pub post: bool,
+    pub reply: bool,
+}
+pub type ActivitySubscription = crate::types::Object<ActivitySubscriptionData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ChatPreferenceData {
+    pub include: String,
+    pub push: bool,
+}
+pub type ChatPreference = crate::types::Object<ChatPreferenceData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct FilterablePreferenceData {
+    pub include: String,
+    pub list: bool,
+    pub push: bool,
+}
+pub type FilterablePreference = crate::types::Object<FilterablePreferenceData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct PreferenceData {
+    pub list: bool,
+    pub push: bool,
+}
+pub type Preference = crate::types::Object<PreferenceData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct PreferencesData {
+    pub chat: ChatPreference,
+    pub follow: FilterablePreference,
+    pub like: FilterablePreference,
+    pub like_via_repost: FilterablePreference,
+    pub mention: FilterablePreference,
+    pub quote: FilterablePreference,
+    pub reply: FilterablePreference,
+    pub repost: FilterablePreference,
+    pub repost_via_repost: FilterablePreference,
+    pub starterpack_joined: Preference,
+    pub subscribed_post: Preference,
+    pub unverified: Preference,
+    pub verified: Preference,
+}
+pub type Preferences = crate::types::Object<PreferencesData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct RecordDeletedData {}
 pub type RecordDeleted = crate::types::Object<RecordDeletedData>;
+///Object used to store activity subscription data in stash.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct SubjectActivitySubscriptionData {
+    pub activity_subscription: ActivitySubscription,
+    pub subject: crate::types::string::Did,
+}
+pub type SubjectActivitySubscription = crate::types::Object<SubjectActivitySubscriptionData>;

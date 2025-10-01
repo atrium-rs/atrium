@@ -38,7 +38,7 @@ pub type GrantError = crate::types::Object<GrantErrorData>;
 pub struct VerificationInputData {
     ///Timestamp for verification record. Defaults to current time when not specified.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub created_at: core::option::Option<String>,
+    pub created_at: core::option::Option<crate::types::string::Datetime>,
     ///Display name of the subject the verification applies to at the moment of verifying.
     pub display_name: String,
     ///Handle of the subject the verification applies to at the moment of verifying.

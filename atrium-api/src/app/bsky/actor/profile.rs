@@ -17,14 +17,17 @@ pub struct RecordData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub display_name: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub joined_via_starter_pack: core::option::Option<
-        crate::com::atproto::repo::strong_ref::Main,
-    >,
+    pub joined_via_starter_pack: core::option::Option<crate::com::atproto::repo::strong_ref::Main>,
     ///Self-label values, specific to the Bluesky application, on the overall account.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<crate::types::Union<RecordLabelsRefs>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub pinned_post: core::option::Option<crate::com::atproto::repo::strong_ref::Main>,
+    ///Free-form pronouns text.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub pronouns: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub website: core::option::Option<String>,
 }
 pub type Record = crate::types::Object<RecordData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]

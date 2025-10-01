@@ -10,6 +10,12 @@ pub struct ParametersData {
     ///If specified, only events where all of these tags were added are returned
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub added_tags: core::option::Option<Vec<String>>,
+    ///If specified, only events where the age assurance state matches the given value are returned
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub age_assurance_state: core::option::Option<String>,
+    ///If specified, only events where the batchId matches the given value are returned
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub batch_id: core::option::Option<String>,
     ///If specified, only events where the subject belongs to the given collections will be returned. When subjectType is set to 'account', this will be ignored.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub collections: core::option::Option<Vec<crate::types::string::Nsid>>,
@@ -34,6 +40,9 @@ pub struct ParametersData {
     pub include_all_user_records: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub limit: core::option::Option<crate::types::LimitedNonZeroU8<100u8>>,
+    ///If specified, only events where the modTool name matches any of the given values are returned
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub mod_tool: core::option::Option<Vec<String>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub policies: core::option::Option<Vec<String>>,
     ///If specified, only events where all of these labels were removed are returned

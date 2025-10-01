@@ -9,9 +9,7 @@ pub struct RecordData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub description: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub description_facets: core::option::Option<
-        Vec<crate::app::bsky::richtext::facet::Main>,
-    >,
+    pub description_facets: core::option::Option<Vec<crate::app::bsky::richtext::facet::Main>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<crate::types::Union<RecordLabelsRefs>>,
     ///Display name for list; can not be empty.

@@ -46,7 +46,7 @@ pub struct NotificationData {
     pub is_read: bool,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
-    ///Expected values are 'like', 'repost', 'follow', 'mention', 'reply', 'quote', 'starterpack-joined', 'verified', and 'unverified'.
+    ///The reason why this notification was delivered - e.g. your post was liked, or you received a new follower.
     pub reason: String,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub reason_subject: core::option::Option<String>,
