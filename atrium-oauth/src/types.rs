@@ -10,9 +10,9 @@ pub use self::request::*;
 pub use self::response::*;
 pub use self::token::*;
 use crate::atproto::{KnownScope, Scope};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub enum AuthorizeOptionPrompt {
     Login,
     None,
@@ -31,7 +31,7 @@ impl From<AuthorizeOptionPrompt> for String {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct AuthorizeOptions {
     pub redirect_uri: Option<String>,
     pub scopes: Vec<Scope>,
@@ -50,7 +50,7 @@ impl Default for AuthorizeOptions {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
 pub struct CallbackParams {
     pub code: String,
     pub state: Option<String>,
