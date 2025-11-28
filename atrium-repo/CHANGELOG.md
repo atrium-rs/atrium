@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7](https://github.com/atrium-rs/atrium/compare/atrium-repo-v0.1.6...atrium-repo-v0.1.7) - 2025-11-28
+
+### Fixed
+
+- Remove duplicate headers and fix ordering in CHANGELOGs ([#331](https://github.com/atrium-rs/atrium/pull/331))
+
 ## [0.1.6](https://github.com/atrium-rs/atrium/compare/atrium-repo-v0.1.5...atrium-repo-v0.1.6) - 2025-10-01
 
 ### Fixed

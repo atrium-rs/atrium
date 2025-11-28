@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.36](https://github.com/atrium-rs/atrium/compare/bsky-cli-v0.1.35...bsky-cli-v0.1.36) - 2025-11-28
+
+### Fixed
+
+- Remove duplicate headers and fix ordering in CHANGELOGs ([#331](https://github.com/atrium-rs/atrium/pull/331))
+
 ## [0.1.35](https://github.com/atrium-rs/atrium/compare/bsky-cli-v0.1.34...bsky-cli-v0.1.35) - 2025-10-01
 
 ### Other

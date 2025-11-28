@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6](https://github.com/atrium-rs/atrium/compare/atrium-oauth-v0.1.5...atrium-oauth-v0.1.6) - 2025-11-28
+
+### Added
+
+- *(oauth)* add missing derives ([#333](https://github.com/atrium-rs/atrium/pull/333))
+
 ## [0.1.5](https://github.com/atrium-rs/atrium/compare/atrium-oauth-v0.1.4...atrium-oauth-v0.1.5) - 2025-10-01
 
 ### Fixed
