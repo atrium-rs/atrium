@@ -7,24 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.34](https://github.com/atrium-rs/atrium/compare/bsky-cli-v0.1.33...bsky-cli-v0.1.34) - 2025-08-16
-
-### Other
-
-- updated the following local packages: bsky-sdk
-# Changelog
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
 ## [0.1.35](https://github.com/atrium-rs/atrium/compare/bsky-cli-v0.1.34...bsky-cli-v0.1.35) - 2025-10-01
 
 ### Other
 
 - Update for latest lexicon ([#327](https://github.com/atrium-rs/atrium/pull/327))
+
+## [0.1.34](https://github.com/atrium-rs/atrium/compare/bsky-cli-v0.1.33...bsky-cli-v0.1.34) - 2025-08-16
+
+### Other
+
+- updated the following local packages: bsky-sdk
 
 ## [0.1.33](https://github.com/atrium-rs/atrium/compare/bsky-cli-v0.1.32...bsky-cli-v0.1.33) - 2025-05-25
 
