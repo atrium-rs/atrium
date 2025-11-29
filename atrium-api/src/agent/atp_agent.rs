@@ -5,17 +5,17 @@ pub mod store;
 
 use self::store::AtpSessionStore;
 use super::{
-    inner::Wrapper, utils::SessionWithEndpointStore, Agent, CloneWithProxy, Configure,
-    SessionManager,
+    Agent, CloneWithProxy, Configure, SessionManager, inner::Wrapper,
+    utils::SessionWithEndpointStore,
 };
 use crate::{
     client::com::atproto::Service,
     did_doc::DidDocument,
-    types::{string::Did, TryFromUnknown},
+    types::{TryFromUnknown, string::Did},
 };
 use atrium_xrpc::{Error, HttpClient, OutputDataOrBytes, XrpcClient, XrpcRequest};
 use http::{Request, Response};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize, de::DeserializeOwned};
 use std::{convert, fmt::Debug, ops::Deref, sync::Arc};
 
 /// Type alias for the [com::atproto::server::create_session::Output](crate::com::atproto::server::create_session::Output)

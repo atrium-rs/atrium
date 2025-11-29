@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use ipld_core::cid::{multihash::Multihash, Cid};
+use ipld_core::cid::{Cid, multihash::Multihash};
 use sha2::Digest;
 
 use super::{AsyncBlockStoreRead, AsyncBlockStoreWrite, Error, SHA2_256};

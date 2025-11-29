@@ -1,6 +1,6 @@
 use crate::types::TokenSet;
 use atrium_api::types::string::Did;
-use atrium_common::store::{memory::MemoryStore, Store};
+use atrium_common::store::{Store, memory::MemoryStore};
 use jose_jwk::Key;
 use serde::{Deserialize, Serialize};
 

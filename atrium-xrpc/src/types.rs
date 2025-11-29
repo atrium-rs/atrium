@@ -1,6 +1,6 @@
-use http::header::{HeaderName, HeaderValue, InvalidHeaderValue, AUTHORIZATION, CONTENT_TYPE};
 use http::Method;
-use serde::{de::DeserializeOwned, Serialize};
+use http::header::{AUTHORIZATION, CONTENT_TYPE, HeaderName, HeaderValue, InvalidHeaderValue};
+use serde::{Serialize, de::DeserializeOwned};
 
 pub(crate) const NSID_REFRESH_SESSION: &str = "com.atproto.server.refreshSession";
 

@@ -100,18 +100,9 @@ fn insert_with_fat_unicode() {
         assert_eq!(input.text, "testone👨‍👩‍👧‍👧 two👨‍👩‍👧‍👧 three👨‍👩‍👧‍👧");
         let facets = input.facets.expect("facets should exist");
         assert_eq!(facets.len(), 3);
-        assert_eq!(
-            &input.text[facets[0].index.byte_start..facets[0].index.byte_end],
-            "one👨‍👩‍👧‍👧"
-        );
-        assert_eq!(
-            &input.text[facets[1].index.byte_start..facets[1].index.byte_end],
-            "two👨‍👩‍👧‍👧"
-        );
-        assert_eq!(
-            &input.text[facets[2].index.byte_start..facets[2].index.byte_end],
-            "three👨‍👩‍👧‍👧"
-        );
+        assert_eq!(&input.text[facets[0].index.byte_start..facets[0].index.byte_end], "one👨‍👩‍👧‍👧");
+        assert_eq!(&input.text[facets[1].index.byte_start..facets[1].index.byte_end], "two👨‍👩‍👧‍👧");
+        assert_eq!(&input.text[facets[2].index.byte_start..facets[2].index.byte_end], "three👨‍👩‍👧‍👧");
     }
     // correctly adjusts facets (scenario B - inner)
     {
@@ -120,18 +111,9 @@ fn insert_with_fat_unicode() {
         assert_eq!(input.text, "onetest👨‍👩‍👧‍👧 two👨‍👩‍👧‍👧 three👨‍👩‍👧‍👧");
         let facets = input.facets.expect("facets should exist");
         assert_eq!(facets.len(), 3);
-        assert_eq!(
-            &input.text[facets[0].index.byte_start..facets[0].index.byte_end],
-            "onetest👨‍👩‍👧‍👧"
-        );
-        assert_eq!(
-            &input.text[facets[1].index.byte_start..facets[1].index.byte_end],
-            "two👨‍👩‍👧‍👧"
-        );
-        assert_eq!(
-            &input.text[facets[2].index.byte_start..facets[2].index.byte_end],
-            "three👨‍👩‍👧‍👧"
-        );
+        assert_eq!(&input.text[facets[0].index.byte_start..facets[0].index.byte_end], "onetest👨‍👩‍👧‍👧");
+        assert_eq!(&input.text[facets[1].index.byte_start..facets[1].index.byte_end], "two👨‍👩‍👧‍👧");
+        assert_eq!(&input.text[facets[2].index.byte_start..facets[2].index.byte_end], "three👨‍👩‍👧‍👧");
     }
     // correctly adjusts facets (scenario C - after)
     {
@@ -140,18 +122,9 @@ fn insert_with_fat_unicode() {
         assert_eq!(input.text, "one👨‍👩‍👧‍👧test two👨‍👩‍👧‍👧 three👨‍👩‍👧‍👧");
         let facets = input.facets.expect("facets should exist");
         assert_eq!(facets.len(), 3);
-        assert_eq!(
-            &input.text[facets[0].index.byte_start..facets[0].index.byte_end],
-            "one👨‍👩‍👧‍👧"
-        );
-        assert_eq!(
-            &input.text[facets[1].index.byte_start..facets[1].index.byte_end],
-            "two👨‍👩‍👧‍👧"
-        );
-        assert_eq!(
-            &input.text[facets[2].index.byte_start..facets[2].index.byte_end],
-            "three👨‍👩‍👧‍👧"
-        );
+        assert_eq!(&input.text[facets[0].index.byte_start..facets[0].index.byte_end], "one👨‍👩‍👧‍👧");
+        assert_eq!(&input.text[facets[1].index.byte_start..facets[1].index.byte_end], "two👨‍👩‍👧‍👧");
+        assert_eq!(&input.text[facets[2].index.byte_start..facets[2].index.byte_end], "three👨‍👩‍👧‍👧");
     }
 }
 
@@ -243,10 +216,7 @@ fn delete_with_fat_unicode() {
         assert_eq!(facets.len(), 1);
         assert_eq!(facets[0].index.byte_start, 29);
         assert_eq!(facets[0].index.byte_end, 57);
-        assert_eq!(
-            &input.text[facets[0].index.byte_start..facets[0].index.byte_end],
-            "two👨‍👩‍👧‍👧"
-        );
+        assert_eq!(&input.text[facets[0].index.byte_start..facets[0].index.byte_end], "two👨‍👩‍👧‍👧");
     }
     // correctly adjusts facets (scenario C - partially after)
     {
@@ -290,10 +260,7 @@ fn delete_with_fat_unicode() {
         assert_eq!(facets.len(), 1);
         assert_eq!(facets[0].index.byte_start, 27);
         assert_eq!(facets[0].index.byte_end, 55);
-        assert_eq!(
-            &input.text[facets[0].index.byte_start..facets[0].index.byte_end],
-            "two👨‍👩‍👧‍👧"
-        );
+        assert_eq!(&input.text[facets[0].index.byte_start..facets[0].index.byte_end], "two👨‍👩‍👧‍👧");
     }
 }
 

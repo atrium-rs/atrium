@@ -1,6 +1,6 @@
 use atrium_api::types::string::Did;
-use atrium_xrpc::http::uri::InvalidUri;
 use atrium_xrpc::http::StatusCode;
+use atrium_xrpc::http::uri::InvalidUri;
 use thiserror::Error;
 
 #[derive(Error, Debug)]

@@ -1,12 +1,12 @@
 //! Verifies a signature for a message using a public key.
+use crate::Algorithm;
 use crate::did::parse_did_key;
 use crate::error::{Error, Result};
-use crate::Algorithm;
 use ecdsa::der::{MaxOverhead, MaxSize};
 use ecdsa::elliptic_curve::{
+    AffinePoint, CurveArithmetic, FieldBytesSize, PrimeCurve,
     generic_array::ArrayLength,
     sec1::{FromEncodedPoint, ModulusSize, ToEncodedPoint},
-    AffinePoint, CurveArithmetic, FieldBytesSize, PrimeCurve,
 };
 use ecdsa::hazmat::{DigestPrimitive, VerifyPrimitive};
 use ecdsa::{SignatureSize, VerifyingKey};

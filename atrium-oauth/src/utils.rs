@@ -1,8 +1,8 @@
-use base64::engine::general_purpose::URL_SAFE_NO_PAD;
 use base64::Engine;
+use base64::engine::general_purpose::URL_SAFE_NO_PAD;
 use elliptic_curve::SecretKey;
-use jose_jwk::{crypto, Key};
-use rand::{rngs::ThreadRng, CryptoRng, RngCore};
+use jose_jwk::{Key, crypto};
+use rand::{CryptoRng, RngCore, rngs::ThreadRng};
 use std::cmp::Ordering;
 
 pub fn generate_key(allowed_algos: &[String]) -> Option<Key> {

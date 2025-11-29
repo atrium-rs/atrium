@@ -1,12 +1,12 @@
 use std::collections::HashSet;
 
 use atrium_api::types::{
-    string::{Did, RecordKey, Tid},
     Collection, LimitedU32,
+    string::{Did, RecordKey, Tid},
 };
 use futures::TryStreamExt;
 use ipld_core::cid::Cid;
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
 use crate::{
     blockstore::{AsyncBlockStoreRead, AsyncBlockStoreWrite, DAG_CBOR, SHA2_256},
@@ -366,7 +366,10 @@ impl<R: AsyncBlockStoreRead> Repository<R> {
     }
 
     /// Extract the CIDs associated with a particular record.
-    pub async fn extract_raw(&mut self, key: &str) -> Result<impl Iterator<Item = Cid>, Error> {
+    pub async fn extract_raw(
+        &mut self,
+        key: &str,
+    ) -> Result<impl Iterator<Item = Cid> + use<R>, Error> {
         let mut mst = mst::Tree::open(&mut self.db, self.latest_commit.data);
 
         let mut r = vec![self.root];

@@ -1,7 +1,7 @@
 //! Muteword checking logic.
 use atrium_api::app::bsky::actor::defs::{MutedWord, ProfileViewBasic};
 use atrium_api::app::bsky::richtext::facet;
-use atrium_api::types::{string::Language, Union};
+use atrium_api::types::{Union, string::Language};
 use regex::Regex;
 use std::sync::OnceLock;
 

@@ -2,7 +2,7 @@ use crate::jose::create_signed_jwt;
 use crate::jose::jws::RegisteredHeader;
 use crate::jose::jwt::Claims;
 use jose_jwa::{Algorithm, Signing};
-use jose_jwk::{crypto, Class, EcCurves};
+use jose_jwk::{Class, EcCurves, crypto};
 use jose_jwk::{Jwk, JwkSet, Key};
 use std::collections::HashSet;
 use thiserror::Error;

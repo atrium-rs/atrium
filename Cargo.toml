@@ -17,8 +17,8 @@ members = [
 resolver = "2"
 
 [workspace.package]
-edition = "2021"
-rust-version = "1.75"
+edition = "2024"
+rust-version = "1.85"
 repository = "https://github.com/atrium-rs/atrium"
 license = "MIT"
 keywords = ["atproto", "bluesky"]
@@ -97,10 +97,3 @@ bumpalo = "~3.14.0"
 
 # Code generation
 trait-variant = "0.1.2"
-
-# Others
-base64ct = "=1.6.0"
-idna_adapter = "=1.2.0"
-litemap = "=0.7.4"
-native-tls = "=0.2.13"
-zerofrom = "=0.1.5"

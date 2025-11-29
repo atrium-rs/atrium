@@ -1,4 +1,4 @@
-use crate::{error::Result, Algorithm};
+use crate::{Algorithm, error::Result};
 use ecdsa::VerifyingKey;
 use k256::Secp256k1;
 use p256::NistP256;
@@ -27,9 +27,9 @@ fn pubkey_bytes(alg: Algorithm, key: &[u8], compress: bool) -> Result<Vec<u8>> {
 #[cfg(test)]
 mod tests {
     use super::{compress_pubkey, decompress_pubkey};
+    use crate::Algorithm;
     use crate::did::parse_did_key;
     use crate::keypair::{Did, P256Keypair, Secp256k1Keypair};
-    use crate::Algorithm;
     use rand::rngs::ThreadRng;
 
     #[test]

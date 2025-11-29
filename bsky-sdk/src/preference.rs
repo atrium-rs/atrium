@@ -79,7 +79,7 @@ mod tests {
     use super::*;
     use crate::moderation::ModerationPrefsLabeler;
     use atrium_api::app::bsky::actor::get_preferences::Output;
-    use serde_json::{from_str, to_string, Value};
+    use serde_json::{Value, from_str, to_string};
 
     const XRPC_PREFERENCES_JSON: &str = r#"{
     "preferences": [

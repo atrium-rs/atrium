@@ -3,9 +3,9 @@ use atrium_api::types::string::Did;
 use atrium_common::resolver::Resolver;
 use atrium_xrpc::HttpClient;
 
+use super::DidResolver;
 use super::plc_resolver::{PlcDidResolver, PlcDidResolverConfig};
 use super::web_resolver::{WebDidResolver, WebDidResolverConfig};
-use super::DidResolver;
 use crate::error::{Error, Result};
 use std::sync::Arc;
 
