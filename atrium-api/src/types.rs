@@ -4,8 +4,8 @@
 use crate::error::Error;
 use ipld_core::ipld::Ipld;
 use ipld_core::serde::to_ipld;
-use serde::{de, ser};
 use serde::{Deserialize, Serialize};
+use serde::{de, ser};
 use std::collections::BTreeMap;
 use std::fmt;
 use std::ops::{Deref, DerefMut};
@@ -405,11 +405,13 @@ mod tests {
             DataModel::try_from(Ipld::List(vec![Ipld::Bool(true), Ipld::Float(1.5)])).is_err(),
             "list with float value should fail"
         );
-        assert!(DataModel::try_from(Ipld::Map(BTreeMap::from_iter([(
-            String::from("k"),
-            Ipld::Bool(true)
-        )])))
-        .is_ok());
+        assert!(
+            DataModel::try_from(Ipld::Map(BTreeMap::from_iter([(
+                String::from("k"),
+                Ipld::Bool(true)
+            )])))
+            .is_ok()
+        );
         assert!(
             DataModel::try_from(Ipld::Map(BTreeMap::from_iter([(
                 String::from("k"),
@@ -418,11 +420,13 @@ mod tests {
             .is_err(),
             "map with float value should fail"
         );
-        assert!(DataModel::try_from(Ipld::Link(
-            Cid::try_from("bafkreibme22gw2h7y2h7tg2fhqotaqjucnbc24deqo72b6mkl2egezxhvy")
-                .expect("failed to create cid")
-        ))
-        .is_ok());
+        assert!(
+            DataModel::try_from(Ipld::Link(
+                Cid::try_from("bafkreibme22gw2h7y2h7tg2fhqotaqjucnbc24deqo72b6mkl2egezxhvy")
+                    .expect("failed to create cid")
+            ))
+            .is_ok()
+        );
     }
 
     #[test]

@@ -1,9 +1,9 @@
 use crate::types::OAuthProtectedResourceMetadata;
 use atrium_common::resolver::Resolver;
 use atrium_identity::{Error, Result};
+use atrium_xrpc::HttpClient;
 use atrium_xrpc::http::uri::Builder;
 use atrium_xrpc::http::{Request, StatusCode, Uri};
-use atrium_xrpc::HttpClient;
 use std::sync::Arc;
 
 pub struct DefaultOAuthProtectedResourceResolver<T> {

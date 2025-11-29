@@ -1,7 +1,7 @@
 use std::hash::Hash;
 
-use crate::types::cached::r#impl::{Cache, CacheImpl};
 use crate::types::cached::Cached;
+use crate::types::cached::r#impl::{Cache, CacheImpl};
 
 use super::Resolver;
 

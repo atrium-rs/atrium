@@ -20,8 +20,8 @@ use atrium_api::{
 };
 use atrium_common::resolver::Resolver;
 use atrium_xrpc::{
-    http::{Method, Request, StatusCode},
     HttpClient,
+    http::{Method, Request, StatusCode},
 };
 use chrono::{TimeDelta, Utc};
 use jose_jwk::Key;
@@ -339,7 +339,7 @@ where
             Some("none")
                 if method_supported.as_ref().is_some_and(|v| v.contains(&String::from("none"))) =>
             {
-                return Ok((None, None))
+                return Ok((None, None));
             }
             _ => {}
         }

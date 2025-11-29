@@ -1,6 +1,6 @@
 use super::AtpSession;
 use crate::agent::AuthorizationProvider;
-use atrium_common::store::{memory::MemoryStore, Store};
+use atrium_common::store::{Store, memory::MemoryStore};
 use atrium_xrpc::types::AuthorizationToken;
 
 #[cfg_attr(not(target_arch = "wasm32"), trait_variant::make(Send))]

@@ -1,9 +1,9 @@
 //! Lexicon integer types with minimum or maximum acceptable values.
 
-use std::num::{NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8};
+use std::num::{NonZeroU8, NonZeroU16, NonZeroU32, NonZeroU64};
 use std::str::FromStr;
 
-use serde::{de::Error, Deserialize};
+use serde::{Deserialize, de::Error};
 
 macro_rules! uint {
     ($primitive:ident, $nz:ident, $lim:ident, $lim_nz:ident, $bounded:ident) => {

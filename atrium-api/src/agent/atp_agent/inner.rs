@@ -1,18 +1,18 @@
 use super::{AtpSession, AtpSessionStore};
 use crate::{
     agent::{
-        utils::{SessionClient, SessionWithEndpointStore},
         CloneWithProxy, Configure,
+        utils::{SessionClient, SessionWithEndpointStore},
     },
     did_doc::DidDocument,
-    types::{string::Did, TryFromUnknown},
+    types::{TryFromUnknown, string::Did},
 };
 use atrium_xrpc::{
     error::{Error, Result, XrpcErrorKind},
     {HttpClient, OutputDataOrBytes, XrpcClient, XrpcRequest},
 };
 use http::{Method, Request, Response};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize, de::DeserializeOwned};
 use std::{fmt::Debug, sync::Arc};
 use tokio::sync::{Mutex, Notify};
 

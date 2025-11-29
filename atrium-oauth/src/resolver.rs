@@ -157,7 +157,7 @@ where
             _ => {
                 return Err(Error::ProtectedResourceMetadata(format!(
                     "no authorization server found for PDS: {pds}"
-                )))
+                )));
             }
         };
         let as_metadata = self.get_authorization_server_metadata(issuer).await?;

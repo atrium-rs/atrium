@@ -1,6 +1,6 @@
 use super::DnsTxtResolver;
-use atrium_xrpc::http::StatusCode;
 use atrium_xrpc::HttpClient;
+use atrium_xrpc::http::StatusCode;
 use hickory_proto::op::{Message, Query};
 use hickory_proto::rr::{RData, RecordType};
 use std::sync::Arc;

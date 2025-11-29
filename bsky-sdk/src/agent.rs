@@ -13,11 +13,11 @@ use crate::{
     preference::{FeedViewPreferenceData, Preferences, ThreadViewPreferenceData},
 };
 use atrium_api::{
-    agent::atp_agent::{
-        store::{AtpSessionStore, MemorySessionStore},
-        AtpAgent,
-    },
     agent::Configure,
+    agent::atp_agent::{
+        AtpAgent,
+        store::{AtpSessionStore, MemorySessionStore},
+    },
     app::bsky::actor::defs::PreferencesItem,
     types::{Object, Union},
     xrpc::XrpcClient,
@@ -271,7 +271,7 @@ where
 pub(crate) mod tests {
     use super::*;
     use atrium_api::{
-        agent::{atp_agent::AtpSession, AuthorizationProvider},
+        agent::{AuthorizationProvider, atp_agent::AtpSession},
         com::atproto::server::create_session::OutputData,
         xrpc::types::AuthorizationToken,
     };

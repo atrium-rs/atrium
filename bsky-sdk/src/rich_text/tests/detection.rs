@@ -10,25 +10,15 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
         ("no mention", vec![("no mention", None)]),
         (
             "@handle.com middle end",
-            vec![
-                ("@handle.com", Some("did:fake:handle.com")),
-                (" middle end", None),
-            ],
+            vec![("@handle.com", Some("did:fake:handle.com")), (" middle end", None)],
         ),
         (
             "start @handle.com end",
-            vec![
-                ("start ", None),
-                ("@handle.com", Some("did:fake:handle.com")),
-                (" end", None),
-            ],
+            vec![("start ", None), ("@handle.com", Some("did:fake:handle.com")), (" end", None)],
         ),
         (
             "start middle @handle.com",
-            vec![
-                ("start middle ", None),
-                ("@handle.com", Some("did:fake:handle.com")),
-            ],
+            vec![("start middle ", None), ("@handle.com", Some("did:fake:handle.com"))],
         ),
         (
             "@handle.com @handle.com @handle.com",
@@ -40,17 +30,11 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
                 ("@handle.com", Some("did:fake:handle.com")),
             ],
         ),
-        (
-            "@full123-chars.test",
-            vec![("@full123-chars.test", Some("did:fake:full123-chars.test"))],
-        ),
+        ("@full123-chars.test", vec![("@full123-chars.test", Some("did:fake:full123-chars.test"))]),
         ("not@right", vec![("not@right", None)]),
         (
             "@handle.com!@#$chars",
-            vec![
-                ("@handle.com", Some("did:fake:handle.com")),
-                ("!@#$chars", None),
-            ],
+            vec![("@handle.com", Some("did:fake:handle.com")), ("!@#$chars", None)],
         ),
         (
             "@handle.com\n@handle.com",
@@ -70,11 +54,7 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
         ),
         (
             "👨‍👩‍👧‍👧 @handle.com 👨‍👩‍👧‍👧",
-            vec![
-                ("👨‍👩‍👧‍👧 ", None),
-                ("@handle.com", Some("did:fake:handle.com")),
-                (" 👨‍👩‍👧‍👧", None),
-            ],
+            vec![("👨‍👩‍👧‍👧 ", None), ("@handle.com", Some("did:fake:handle.com")), (" 👨‍👩‍👧‍👧", None)],
         ),
         (
             "start https://middle.com end",
@@ -88,10 +68,7 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
             "start https://middle.com/foo/bar end",
             vec![
                 ("start ", None),
-                (
-                    "https://middle.com/foo/bar",
-                    Some("https://middle.com/foo/bar"),
-                ),
+                ("https://middle.com/foo/bar", Some("https://middle.com/foo/bar")),
                 (" end", None),
             ],
         ),
@@ -99,10 +76,7 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
             "start https://middle.com/foo/bar?baz=bux end",
             vec![
                 ("start ", None),
-                (
-                    "https://middle.com/foo/bar?baz=bux",
-                    Some("https://middle.com/foo/bar?baz=bux"),
-                ),
+                ("https://middle.com/foo/bar?baz=bux", Some("https://middle.com/foo/bar?baz=bux")),
                 (" end", None),
             ],
         ),
@@ -147,19 +121,11 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
         ),
         (
             "👨‍👩‍👧‍👧 https://middle.com 👨‍👩‍👧‍👧",
-            vec![
-                ("👨‍👩‍👧‍👧 ", None),
-                ("https://middle.com", Some("https://middle.com")),
-                (" 👨‍👩‍👧‍👧", None),
-            ],
+            vec![("👨‍👩‍👧‍👧 ", None), ("https://middle.com", Some("https://middle.com")), (" 👨‍👩‍👧‍👧", None)],
         ),
         (
             "start middle.com end",
-            vec![
-                ("start ", None),
-                ("middle.com", Some("https://middle.com")),
-                (" end", None),
-            ],
+            vec![("start ", None), ("middle.com", Some("https://middle.com")), (" end", None)],
         ),
         (
             "start middle.com/foo/bar end",
@@ -173,10 +139,7 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
             "start middle.com/foo/bar?baz=bux end",
             vec![
                 ("start ", None),
-                (
-                    "middle.com/foo/bar?baz=bux",
-                    Some("https://middle.com/foo/bar?baz=bux"),
-                ),
+                ("middle.com/foo/bar?baz=bux", Some("https://middle.com/foo/bar?baz=bux")),
                 (" end", None),
             ],
         ),
@@ -194,10 +157,7 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
         (
             "start.com/foo/bar?baz=bux#hash middle end",
             vec![
-                (
-                    "start.com/foo/bar?baz=bux#hash",
-                    Some("https://start.com/foo/bar?baz=bux#hash"),
-                ),
+                ("start.com/foo/bar?baz=bux#hash", Some("https://start.com/foo/bar?baz=bux#hash")),
                 (" middle end", None),
             ],
         ),
@@ -205,10 +165,7 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
             "start middle end.com/foo/bar?baz=bux#hash",
             vec![
                 ("start middle ", None),
-                (
-                    "end.com/foo/bar?baz=bux#hash",
-                    Some("https://end.com/foo/bar?baz=bux#hash"),
-                ),
+                ("end.com/foo/bar?baz=bux#hash", Some("https://end.com/foo/bar?baz=bux#hash")),
             ],
         ),
         (
@@ -223,20 +180,13 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
             "a example.com/index.php php link",
             vec![
                 ("a ", None),
-                (
-                    "example.com/index.php",
-                    Some("https://example.com/index.php"),
-                ),
+                ("example.com/index.php", Some("https://example.com/index.php")),
                 (" php link", None),
             ],
         ),
         (
             "a trailing bsky.app: colon",
-            vec![
-                ("a trailing ", None),
-                ("bsky.app", Some("https://bsky.app")),
-                (": colon", None),
-            ],
+            vec![("a trailing ", None), ("bsky.app", Some("https://bsky.app")), (": colon", None)],
         ),
         ("not.. a..url ..here", vec![("not.. a..url ..here", None)]),
         ("e.g.", vec![("e.g.", None)]),
@@ -250,7 +200,9 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
                 ("Classic article ", None),
                 (
                     "https://socket3.wordpress.com/2018/02/03/designing-windows-95s-user-interface/",
-                    Some("https://socket3.wordpress.com/2018/02/03/designing-windows-95s-user-interface/"),
+                    Some(
+                        "https://socket3.wordpress.com/2018/02/03/designing-windows-95s-user-interface/",
+                    ),
                 ),
             ],
         ),
@@ -260,7 +212,9 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
                 ("Classic article ", None),
                 (
                     "https://socket3.wordpress.com/2018/02/03/designing-windows-95s-user-interface/",
-                    Some("https://socket3.wordpress.com/2018/02/03/designing-windows-95s-user-interface/"),
+                    Some(
+                        "https://socket3.wordpress.com/2018/02/03/designing-windows-95s-user-interface/",
+                    ),
                 ),
                 (" ", None),
             ],
@@ -299,10 +253,7 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
             "except for https://foo.com/thing_(cool)",
             vec![
                 ("except for ", None),
-                (
-                    "https://foo.com/thing_(cool)",
-                    Some("https://foo.com/thing_(cool)"),
-                ),
+                ("https://foo.com/thing_(cool)", Some("https://foo.com/thing_(cool)")),
             ],
         ),
     ];

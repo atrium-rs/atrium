@@ -137,8 +137,8 @@ mod tests {
     use super::*;
     use atrium_common::store::Store;
     use atrium_xrpc::{Error, HttpClient, OutputDataOrBytes, XrpcClient, XrpcRequest};
-    use http::{header::CONTENT_TYPE, HeaderMap, HeaderName, HeaderValue, Request, Response};
-    use serde::{de::DeserializeOwned, Serialize};
+    use http::{HeaderMap, HeaderName, HeaderValue, Request, Response, header::CONTENT_TYPE};
+    use serde::{Serialize, de::DeserializeOwned};
     use std::fmt::Debug;
     use tokio::sync::Mutex;
 

@@ -1,6 +1,6 @@
 use super::Record;
-use crate::error::{Error, Result};
 use crate::BskyAgent;
+use crate::error::{Error, Result};
 use atrium_api::agent::atp_agent::store::AtpSessionStore;
 use atrium_api::com::atproto::repo::{create_record, delete_record};
 use atrium_api::record::KnownRecord;

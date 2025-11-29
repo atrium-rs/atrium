@@ -3,7 +3,7 @@
 use super::{AuthorizationProvider, CloneWithProxy, Configure};
 use crate::{did_doc::DidDocument, types::string::Did};
 use atrium_common::store::Store;
-use atrium_xrpc::{types::AuthorizationToken, HttpClient, XrpcClient};
+use atrium_xrpc::{HttpClient, XrpcClient, types::AuthorizationToken};
 use http::{Request, Response};
 use std::{
     marker::PhantomData,

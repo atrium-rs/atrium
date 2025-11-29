@@ -582,18 +582,20 @@ fn facet_with_multiple_features() {
         assert!(has_muted_word(
             &[muted_word("bad", MutedWordTarget::Content, ActorTarget::All)],
             "tags",
-            Some(&vec![MainData {
-                features: vec![
-                    Union::Refs(MainFeaturesItem::Tag(Box::new(
-                        TagData { tag: String::from("good") }.into()
-                    ))),
-                    Union::Refs(MainFeaturesItem::Tag(Box::new(
-                        TagData { tag: String::from("bad") }.into()
-                    )))
-                ],
-                index: ByteSliceData { byte_end: 4, byte_start: 0 }.into()
-            }
-            .into()]),
+            Some(&vec![
+                MainData {
+                    features: vec![
+                        Union::Refs(MainFeaturesItem::Tag(Box::new(
+                            TagData { tag: String::from("good") }.into()
+                        ))),
+                        Union::Refs(MainFeaturesItem::Tag(Box::new(
+                            TagData { tag: String::from("bad") }.into()
+                        )))
+                    ],
+                    index: ByteSliceData { byte_end: 4, byte_start: 0 }.into()
+                }
+                .into()
+            ]),
             Some(&vec![]),
             None,
             None
@@ -604,22 +606,24 @@ fn facet_with_multiple_features() {
         assert!(has_muted_word(
             &[muted_word("bad", MutedWordTarget::Content, ActorTarget::All)],
             "test",
-            Some(&vec![MainData {
-                features: vec![
-                    Union::Unknown(UnknownData {
-                        r#type: String::from("com.example.richtext.facet#other"),
-                        data: Ipld::Map(BTreeMap::from_iter([(
-                            String::from("foo"),
-                            Ipld::String(String::from("bar"))
-                        ),]))
-                    }),
-                    Union::Refs(MainFeaturesItem::Tag(Box::new(
-                        TagData { tag: String::from("bad") }.into()
-                    )))
-                ],
-                index: ByteSliceData { byte_end: 4, byte_start: 0 }.into()
-            }
-            .into()]),
+            Some(&vec![
+                MainData {
+                    features: vec![
+                        Union::Unknown(UnknownData {
+                            r#type: String::from("com.example.richtext.facet#other"),
+                            data: Ipld::Map(BTreeMap::from_iter([(
+                                String::from("foo"),
+                                Ipld::String(String::from("bar"))
+                            ),]))
+                        }),
+                        Union::Refs(MainFeaturesItem::Tag(Box::new(
+                            TagData { tag: String::from("bad") }.into()
+                        )))
+                    ],
+                    index: ByteSliceData { byte_end: 4, byte_start: 0 }.into()
+                }
+                .into()
+            ]),
             Some(&vec![]),
             None,
             None

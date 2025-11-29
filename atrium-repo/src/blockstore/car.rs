@@ -1,7 +1,7 @@
 use std::{collections::HashMap, convert::Infallible};
 
 use futures::{AsyncReadExt as _, AsyncSeekExt as _};
-use ipld_core::cid::{multihash::Multihash, Cid, Version};
+use ipld_core::cid::{Cid, Version, multihash::Multihash};
 use serde::{Deserialize, Serialize};
 use sha2::Digest;
 use tokio::io::{
@@ -220,7 +220,7 @@ pub enum Error {
 mod test {
     use std::io::Cursor;
 
-    use crate::blockstore::{MemoryBlockStore, DAG_CBOR};
+    use crate::blockstore::{DAG_CBOR, MemoryBlockStore};
 
     use super::*;
 

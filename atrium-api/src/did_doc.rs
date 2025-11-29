@@ -1,5 +1,5 @@
 //! Definitions for DID document types.
-use http::{uri::Scheme, Uri};
+use http::{Uri, uri::Scheme};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]

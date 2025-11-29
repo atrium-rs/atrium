@@ -1,13 +1,13 @@
 //! Record operations.
 mod agent;
 
-use crate::error::{Error, Result};
 use crate::BskyAgent;
+use crate::error::{Error, Result};
 use atrium_api::agent::atp_agent::store::AtpSessionStore;
 use atrium_api::com::atproto::repo::{
     create_record, delete_record, get_record, list_records, put_record,
 };
-use atrium_api::types::{string::RecordKey, Collection, LimitedNonZeroU8, TryIntoUnknown};
+use atrium_api::types::{Collection, LimitedNonZeroU8, TryIntoUnknown, string::RecordKey};
 use atrium_api::xrpc::XrpcClient;
 use std::future::Future;
 
@@ -33,7 +33,7 @@ where
         rkey: RecordKey,
     ) -> impl Future<Output = Result<put_record::Output>>;
     fn create(self, agent: &BskyAgent<T, S>)
-        -> impl Future<Output = Result<create_record::Output>>;
+    -> impl Future<Output = Result<create_record::Output>>;
     fn delete(
         agent: &BskyAgent<T, S>,
         rkey: RecordKey,
@@ -293,7 +293,7 @@ record_impl!(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{agent::tests::MockSessionStore, agent::BskyAtpAgentBuilder, tests::FAKE_CID};
+    use crate::{agent::BskyAtpAgentBuilder, agent::tests::MockSessionStore, tests::FAKE_CID};
     use atrium_api::types::string::Datetime;
     use atrium_api::xrpc::http::{Request, Response};
     use atrium_api::xrpc::types::Header;

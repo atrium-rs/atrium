@@ -1,8 +1,8 @@
+use super::{ExpectedBehaviors, FAKE_CID, ResultFlag};
 use super::{assert_ui, label, post_view, profile_view_basic};
-use super::{ExpectedBehaviors, ResultFlag, FAKE_CID};
+use crate::moderation::Moderator;
 use crate::moderation::decision::DecisionContext;
 use crate::moderation::types::*;
-use crate::moderation::Moderator;
 use atrium_api::app::bsky::actor::defs::{ProfileViewBasic, ViewerState, ViewerStateData};
 use atrium_api::app::bsky::graph::defs::{ListPurpose, ListViewBasic, ListViewBasicData};
 use atrium_api::types::string::Datetime;
