@@ -1,7 +1,7 @@
 //! Error types for the Bsky SDK.
+use atrium_api::xrpc::Error as XrpcError;
 use atrium_api::xrpc::error::XrpcErrorKind;
 use atrium_api::xrpc::http::StatusCode;
-use atrium_api::xrpc::Error as XrpcError;
 use std::fmt::Debug;
 use thiserror::Error;
 

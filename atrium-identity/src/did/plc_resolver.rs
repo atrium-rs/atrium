@@ -3,9 +3,9 @@ use crate::error::{Error, Result};
 use atrium_api::did_doc::DidDocument;
 use atrium_api::types::string::Did;
 use atrium_common::resolver::Resolver;
+use atrium_xrpc::HttpClient;
 use atrium_xrpc::http::uri::Builder;
 use atrium_xrpc::http::{Request, Uri};
-use atrium_xrpc::HttpClient;
 use std::sync::Arc;
 
 pub const DEFAULT_PLC_DIRECTORY_URL: &str = "https://plc.directory/";

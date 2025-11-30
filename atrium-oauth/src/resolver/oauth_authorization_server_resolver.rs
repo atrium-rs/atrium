@@ -1,9 +1,9 @@
 use crate::resolver::Resolver;
 use crate::types::OAuthAuthorizationServerMetadata;
 use atrium_identity::{Error, Result};
+use atrium_xrpc::HttpClient;
 use atrium_xrpc::http::uri::Builder;
 use atrium_xrpc::http::{Request, StatusCode, Uri};
-use atrium_xrpc::HttpClient;
 use std::sync::Arc;
 
 pub struct DefaultOAuthAuthorizationServerResolver<T> {

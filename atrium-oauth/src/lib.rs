@@ -30,12 +30,12 @@ pub use types::{
 #[cfg(test)]
 mod tests {
     use crate::{
+        AtprotoLocalhostClientMetadata, OAuthResolverConfig,
         resolver::OAuthResolver,
         types::{
             OAuthAuthorizationServerMetadata, OAuthClientMetadata, OAuthProtectedResourceMetadata,
             TryIntoOAuthClientMetadata,
         },
-        AtprotoLocalhostClientMetadata, OAuthResolverConfig,
     };
     use atrium_api::{
         did_doc::{DidDocument, Service},

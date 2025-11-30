@@ -16,7 +16,9 @@ pub enum Error {
     EmptyRedirectUris,
     #[error("`private_key_jwt` auth method requires `jwks` keys")]
     EmptyJwks,
-    #[error("`private_key_jwt` auth method requires `token_endpoint_auth_signing_alg`, otherwise must not be provided")]
+    #[error(
+        "`private_key_jwt` auth method requires `token_endpoint_auth_signing_alg`, otherwise must not be provided"
+    )]
     AuthSigningAlg,
     #[error(transparent)]
     SerdeHtmlForm(#[from] serde_html_form::ser::Error),
@@ -131,7 +133,7 @@ impl TryIntoOAuthClientMetadata for AtprotoLocalhostClientMetadata {
                 if uri.host() == Some("localhost") {
                     return Err(Error::LocalhostClient(LocalhostClientError::Localhost));
                 }
-                if uri.host().map_or(true, |host| host != "127.0.0.1" && host != "[::1]") {
+                if uri.host().is_none_or(|host| host != "127.0.0.1" && host != "[::1]") {
                     return Err(Error::LocalhostClient(LocalhostClientError::NotLoopbackHost));
                 }
             }
@@ -274,12 +276,14 @@ gbGGr0pN+oSing7cZ0169JaRHTNh+0LNQXrFobInX6cj95FzEdRyT4T3
         assert_eq!(
             metadata.try_into_client_metadata(&None).expect("failed to convert metadata"),
             OAuthClientMetadata {
-                client_id: String::from("http://localhost?redirect_uri=http%3A%2F%2F127.0.0.1%2Fcallback&redirect_uri=http%3A%2F%2F%5B%3A%3A1%5D%2Fcallback&scope=atproto+transition%3Ageneric+unknown"),
+                client_id: String::from(
+                    "http://localhost?redirect_uri=http%3A%2F%2F127.0.0.1%2Fcallback&redirect_uri=http%3A%2F%2F%5B%3A%3A1%5D%2Fcallback&scope=atproto+transition%3Ageneric+unknown"
+                ),
                 client_uri: None,
                 redirect_uris: vec![
                     String::from("http://127.0.0.1/callback"),
                     String::from("http://[::1]/callback"),
-                    ],
+                ],
                 scope: None,
                 grant_types: None,
                 token_endpoint_auth_method: Some(AuthMethod::None.into()),

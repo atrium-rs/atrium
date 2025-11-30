@@ -1,8 +1,8 @@
+use super::HandleResolver;
 use super::dns_resolver::{DnsHandleResolver, DnsHandleResolverConfig, DnsTxtResolver};
 use super::well_known_resolver::{WellKnownHandleResolver, WellKnownHandleResolverConfig};
-use super::HandleResolver;
-use crate::error::Result;
 use crate::Error;
+use crate::error::Result;
 use atrium_api::types::string::{Did, Handle};
 use atrium_common::resolver::Resolver;
 use atrium_xrpc::HttpClient;
@@ -44,11 +44,7 @@ where
     async fn resolve(&self, handle: &Self::Input) -> Result<Self::Output> {
         let d_fut = self.dns.resolve(handle);
         let h_fut = self.http.resolve(handle);
-        if let Ok(did) = d_fut.await {
-            Ok(did)
-        } else {
-            h_fut.await
-        }
+        if let Ok(did) = d_fut.await { Ok(did) } else { h_fut.await }
     }
 }
 

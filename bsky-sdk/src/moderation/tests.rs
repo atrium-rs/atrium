@@ -3,16 +3,16 @@ mod custom_labels;
 mod mutewords;
 mod quoteposts;
 
+use crate::moderation::Moderator;
 use crate::moderation::decision::{DecisionContext, ModerationDecision};
 use crate::moderation::types::*;
 use crate::moderation::util::interpret_label_value_definition;
-use crate::moderation::Moderator;
 use crate::tests::FAKE_CID;
 use atrium_api::app::bsky::actor::defs::{ProfileViewBasic, ProfileViewBasicData};
 use atrium_api::app::bsky::feed::defs::{PostView, PostViewData};
 use atrium_api::com::atproto::label::defs::{Label, LabelData, LabelValueDefinitionData};
-use atrium_api::types::string::Datetime;
 use atrium_api::types::TryIntoUnknown;
+use atrium_api::types::string::Datetime;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -308,19 +308,21 @@ fn prioritize_custom_labels() {
         },
         HashMap::from_iter([(
             "did:web:labeler.test".parse().expect("invalid did"),
-            vec![interpret_label_value_definition(
-                &LabelValueDefinitionData {
-                    identifier: String::from("porn"),
-                    default_setting: Some(String::from("warn")),
-                    severity: String::from("inform"),
-                    blurs: String::from("none"),
-                    adult_only: None,
-                    locales: Vec::new(),
-                }
-                .into(),
-                Some("did:web:labeler.test".parse().expect("invalid did")),
-            )
-            .expect("invalid label value definition")],
+            vec![
+                interpret_label_value_definition(
+                    &LabelValueDefinitionData {
+                        identifier: String::from("porn"),
+                        default_setting: Some(String::from("warn")),
+                        severity: String::from("inform"),
+                        blurs: String::from("none"),
+                        adult_only: None,
+                        locales: Vec::new(),
+                    }
+                    .into(),
+                    Some("did:web:labeler.test".parse().expect("invalid did")),
+                )
+                .expect("invalid label value definition"),
+            ],
         )]),
     );
     let result = moderator.moderate_post(&post_view(
@@ -358,19 +360,21 @@ fn does_not_override_imperative_labels() {
         },
         HashMap::from_iter([(
             "did:web:labeler.test".parse().expect("invalid did"),
-            vec![interpret_label_value_definition(
-                &LabelValueDefinitionData {
-                    identifier: String::from("!hide"),
-                    default_setting: Some(String::from("warn")),
-                    severity: String::from("inform"),
-                    blurs: String::from("none"),
-                    adult_only: None,
-                    locales: Vec::new(),
-                }
-                .into(),
-                Some("did:web:labeler.test".parse().expect("invalid did")),
-            )
-            .expect("invalid label value definition")],
+            vec![
+                interpret_label_value_definition(
+                    &LabelValueDefinitionData {
+                        identifier: String::from("!hide"),
+                        default_setting: Some(String::from("warn")),
+                        severity: String::from("inform"),
+                        blurs: String::from("none"),
+                        adult_only: None,
+                        locales: Vec::new(),
+                    }
+                    .into(),
+                    Some("did:web:labeler.test".parse().expect("invalid did")),
+                )
+                .expect("invalid label value definition"),
+            ],
         )]),
     );
     let result = moderator.moderate_post(&post_view(
@@ -586,19 +590,21 @@ fn custom_labels_require_adult_content_enabled() {
         },
         HashMap::from_iter([(
             "did:web:labeler.test".parse().expect("invalid did"),
-            vec![interpret_label_value_definition(
-                &LabelValueDefinitionData {
-                    identifier: String::from("adult"),
-                    default_setting: Some(String::from("hide")),
-                    severity: String::from("inform"),
-                    blurs: String::from("content"),
-                    adult_only: Some(true),
-                    locales: Vec::new(),
-                }
-                .into(),
-                Some("did:web:labeler.test".parse().expect("invalid did")),
-            )
-            .expect("invalid label value definition")],
+            vec![
+                interpret_label_value_definition(
+                    &LabelValueDefinitionData {
+                        identifier: String::from("adult"),
+                        default_setting: Some(String::from("hide")),
+                        severity: String::from("inform"),
+                        blurs: String::from("content"),
+                        adult_only: Some(true),
+                        locales: Vec::new(),
+                    }
+                    .into(),
+                    Some("did:web:labeler.test".parse().expect("invalid did")),
+                )
+                .expect("invalid label value definition"),
+            ],
         )]),
     );
     let result = moderator.moderate_post(&post_view(

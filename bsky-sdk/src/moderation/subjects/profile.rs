@@ -1,6 +1,6 @@
+use super::super::Moderator;
 use super::super::decision::ModerationDecision;
 use super::super::types::{LabelTarget, SubjectProfile};
-use super::super::Moderator;
 
 impl Moderator {
     pub(crate) fn decide_profile(&self, subject: &SubjectProfile) -> ModerationDecision {

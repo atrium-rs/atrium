@@ -1,6 +1,6 @@
 //! Moderation behavior decision making.
 use super::types::*;
-use super::{labels::KnownLabelValue, ui::ModerationUi, Moderator};
+use super::{Moderator, labels::KnownLabelValue, ui::ModerationUi};
 use atrium_api::app::bsky::graph::defs::ListViewBasic;
 use atrium_api::com::atproto::label::defs::Label;
 use atrium_api::types::string::Did;

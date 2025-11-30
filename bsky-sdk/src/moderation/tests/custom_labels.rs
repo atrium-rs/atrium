@@ -1,10 +1,10 @@
-use super::{assert_ui, label, post_view, profile_view_basic};
 use super::{ExpectedBehaviors, ResultFlag};
+use super::{assert_ui, label, post_view, profile_view_basic};
+use crate::moderation::Moderator;
 use crate::moderation::decision::DecisionContext;
 use crate::moderation::error::Result;
 use crate::moderation::types::*;
 use crate::moderation::util::interpret_label_value_definition;
-use crate::moderation::Moderator;
 use atrium_api::com::atproto::label::defs::LabelValueDefinitionData;
 use std::collections::HashMap;
 

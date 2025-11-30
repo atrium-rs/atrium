@@ -1328,7 +1328,7 @@ mod test {
         tree.add("com.example.record/3jqfcqzm3fr2j", value_cid()).await.unwrap(); // C; level 0
         tree.add("com.example.record/3jqfcqzm3fs2j", value_cid()).await.unwrap(); // D; level 1
         tree.add("com.example.record/3jqfcqzm3ft2j", value_cid()).await.unwrap(); // E; level 0
-                                                                                  // GAP for F
+        // GAP for F
         tree.add("com.example.record/3jqfcqzm3fz2j", value_cid()).await.unwrap(); // G; level 0
         tree.add("com.example.record/3jqfcqzm4fc2j", value_cid()).await.unwrap(); // H; level 0
         tree.add("com.example.record/3jqfcqzm4fd2j", value_cid()).await.unwrap(); // I; level 1

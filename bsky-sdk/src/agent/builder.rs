@@ -1,12 +1,12 @@
-use super::config::Config;
 use super::BskyAgent;
+use super::config::Config;
 use crate::error::Result;
 use atrium_api::agent::{
-    atp_agent::{
-        store::{AtpSessionStore, MemorySessionStore},
-        AtpAgent,
-    },
     Configure,
+    atp_agent::{
+        AtpAgent,
+        store::{AtpSessionStore, MemorySessionStore},
+    },
 };
 use atrium_api::xrpc::XrpcClient;
 #[cfg(feature = "default-client")]

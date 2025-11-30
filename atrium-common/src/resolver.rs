@@ -58,11 +58,7 @@ mod tests {
         async fn resolve(&self, input: &Self::Input) -> Result<Self::Output> {
             sleep(Duration::from_millis(10)).await;
             *self.counts.write().await.entry(input.clone()).or_default() += 1;
-            if let Some(value) = self.data.get(input) {
-                Ok(value.clone())
-            } else {
-                Err(Error)
-            }
+            if let Some(value) = self.data.get(input) { Ok(value.clone()) } else { Err(Error) }
         }
     }
 

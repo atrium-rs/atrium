@@ -3,8 +3,8 @@ use crate::error::{Error, Result};
 use atrium_api::did_doc::DidDocument;
 use atrium_api::types::string::Did;
 use atrium_common::resolver::Resolver;
-use atrium_xrpc::http::{header::ACCEPT, Request, Uri};
 use atrium_xrpc::HttpClient;
+use atrium_xrpc::http::{Request, Uri, header::ACCEPT};
 use std::sync::Arc;
 
 const DID_WEB_PREFIX: &str = "did:web:";

@@ -1,6 +1,6 @@
+use super::super::Moderator;
 use super::super::decision::ModerationDecision;
 use super::super::types::{LabelTarget, SubjectUserList};
-use super::super::Moderator;
 use atrium_api::types::string::Did;
 
 impl Moderator {

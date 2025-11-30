@@ -4,15 +4,15 @@ use atrium_identity::{
     handle::{AtprotoHandleResolver, AtprotoHandleResolverConfig, DnsTxtResolver},
 };
 use atrium_oauth::{
-    store::session::MemorySessionStore, store::state::MemoryStateStore,
     AtprotoLocalhostClientMetadata, AuthorizeOptions, DefaultHttpClient, KnownScope, OAuthClient,
-    OAuthClientConfig, OAuthResolverConfig, Scope,
+    OAuthClientConfig, OAuthResolverConfig, Scope, store::session::MemorySessionStore,
+    store::state::MemoryStateStore,
 };
 use atrium_xrpc::http::Uri;
 use hickory_resolver::TokioAsyncResolver;
 use std::{
     error::Error,
-    io::{stdin, stdout, BufRead, Write},
+    io::{BufRead, Write, stdin, stdout},
     sync::Arc,
 };
 

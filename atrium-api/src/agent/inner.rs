@@ -2,7 +2,7 @@ use super::{CloneWithProxy, Configure, SessionManager};
 use crate::types::string::Did;
 use atrium_xrpc::{Error, HttpClient, OutputDataOrBytes, XrpcClient, XrpcRequest};
 use http::{Request, Response};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize, de::DeserializeOwned};
 use std::{fmt::Debug, ops::Deref, sync::Arc};
 
 pub struct Wrapper<M> {
