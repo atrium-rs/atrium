@@ -97,3 +97,6 @@ bumpalo = "~3.14.0"
 
 # Code generation
 trait-variant = "0.1.2"
+
+# Others
+generic-array = "=0.14.7"
