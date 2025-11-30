@@ -133,7 +133,7 @@ impl TryIntoOAuthClientMetadata for AtprotoLocalhostClientMetadata {
                 if uri.host() == Some("localhost") {
                     return Err(Error::LocalhostClient(LocalhostClientError::Localhost));
                 }
-                if uri.host().map_or(true, |host| host != "127.0.0.1" && host != "[::1]") {
+                if uri.host().is_none_or(|host| host != "127.0.0.1" && host != "[::1]") {
                     return Err(Error::LocalhostClient(LocalhostClientError::NotLoopbackHost));
                 }
             }
