@@ -273,6 +273,7 @@ dependencies = [
  "ecdsa",
  "elliptic-curve",
  "futures",
+ "getrandom 0.2.15",
  "hickory-resolver",
  "jose-jwa",
  "jose-jwk",

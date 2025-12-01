@@ -39,11 +39,17 @@ trait-variant.workspace = true
 [dev-dependencies]
 atrium-api = { workspace = true, features = ["bluesky"] }
 futures.workspace = true
-hickory-resolver.workspace = true
 p256 = { workspace = true, features = ["pem", "std"] }
-tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
 base64ct.workspace = true
 
 [features]
 default = ["default-client"]
 default-client = ["reqwest/default-tls"]
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { workspace = true, features = ["js"] }
+tokio = { workspace = true, features = ["macros", "rt", "time"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+hickory-resolver.workspace = true
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

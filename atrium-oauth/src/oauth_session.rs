@@ -380,9 +380,11 @@ mod tests {
         Agent::new(oauth_session(data, default_store()).await)
     }
 
-    async fn call_service(
-        service: &Service<impl SessionManager + Sync>,
+    async fn call_service<S>(
+        service: &Service<S>,
     ) -> Result<(), atrium_xrpc::Error<atrium_api::com::atproto::server::get_service_auth::Error>>
+    where
+        S: SessionManager + Send + Sync,
     {
         let output = service
             .com
