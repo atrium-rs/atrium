@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.15](https://github.com/atrium-rs/atrium/compare/atrium-xrpc-client-v0.5.14...atrium-xrpc-client-v0.5.15) - 2025-12-27
+
+### Added
+
+- Bump MSRV to 1.85 ([#336](https://github.com/atrium-rs/atrium/pull/336))
+
 ## [0.5.14](https://github.com/atrium-rs/atrium/compare/atrium-xrpc-client-v0.5.13...atrium-xrpc-client-v0.5.14) - 2025-04-27
 
 ### Other
