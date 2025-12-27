@@ -199,7 +199,7 @@ dependencies = [
 
 [[package]]
 name = "atrium-common"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "dashmap",
  "futures",
@@ -215,7 +215,7 @@ dependencies = [
 
 [[package]]
 name = "atrium-crypto"
-version = "0.1.2"
+version = "0.1.3"
 dependencies = [
  "ecdsa",
  "generic-array",
@@ -295,7 +295,7 @@ dependencies = [
 
 [[package]]
 name = "atrium-xrpc"
-version = "0.12.3"
+version = "0.12.4"
 dependencies = [
  "bumpalo",
  "http 1.4.0",
@@ -310,7 +310,7 @@ dependencies = [
 
 [[package]]
 name = "atrium-xrpc-client"
-version = "0.5.14"
+version = "0.5.15"
 dependencies = [
  "atrium-xrpc",
  "bumpalo",
