@@ -1,15 +1,15 @@
 use crate::commands::Command;
 use anyhow::{Context, Result};
 use api::agent::bluesky::{AtprotoServiceType, BSKY_CHAT_DID};
-use api::types::string::{AtIdentifier, Datetime, Handle, RecordKey};
 use api::types::LimitedNonZeroU8;
+use api::types::string::{AtIdentifier, Datetime, Handle, RecordKey};
+use bsky_sdk::BskyAgent;
 use bsky_sdk::agent::config::{Config, FileStore};
 use bsky_sdk::api;
-use bsky_sdk::BskyAgent;
 use serde::Serialize;
 use std::ffi::OsStr;
 use std::path::PathBuf;
-use tokio::fs::{create_dir_all, File};
+use tokio::fs::{File, create_dir_all};
 use tokio::io::AsyncReadExt;
 
 pub struct Runner {

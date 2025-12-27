@@ -1,15 +1,15 @@
 //! Rich text module for working with text that contains facets.
 mod detection;
 
-use crate::agent::config::Config;
 use crate::agent::BskyAtpAgentBuilder;
+use crate::agent::config::Config;
 use crate::error::Result;
 use atrium_api::app::bsky::richtext::facet::{
     ByteSliceData, Link, MainFeaturesItem, Mention, MentionData, Tag,
 };
 use atrium_api::types::Union;
 use atrium_api::xrpc::XrpcClient;
-use detection::{detect_facets, FacetFeaturesItem};
+use detection::{FacetFeaturesItem, detect_facets};
 use std::cmp::Ordering;
 use unicode_segmentation::UnicodeSegmentation;
 

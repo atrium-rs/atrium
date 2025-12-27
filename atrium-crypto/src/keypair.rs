@@ -1,16 +1,16 @@
 //! Keypair structs for signing, and utility trait implementations.
+use crate::Algorithm;
 use crate::did::prefix_did_key;
 use crate::error::Result;
-use crate::Algorithm;
 use ecdsa::elliptic_curve::{
+    AffinePoint, CurveArithmetic, FieldBytesSize, PrimeCurve, Scalar,
     generic_array::ArrayLength,
     ops::Invert,
     sec1::{FromEncodedPoint, ModulusSize, ToEncodedPoint},
     subtle::CtOption,
-    AffinePoint, CurveArithmetic, FieldBytesSize, PrimeCurve, Scalar,
 };
 use ecdsa::hazmat::{DigestPrimitive, SignPrimitive};
-use ecdsa::signature::{rand_core::CryptoRngCore, Signer};
+use ecdsa::signature::{Signer, rand_core::CryptoRngCore};
 use ecdsa::{Signature, SignatureSize, SigningKey};
 use k256::Secp256k1;
 use p256::NistP256;
@@ -122,9 +122,9 @@ impl Did<Secp256k1> for Secp256k1Keypair {
 #[cfg(test)]
 mod tests {
     use super::{P256Keypair, Secp256k1Keypair};
+    use crate::Algorithm;
     use crate::did::{format_did_key, parse_did_key};
     use crate::verify::Verifier;
-    use crate::Algorithm;
     use rand::rngs::ThreadRng;
 
     #[test]

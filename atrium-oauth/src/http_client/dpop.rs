@@ -3,15 +3,15 @@ use crate::jose::{
     jws::RegisteredHeader,
     jwt::{Claims, PublicClaims, RegisteredClaims},
 };
-use atrium_common::store::{memory::MemoryStore, Store};
+use atrium_common::store::{Store, memory::MemoryStore};
 use atrium_xrpc::{
-    http::{Request, Response},
     HttpClient,
+    http::{Request, Response},
 };
-use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine};
+use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use chrono::Utc;
 use jose_jwa::{Algorithm, Signing};
-use jose_jwk::{crypto, EcCurves, Jwk, Key};
+use jose_jwk::{EcCurves, Jwk, Key, crypto};
 use rand::{
     rngs::SmallRng,
     {RngCore, SeedableRng},

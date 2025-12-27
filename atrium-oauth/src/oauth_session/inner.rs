@@ -1,22 +1,22 @@
 use super::store::MemorySessionStore;
 use crate::{
-    store::{session::SessionStore, session_registry::SessionRegistry},
     DpopClient,
+    store::{session::SessionStore, session_registry::SessionRegistry},
 };
 use atrium_api::{
     agent::{
-        utils::{SessionClient, SessionWithEndpointStore},
         CloneWithProxy, Configure,
+        utils::{SessionClient, SessionWithEndpointStore},
     },
     did_doc::DidDocument,
     types::string::{Did, Handle},
 };
 use atrium_common::resolver::Resolver;
 use atrium_xrpc::{
-    http::{Request, Response},
     Error, HttpClient, OutputDataOrBytes, XrpcClient, XrpcRequest,
+    http::{Request, Response},
 };
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize, de::DeserializeOwned};
 use std::{fmt::Debug, sync::Arc};
 
 pub struct Client<S, T, D, H>

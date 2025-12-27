@@ -1,7 +1,7 @@
 //! Muteword checking logic.
 use atrium_api::app::bsky::actor::defs::{MutedWord, ProfileViewBasic};
 use atrium_api::app::bsky::richtext::facet;
-use atrium_api::types::{string::Language, Union};
+use atrium_api::types::{Union, string::Language};
 use regex::Regex;
 use std::sync::OnceLock;
 
@@ -58,6 +58,14 @@ pub fn has_muted_word(
                 .collect::<Vec<_>>(),
         )
     }
+    let re_space_or_punctuation =
+        RE_SPACE_OR_PUNCTUATION.get_or_init(|| Regex::new(r"\s|\p{P}").expect("invalid regex"));
+    let re_word_boundary =
+        RE_WORD_BOUNDARY.get_or_init(|| Regex::new(r"[\s\n\t\r\f\v]+?").expect("invalid regex"));
+    let re_leading_trailing_punctuation = RE_LEADING_TRAILING_PUNCTUATION
+        .get_or_init(|| Regex::new(r"^\p{P}+|\p{P}+$").expect("invalid regex"));
+    let re_internal_punctuation =
+        RE_INTERNAL_PUNCTUATION.get_or_init(|| Regex::new(r"\p{P}").expect("invalid regex"));
     for mute in muted_words {
         let muted_word = mute.value.to_lowercase();
         let post_text = text.to_lowercase();
@@ -102,37 +110,25 @@ pub fn has_muted_word(
             return true;
         }
         // any muted phrase with space or punctuation
-        if RE_SPACE_OR_PUNCTUATION
-            .get_or_init(|| Regex::new(r"\s|\p{P}").expect("invalid regex"))
-            .is_match(&muted_word)
-            && post_text.contains(&muted_word)
-        {
+        if re_space_or_punctuation.is_match(&muted_word) && post_text.contains(&muted_word) {
             return true;
         }
 
         // check individual character groups
-        let words = RE_WORD_BOUNDARY
-            .get_or_init(|| Regex::new(r"[\s\n\t\r\f\v]+?").expect("invalid regex"))
-            .split(&post_text)
-            .collect::<Vec<_>>();
+        let words = re_word_boundary.split(&post_text).collect::<Vec<_>>();
         for word in words {
             if word == muted_word {
                 return true;
             }
             // compare word without leading/trailing punctuation, but allow internal
             // punctuation (such as `s@ssy`)
-            let word_trimmed_punctuation = RE_LEADING_TRAILING_PUNCTUATION
-                .get_or_init(|| Regex::new(r"^\p{P}+|\p{P}+$").expect("invalid regex"))
-                .replace_all(word, "");
+            let word_trimmed_punctuation = re_leading_trailing_punctuation.replace_all(word, "");
             if muted_word == word_trimmed_punctuation {
                 return true;
             }
             if muted_word.len() > word_trimmed_punctuation.len() {
                 continue;
             }
-
-            let re_internal_punctuation = RE_INTERNAL_PUNCTUATION
-                .get_or_init(|| Regex::new(r"\p{P}").expect("invalid regex"));
             if re_internal_punctuation.is_match(&word_trimmed_punctuation) {
                 let spaced_word = re_internal_punctuation
                     .replace_all(&word_trimmed_punctuation, " ")

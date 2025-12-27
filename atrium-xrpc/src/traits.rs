@@ -1,8 +1,8 @@
 use crate::error::{Error, XrpcError, XrpcErrorKind};
 use crate::types::{AuthorizationToken, Header, NSID_REFRESH_SESSION};
 use crate::{InputDataOrBytes, OutputDataOrBytes, XrpcRequest};
-use http::{header::WWW_AUTHENTICATE, Method, Request, Response};
-use serde::{de::DeserializeOwned, Serialize};
+use http::{Method, Request, Response, header::WWW_AUTHENTICATE};
+use serde::{Serialize, de::DeserializeOwned};
 use std::{fmt::Debug, future::Future};
 
 /// An abstract HTTP client.

@@ -49,13 +49,15 @@ pub fn detect_facets(text: &str) -> Vec<FacetWithoutResolution> {
     }
     // links
     {
-        let re = RE_URL.get_or_init(|| {
+        let re_url = RE_URL.get_or_init(|| {
             Regex::new(
                 r"(?:^|\s|\()((?:https?:\/\/[\S]+)|(?:(?<domain>[a-z][a-z0-9]*(?:\.[a-z0-9]+)+)[\S]*))",
             )
             .expect("invalid regex")
         });
-        for capture in re.captures_iter(text) {
+        let re_ending_punctuation =
+            RE_ENDING_PUNCTUATION.get_or_init(|| Regex::new(r"[.,;:!?]$").expect("invalid regex"));
+        for capture in re_url.captures_iter(text) {
             let m = capture.get(1).expect("invalid capture");
             let mut uri = if let Some(domain) = capture.name("domain") {
                 if !psl::suffix(domain.as_str().as_bytes()).is_some_and(|suffix| suffix.is_known())
@@ -67,11 +69,8 @@ pub fn detect_facets(text: &str) -> Vec<FacetWithoutResolution> {
                 m.as_str().into()
             };
             let mut index = ByteSliceData { byte_end: m.end(), byte_start: m.start() };
-            // strip ending puncuation
-            if (RE_ENDING_PUNCTUATION
-                .get_or_init(|| Regex::new(r"[.,;:!?]$").expect("invalid regex"))
-                .is_match(&uri))
-                || (uri.ends_with(')') && !uri.contains('('))
+            // strip ending punctuation
+            if (re_ending_punctuation.is_match(&uri)) || (uri.ends_with(')') && !uri.contains('('))
             {
                 uri.pop();
                 index.byte_end -= 1;
@@ -84,18 +83,18 @@ pub fn detect_facets(text: &str) -> Vec<FacetWithoutResolution> {
     }
     // tags
     {
-        let re = RE_TAG.get_or_init(|| {
+        let re_tag = RE_TAG.get_or_init(|| {
             Regex::new(
                 r"(?:^|\s)([#＃])([^\s\u00AD\u2060\u200A\u200B\u200C\u200D\u20e2]*[^\d\s\p{P}\u00AD\u2060\u200A\u200B\u200C\u200D\u20e2]+[^\s\u00AD\u2060\u200A\u200B\u200C\u200D\u20e2]*)?",
             )
             .expect("invalid regex")
         });
-        for capture in re.captures_iter(text) {
+        let re_trailing_punctuation =
+            RE_TRAILING_PUNCTUATION.get_or_init(|| Regex::new(r"\p{P}+$").expect("invalid regex"));
+        for capture in re_tag.captures_iter(text) {
             if let Some(tag) = capture.get(2) {
                 // strip ending punctuation and any spaces
-                let tag = RE_TRAILING_PUNCTUATION
-                    .get_or_init(|| Regex::new(r"\p{P}+$").expect("invalid regex"))
-                    .replace(tag.as_str(), "");
+                let tag = re_trailing_punctuation.replace(tag.as_str(), "");
                 // look-around, including look-ahead and look-behind, is not supported in `regex`
                 if tag.starts_with('\u{fe0f}') {
                     continue;

@@ -1,5 +1,5 @@
-use elliptic_curve::pkcs8::EncodePrivateKey;
 use elliptic_curve::SecretKey;
+use elliptic_curve::pkcs8::EncodePrivateKey;
 use jose_jwa::{Algorithm, Signing};
 use jose_jwk::{Class, Jwk, JwkSet, Key, Parameters};
 use p256::NistP256;

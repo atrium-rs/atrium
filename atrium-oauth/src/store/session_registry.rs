@@ -104,13 +104,13 @@ mod tests {
     use super::*;
     use crate::{
         tests::{
-            client_metadata, dpop_key, oauth_resolver, protected_resource_metadata,
-            server_metadata, MockDidResolver, NoopHandleResolver,
+            MockDidResolver, NoopHandleResolver, client_metadata, dpop_key, oauth_resolver,
+            protected_resource_metadata, server_metadata,
         },
         types::{OAuthTokenResponse, OAuthTokenType, RefreshRequestParameters, TokenSet},
     };
     use atrium_common::store::Store;
-    use atrium_xrpc::http::{header::CONTENT_TYPE, Request, Response, StatusCode};
+    use atrium_xrpc::http::{Request, Response, StatusCode, header::CONTENT_TYPE};
     use std::{collections::HashMap, time::Duration};
     use tokio::{sync::Mutex, time::sleep};
 

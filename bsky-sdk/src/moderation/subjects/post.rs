@@ -1,7 +1,7 @@
+use super::super::Moderator;
 use super::super::decision::ModerationDecision;
 use super::super::mutewords::has_muted_word;
 use super::super::types::{LabelTarget, SubjectPost};
-use super::super::Moderator;
 use atrium_api::app::bsky::actor::defs::MutedWord;
 use atrium_api::app::bsky::embed::record::{ViewBlocked, ViewRecord, ViewRecordRefs};
 use atrium_api::app::bsky::embed::record_with_media::{MainMediaRefs, ViewMediaRefs};

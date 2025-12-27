@@ -1,5 +1,5 @@
 use atrium_api::agent::AuthorizationProvider;
-use atrium_common::store::{self, memory::MemoryStore, Store};
+use atrium_common::store::{self, Store, memory::MemoryStore};
 use atrium_xrpc::types::AuthorizationToken;
 
 #[derive(Default)]

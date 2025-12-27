@@ -3,9 +3,9 @@ use crate::error::{Error, Result};
 use atrium_api::com::atproto::identity::resolve_handle;
 use atrium_api::types::string::{Did, Handle};
 use atrium_common::resolver::Resolver;
+use atrium_xrpc::HttpClient;
 use atrium_xrpc::http::uri::Builder;
 use atrium_xrpc::http::{Request, Uri};
-use atrium_xrpc::HttpClient;
 use std::sync::Arc;
 
 #[derive(Clone, Debug)]

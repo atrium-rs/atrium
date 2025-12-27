@@ -1,8 +1,8 @@
 use std::{hash::Hash, sync::Arc};
 
 use dashmap::{DashMap, Entry};
-use tokio::sync::broadcast::{channel, Sender};
 use tokio::sync::Mutex;
+use tokio::sync::broadcast::{Sender, channel};
 
 use crate::types::throttled::Throttled;
 

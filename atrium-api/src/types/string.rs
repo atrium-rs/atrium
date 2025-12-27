@@ -6,7 +6,7 @@ use chrono::DurationRound;
 use ipld_core::cid;
 use langtag::{LanguageTag, LanguageTagBuf};
 use regex::Regex;
-use serde::{de::Error, Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Deserializer, Serialize, Serializer, de::Error};
 use std::{cmp, ops::Deref, str::FromStr, sync::OnceLock};
 
 use super::LimitedU32;

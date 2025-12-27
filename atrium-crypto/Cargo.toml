@@ -19,6 +19,8 @@ p256 = { workspace = true, features = ["ecdsa"] }
 multibase.workspace = true
 thiserror.workspace = true
 
+generic-array.workspace = true
+
 [dev-dependencies]
 hex.workspace = true
 rand.workspace = true

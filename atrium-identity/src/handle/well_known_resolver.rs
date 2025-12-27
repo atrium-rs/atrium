@@ -2,8 +2,8 @@ use super::HandleResolver;
 use crate::error::{Error, Result};
 use atrium_api::types::string::{Did, Handle};
 use atrium_common::resolver::Resolver;
-use atrium_xrpc::http::Request;
 use atrium_xrpc::HttpClient;
+use atrium_xrpc::http::Request;
 use std::sync::Arc;
 
 const WELL_KNWON_PATH: &str = "/.well-known/atproto-did";

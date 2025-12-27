@@ -8,16 +8,16 @@ use crate::{
     types::OAuthAuthorizationServerMetadata,
 };
 use atrium_api::{
-    agent::{utils::SessionWithEndpointStore, CloneWithProxy, Configure, SessionManager},
+    agent::{CloneWithProxy, Configure, SessionManager, utils::SessionWithEndpointStore},
     did_doc::DidDocument,
     types::string::{Did, Handle},
 };
 use atrium_common::resolver::Resolver;
 use atrium_xrpc::{
-    http::{Request, Response},
     HttpClient, OutputDataOrBytes, XrpcClient, XrpcRequest,
+    http::{Request, Response},
 };
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize, de::DeserializeOwned};
 use std::{fmt::Debug, sync::Arc};
 use thiserror::Error;
 
@@ -168,8 +168,8 @@ mod tests {
     use super::*;
     use crate::server_agent::OAuthServerFactory;
     use crate::tests::{
-        client_metadata, dpop_key, oauth_resolver, protected_resource_metadata, server_metadata,
-        MockDidResolver, NoopHandleResolver,
+        MockDidResolver, NoopHandleResolver, client_metadata, dpop_key, oauth_resolver,
+        protected_resource_metadata, server_metadata,
     };
     use crate::{
         jose::jwt::Claims,
@@ -179,10 +179,10 @@ mod tests {
     use atrium_api::{
         agent::{Agent, AtprotoServiceType},
         client::Service,
-        xrpc::http::{header::CONTENT_TYPE, HeaderMap, HeaderName, HeaderValue, StatusCode},
+        xrpc::http::{HeaderMap, HeaderName, HeaderValue, StatusCode, header::CONTENT_TYPE},
     };
     use atrium_common::store::Store;
-    use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine};
+    use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
     use std::{collections::HashMap, time::Duration};
     use tokio::sync::Mutex;
 

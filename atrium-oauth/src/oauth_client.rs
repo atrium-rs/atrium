@@ -24,7 +24,7 @@ use atrium_api::{
 };
 use atrium_common::resolver::Resolver;
 use atrium_xrpc::HttpClient;
-use base64::{engine::general_purpose::URL_SAFE_NO_PAD, Engine};
+use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use jose_jwk::{Jwk, JwkSet, Key};
 use serde::Serialize;
 use sha2::{Digest, Sha256};
