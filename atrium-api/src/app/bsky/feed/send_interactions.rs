@@ -4,6 +4,8 @@ pub const NSID: &str = "app.bsky.feed.sendInteractions";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct InputData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub feed: core::option::Option<String>,
     pub interactions: Vec<crate::app::bsky::feed::defs::Interaction>,
 }
 pub type Input = crate::types::Object<InputData>;

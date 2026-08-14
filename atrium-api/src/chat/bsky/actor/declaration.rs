@@ -3,6 +3,9 @@
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct RecordData {
+    ///Declaration about group chat invitation preferences for the record owner.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub allow_group_invites: core::option::Option<String>,
     pub allow_incoming: String,
 }
 pub type Record = crate::types::Object<RecordData>;

@@ -4,6 +4,7 @@ pub mod declaration;
 pub mod defs;
 pub mod delete_account;
 pub mod export_account_data;
+pub mod get_status;
 #[derive(Debug)]
 pub struct Declaration;
 impl crate::types::Collection for Declaration {

@@ -8,6 +8,9 @@ pub struct JobStatusData {
     pub did: crate::types::string::Did,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub error: core::option::Option<String>,
+    ///A machine-readable code for why the video processing job failed.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub failure_code: core::option::Option<String>,
     pub job_id: String,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub message: core::option::Option<String>,

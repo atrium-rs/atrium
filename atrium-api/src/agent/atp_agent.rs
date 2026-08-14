@@ -368,6 +368,9 @@ mod tests {
                                     active: None,
                                     did: "did:web:example.com".parse().expect("valid"),
                                     did_doc: None,
+                                    email: None,
+                                    email_auth_factor: None,
+                                    email_confirmed: None,
                                     handle: "example.com".parse().expect("valid"),
                                     refresh_jwt: String::from("refresh"),
                                     status: None,
@@ -379,6 +382,7 @@ mod tests {
                         body.extend(serde_json::to_vec(
                             &crate::com::atproto::server::describe_server::OutputData {
                                 available_user_domains: Vec::new(),
+                                blob_upload_limit: None,
                                 contact: None,
                                 did: "did:web:example.com".parse().expect("valid"),
                                 invite_code_required: None,

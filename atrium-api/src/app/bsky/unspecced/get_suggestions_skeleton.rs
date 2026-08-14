@@ -22,9 +22,12 @@ pub struct OutputData {
     pub actors: Vec<crate::app::bsky::unspecced::defs::SkeletonSearchActor>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub cursor: core::option::Option<String>,
-    ///Snowflake for this recommendation, use when submitting recommendation events.
+    ///DEPRECATED: use recIdStr instead.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub rec_id: core::option::Option<i64>,
+    ///Snowflake for this recommendation, use when submitting recommendation events.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub rec_id_str: core::option::Option<String>,
     ///DID of the account these suggestions are relative to. If this is returned undefined, suggestions are based on the viewer.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub relative_to_did: core::option::Option<crate::types::string::Did>,

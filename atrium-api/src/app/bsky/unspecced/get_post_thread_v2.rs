@@ -15,9 +15,6 @@ pub struct ParametersData {
     ///Maximum of replies to include at each level of the thread, except for the direct replies to the anchor, which are (NOTE: currently, during unspecced phase) all returned (NOTE: later they might be paginated).
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub branching_factor: core::option::Option<crate::types::LimitedU8<100u8>>,
-    ///Whether to prioritize posts from followed users. It only has effect when the user is authenticated.
-    #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub prioritize_followed_users: core::option::Option<bool>,
     ///Sorting for the thread replies.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub sort: core::option::Option<String>,
@@ -55,7 +52,9 @@ pub type ThreadItem = crate::types::Object<ThreadItemData>;
 #[serde(tag = "$type")]
 pub enum ThreadItemValueRefs {
     #[serde(rename = "app.bsky.unspecced.defs#threadItemPost")]
-    AppBskyUnspeccedDefsThreadItemPost(Box<crate::app::bsky::unspecced::defs::ThreadItemPost>),
+    AppBskyUnspeccedDefsThreadItemPost(
+        Box<crate::app::bsky::unspecced::defs::ThreadItemPost>,
+    ),
     #[serde(rename = "app.bsky.unspecced.defs#threadItemNoUnauthenticated")]
     AppBskyUnspeccedDefsThreadItemNoUnauthenticated(
         Box<crate::app::bsky::unspecced::defs::ThreadItemNoUnauthenticated>,

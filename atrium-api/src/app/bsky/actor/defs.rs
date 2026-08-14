@@ -19,6 +19,9 @@ pub type BskyAppProgressGuide = crate::types::Object<BskyAppProgressGuideData>;
 pub struct BskyAppStatePrefData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub active_progress_guide: core::option::Option<BskyAppProgressGuide>,
+    ///Indicates if the user is participating in the beta features program.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub is_beta_user: core::option::Option<bool>,
     ///Storage for NUXs the user has encountered.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub nuxs: core::option::Option<Vec<crate::app::bsky::actor::defs::Nux>>,
@@ -37,6 +40,21 @@ pub struct ContentLabelPrefData {
     pub visibility: String,
 }
 pub type ContentLabelPref = crate::types::Object<ContentLabelPrefData>;
+///Read-only preference containing value(s) inferred from the user's declared birthdate. Absence of this preference object in the response indicates that the user has not made a declaration.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct DeclaredAgePrefData {
+    ///Indicates if the user has declared that they are over 13 years of age.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub is_over_age13: core::option::Option<bool>,
+    ///Indicates if the user has declared that they are over 16 years of age.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub is_over_age16: core::option::Option<bool>,
+    ///Indicates if the user has declared that they are over 18 years of age.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub is_over_age18: core::option::Option<bool>,
+}
+pub type DeclaredAgePref = crate::types::Object<DeclaredAgePrefData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct FeedViewPrefData {
@@ -93,6 +111,18 @@ pub struct LabelersPrefData {
     pub labelers: Vec<LabelerPrefItem>,
 }
 pub type LabelersPref = crate::types::Object<LabelersPrefData>;
+///Preferences for live events.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct LiveEventPreferencesData {
+    ///A list of feed IDs that the user has hidden from live events.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub hidden_feed_ids: core::option::Option<Vec<String>>,
+    ///Whether to hide all feeds from live events.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub hide_all_feeds: core::option::Option<bool>,
+}
+pub type LiveEventPreferences = crate::types::Object<LiveEventPreferencesData>;
 ///A word that the account owner has muted.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -156,17 +186,23 @@ pub struct PostInteractionSettingsPrefData {
         Vec<crate::types::Union<PostInteractionSettingsPrefThreadgateAllowRulesItem>>,
     >,
 }
-pub type PostInteractionSettingsPref = crate::types::Object<PostInteractionSettingsPrefData>;
+pub type PostInteractionSettingsPref = crate::types::Object<
+    PostInteractionSettingsPrefData,
+>;
 pub type Preferences = Vec<crate::types::Union<PreferencesItem>>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ProfileAssociatedData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub activity_subscription: core::option::Option<ProfileAssociatedActivitySubscription>,
+    pub activity_subscription: core::option::Option<
+        ProfileAssociatedActivitySubscription,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub chat: core::option::Option<ProfileAssociatedChat>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub feedgens: core::option::Option<i64>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub germ: core::option::Option<ProfileAssociatedGerm>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labeler: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -180,14 +216,24 @@ pub type ProfileAssociated = crate::types::Object<ProfileAssociatedData>;
 pub struct ProfileAssociatedActivitySubscriptionData {
     pub allow_subscriptions: String,
 }
-pub type ProfileAssociatedActivitySubscription =
-    crate::types::Object<ProfileAssociatedActivitySubscriptionData>;
+pub type ProfileAssociatedActivitySubscription = crate::types::Object<
+    ProfileAssociatedActivitySubscriptionData,
+>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ProfileAssociatedChatData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub allow_group_invites: core::option::Option<String>,
     pub allow_incoming: String,
 }
 pub type ProfileAssociatedChat = crate::types::Object<ProfileAssociatedChatData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ProfileAssociatedGermData {
+    pub message_me_url: String,
+    pub show_button_to: String,
+}
+pub type ProfileAssociatedGerm = crate::types::Object<ProfileAssociatedGermData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ProfileViewData {
@@ -197,6 +243,9 @@ pub struct ProfileViewData {
     pub avatar: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub created_at: core::option::Option<crate::types::string::Datetime>,
+    ///Debug information for internal development
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub debug: core::option::Option<crate::types::Unknown>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub description: core::option::Option<String>,
     pub did: crate::types::string::Did,
@@ -226,6 +275,9 @@ pub struct ProfileViewBasicData {
     pub avatar: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub created_at: core::option::Option<crate::types::string::Datetime>,
+    ///Debug information for internal development
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub debug: core::option::Option<crate::types::Unknown>,
     pub did: crate::types::string::Did,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub display_name: core::option::Option<String>,
@@ -253,6 +305,9 @@ pub struct ProfileViewDetailedData {
     pub banner: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub created_at: core::option::Option<crate::types::string::Datetime>,
+    ///Debug information for internal development
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub debug: core::option::Option<crate::types::Unknown>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub description: core::option::Option<String>,
     pub did: crate::types::string::Did,
@@ -266,8 +321,9 @@ pub struct ProfileViewDetailedData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub indexed_at: core::option::Option<crate::types::string::Datetime>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub joined_via_starter_pack:
-        core::option::Option<crate::app::bsky::graph::defs::StarterPackViewBasic>,
+    pub joined_via_starter_pack: core::option::Option<
+        crate::app::bsky::graph::defs::StarterPackViewBasic,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -313,6 +369,8 @@ pub type SavedFeedsPrefV2 = crate::types::Object<SavedFeedsPrefV2Data>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct StatusViewData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub cid: core::option::Option<crate::types::string::Cid>,
     ///An optional embed associated with the status.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub embed: core::option::Option<crate::types::Union<StatusViewEmbedRefs>>,
@@ -322,17 +380,21 @@ pub struct StatusViewData {
     ///True if the status is not expired, false if it is expired. Only present if expiration was set.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub is_active: core::option::Option<bool>,
+    ///True if the user's go-live access has been disabled by a moderator, false otherwise.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub is_disabled: core::option::Option<bool>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
     pub record: crate::types::Unknown,
     ///The status for the account.
     pub status: String,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub uri: core::option::Option<String>,
 }
 pub type StatusView = crate::types::Object<StatusViewData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ThreadViewPrefData {
-    ///Show followed users at the top of all replies.
-    #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub prioritize_followed_users: core::option::Option<bool>,
     ///Sorting mode for threads.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub sort: core::option::Option<String>,
@@ -369,6 +431,12 @@ pub struct VerificationViewData {
     pub is_valid: bool,
     ///The user who issued this verification.
     pub issuer: crate::types::string::Did,
+    ///The display name of the issuer.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub issuer_display_name: core::option::Option<String>,
+    ///The handle of the issuer.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub issuer_handle: core::option::Option<crate::types::string::Handle>,
     ///The AT-URI of the verification record.
     pub uri: String,
 }
@@ -379,14 +447,17 @@ pub type VerificationView = crate::types::Object<VerificationViewData>;
 pub struct ViewerStateData {
     ///This property is present only in selected cases, as an optimization.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub activity_subscription:
-        core::option::Option<crate::app::bsky::notification::defs::ActivitySubscription>,
+    pub activity_subscription: core::option::Option<
+        crate::app::bsky::notification::defs::ActivitySubscription,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub blocked_by: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub blocking: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub blocking_by_list: core::option::Option<crate::app::bsky::graph::defs::ListViewBasic>,
+    pub blocking_by_list: core::option::Option<
+        crate::app::bsky::graph::defs::ListViewBasic,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub followed_by: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -394,10 +465,19 @@ pub struct ViewerStateData {
     ///This property is present only in selected cases, as an optimization.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub known_followers: core::option::Option<KnownFollowers>,
+    ///Whether the account is fully muted, directly or via a mutelist. False when the mute is scoped to specific kinds; see mutedOnlyReposts and mutedOnlyQuoteposts.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub muted: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub muted_by_list: core::option::Option<crate::app::bsky::graph::defs::ListViewBasic>,
+    pub muted_by_list: core::option::Option<
+        crate::app::bsky::graph::defs::ListViewBasic,
+    >,
+    ///Whether the account's quote posts are muted. Scoped mutes are exclusive with muted: this can be true while muted is false. If muted is true, this will be false.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub muted_only_quoteposts: core::option::Option<bool>,
+    ///Whether the account's reposts are muted. Scoped mutes are exclusive with muted: this can be true while muted is false. If muted is true, this will be false.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub muted_only_reposts: core::option::Option<bool>,
 }
 pub type ViewerState = crate::types::Object<ViewerStateData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -410,11 +490,17 @@ pub enum PostInteractionSettingsPrefPostgateEmbeddingRulesItem {
 #[serde(tag = "$type")]
 pub enum PostInteractionSettingsPrefThreadgateAllowRulesItem {
     #[serde(rename = "app.bsky.feed.threadgate#mentionRule")]
-    AppBskyFeedThreadgateMentionRule(Box<crate::app::bsky::feed::threadgate::MentionRule>),
+    AppBskyFeedThreadgateMentionRule(
+        Box<crate::app::bsky::feed::threadgate::MentionRule>,
+    ),
     #[serde(rename = "app.bsky.feed.threadgate#followerRule")]
-    AppBskyFeedThreadgateFollowerRule(Box<crate::app::bsky::feed::threadgate::FollowerRule>),
+    AppBskyFeedThreadgateFollowerRule(
+        Box<crate::app::bsky::feed::threadgate::FollowerRule>,
+    ),
     #[serde(rename = "app.bsky.feed.threadgate#followingRule")]
-    AppBskyFeedThreadgateFollowingRule(Box<crate::app::bsky::feed::threadgate::FollowingRule>),
+    AppBskyFeedThreadgateFollowingRule(
+        Box<crate::app::bsky::feed::threadgate::FollowingRule>,
+    ),
     #[serde(rename = "app.bsky.feed.threadgate#listRule")]
     AppBskyFeedThreadgateListRule(Box<crate::app::bsky::feed::threadgate::ListRule>),
 }
@@ -431,6 +517,8 @@ pub enum PreferencesItem {
     SavedFeedsPrefV2(Box<SavedFeedsPrefV2>),
     #[serde(rename = "app.bsky.actor.defs#personalDetailsPref")]
     PersonalDetailsPref(Box<PersonalDetailsPref>),
+    #[serde(rename = "app.bsky.actor.defs#declaredAgePref")]
+    DeclaredAgePref(Box<DeclaredAgePref>),
     #[serde(rename = "app.bsky.actor.defs#feedViewPref")]
     FeedViewPref(Box<FeedViewPref>),
     #[serde(rename = "app.bsky.actor.defs#threadViewPref")]
@@ -449,6 +537,8 @@ pub enum PreferencesItem {
     PostInteractionSettingsPref(Box<PostInteractionSettingsPref>),
     #[serde(rename = "app.bsky.actor.defs#verificationPrefs")]
     VerificationPrefs(Box<VerificationPrefs>),
+    #[serde(rename = "app.bsky.actor.defs#liveEventPreferences")]
+    LiveEventPreferences(Box<LiveEventPreferences>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]

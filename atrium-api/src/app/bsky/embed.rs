@@ -2,6 +2,8 @@
 //!Definitions for the `app.bsky.embed` namespace.
 pub mod defs;
 pub mod external;
+pub mod gallery;
+pub mod get_embed_external_view;
 pub mod images;
 pub mod record;
 pub mod record_with_media;

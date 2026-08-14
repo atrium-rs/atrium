@@ -35,7 +35,6 @@ pub type FeedViewPreference = Object<FeedViewPreferenceData>;
 #[serde(rename_all = "camelCase")]
 pub struct ThreadViewPreferenceData {
     pub sort: String,
-    pub prioritize_followed_users: bool,
 }
 
 impl ThreadViewPreferenceData {
@@ -47,7 +46,7 @@ impl ThreadViewPreferenceData {
 
 impl Default for ThreadViewPreferenceData {
     fn default() -> Self {
-        Self { sort: Self::SORT_OLDEST.to_string(), prioritize_followed_users: true }
+        Self { sort: Self::SORT_OLDEST.to_string() }
     }
 }
 

@@ -4,13 +4,20 @@ pub const NSID: &str = "chat.bsky.moderation.getMessageContext";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ParametersData {
+    ///Number of user messages after the target to include. System messages between the target and the latest returned user message are also included, capped per gap by `maxInterleavedSystemMessages`. If there are no user messages after the target, up to `maxInterleavedSystemMessages` system messages immediately following the target are returned instead.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub after: core::option::Option<i64>,
+    ///Number of user messages before the target to include. System messages between the earliest returned user message and the target are also included, capped per gap by `maxInterleavedSystemMessages`. If there are no user messages before the target, up to `maxInterleavedSystemMessages` system messages immediately preceding the target are returned instead.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub before: core::option::Option<i64>,
     ///Conversation that the message is from. NOTE: this field will eventually be required.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub convo_id: core::option::Option<String>,
+    ///Maximum number of system messages to include per gap between consecutive returned messages (and per side when there are no user messages on that side). Within a gap, the system messages closest to the earlier message are kept.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub max_interleaved_system_messages: core::option::Option<
+        crate::types::LimitedU16<1000u16>,
+    >,
     pub message_id: String,
 }
 pub type Parameters = crate::types::Object<ParametersData>;
@@ -33,6 +40,8 @@ impl std::fmt::Display for Error {
 pub enum OutputMessagesItem {
     #[serde(rename = "chat.bsky.convo.defs#messageView")]
     ChatBskyConvoDefsMessageView(Box<crate::chat::bsky::convo::defs::MessageView>),
-    #[serde(rename = "chat.bsky.convo.defs#deletedMessageView")]
-    ChatBskyConvoDefsDeletedMessageView(Box<crate::chat::bsky::convo::defs::DeletedMessageView>),
+    #[serde(rename = "chat.bsky.convo.defs#systemMessageView")]
+    ChatBskyConvoDefsSystemMessageView(
+        Box<crate::chat::bsky::convo::defs::SystemMessageView>,
+    ),
 }

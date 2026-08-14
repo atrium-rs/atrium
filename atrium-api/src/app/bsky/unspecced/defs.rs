@@ -61,6 +61,8 @@ pub type SkeletonSearchStarterPack = crate::types::Object<SkeletonSearchStarterP
 pub struct SkeletonTrendData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub category: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub description: core::option::Option<String>,
     pub dids: Vec<crate::types::string::Did>,
     pub display_name: String,
     pub link: String,
@@ -80,7 +82,9 @@ pub type ThreadItemBlocked = crate::types::Object<ThreadItemBlockedData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ThreadItemNoUnauthenticatedData {}
-pub type ThreadItemNoUnauthenticated = crate::types::Object<ThreadItemNoUnauthenticatedData>;
+pub type ThreadItemNoUnauthenticated = crate::types::Object<
+    ThreadItemNoUnauthenticatedData,
+>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ThreadItemNotFoundData {}
@@ -96,8 +100,14 @@ pub struct ThreadItemPostData {
     pub more_replies: i64,
     ///This is by an account muted by the viewer requesting it.
     pub muted_by_viewer: bool,
-    ///This post is part of a contiguous thread by the OP from the thread root. Many different OP threads can happen in the same thread.
+    ///This post is part of a contiguous thread by the OP from the thread root. Sub-threads by OP deeper in the tree are not considered an OP thread.
     pub op_thread: bool,
+    ///The total number of posts in the contiguous OP thread that this post belongs to. Only present when this post is part of the OP thread (see `opThread`).
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub op_thread_post_count: core::option::Option<i64>,
+    ///The 1-indexed position of this post within the contiguous OP thread. Only present when this post is part of the OP thread (see `opThread`).
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub op_thread_post_index: core::option::Option<i64>,
     pub post: crate::app::bsky::feed::defs::PostView,
 }
 pub type ThreadItemPost = crate::types::Object<ThreadItemPostData>;
@@ -107,6 +117,8 @@ pub struct TrendViewData {
     pub actors: Vec<crate::app::bsky::actor::defs::ProfileViewBasic>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub category: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub description: core::option::Option<String>,
     pub display_name: String,
     pub link: String,
     pub post_count: i64,

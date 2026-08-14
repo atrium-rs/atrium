@@ -10,12 +10,15 @@ pub type Parameters = crate::types::Object<ParametersData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct OutputData {
-    ///If true, response has fallen-back to generic results, and is not scoped using relativeToDid
+    ///DEPRECATED, unused. Previously: if true, response has fallen-back to generic results, and is not scoped using relativeToDid
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub is_fallback: core::option::Option<bool>,
-    ///Snowflake for this recommendation, use when submitting recommendation events.
+    ///DEPRECATED: use recIdStr instead.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub rec_id: core::option::Option<i64>,
+    ///Snowflake for this recommendation, use when submitting recommendation events.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub rec_id_str: core::option::Option<String>,
     pub suggestions: Vec<crate::app::bsky::actor::defs::ProfileView>,
 }
 pub type Output = crate::types::Object<OutputData>;

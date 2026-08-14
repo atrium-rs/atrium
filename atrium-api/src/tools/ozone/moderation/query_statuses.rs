@@ -57,6 +57,9 @@ pub struct ParametersData {
     ///If specified, only subjects that belong to an account that has at least this many reported records will be returned.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub min_reported_records_count: core::option::Option<i64>,
+    ///If specified, only subjects that belong to an account that has at least this many active strikes will be returned.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub min_strike_count: core::option::Option<core::num::NonZeroU64>,
     ///If specified, only subjects that belong to an account that has at least this many taken down records will be returned.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub min_takendown_records_count: core::option::Option<i64>,
@@ -94,7 +97,7 @@ pub struct ParametersData {
     ///The subject to get the status for.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub subject: core::option::Option<String>,
-    ///If specified, subjects of the given type (account or record) will be returned. When this is set to 'account' the 'collections' parameter will be ignored. When includeAllUserRecords or subject is set, this will be ignored.
+    ///If specified, subjects of the given type (account, record, or conversation) will be returned. When this is set to 'account' the 'collections' parameter will be ignored. When includeAllUserRecords or subject is set, this will be ignored.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub subject_type: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]

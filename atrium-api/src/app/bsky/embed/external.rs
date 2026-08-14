@@ -7,9 +7,23 @@ pub struct MainData {
     pub external: External,
 }
 pub type Main = crate::types::Object<MainData>;
+///RGB color definition, inspired by site.standard.theme.color#rgb
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ColorRgbData {
+    pub b: u8,
+    pub g: u8,
+    pub r: u8,
+}
+pub type ColorRgb = crate::types::Object<ColorRgbData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ExternalData {
+    ///StrongRefs (uri+cid) of the Atmosphere records that backed this view.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub associated_refs: core::option::Option<
+        Vec<crate::com::atproto::repo::strong_ref::Main>,
+    >,
     pub description: String,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub thumb: core::option::Option<crate::types::BlobRef>,
@@ -26,10 +40,63 @@ pub type View = crate::types::Object<ViewData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ViewExternalData {
+    ///Profiles of the owners of the Atmosphere records that backed this view.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub associated_profiles: core::option::Option<
+        Vec<crate::app::bsky::actor::defs::ProfileViewBasic>,
+    >,
+    ///StrongRefs (uri+cid) of the Atmosphere records that backed this view.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub associated_refs: core::option::Option<
+        Vec<crate::com::atproto::repo::strong_ref::Main>,
+    >,
+    ///When the external content was created, if available. Example: a publication date, for an article.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub created_at: core::option::Option<crate::types::string::Datetime>,
     pub description: String,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
+    ///Estimated reading time in minutes, if applicable and available.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub reading_time: core::option::Option<i64>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub source: core::option::Option<ViewExternalSource>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub thumb: core::option::Option<String>,
     pub title: String,
+    ///When the external content was updated, if available.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub updated_at: core::option::Option<crate::types::string::Datetime>,
     pub uri: String,
 }
 pub type ViewExternal = crate::types::Object<ViewExternalData>;
+///The source of an external embed, such as a standard.site publication.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ViewExternalSourceData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub description: core::option::Option<String>,
+    ///Fully-qualified URL where an icon representing the source can be fetched. For example, CDN location provided by the App View.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub icon: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub theme: core::option::Option<ViewExternalSourceTheme>,
+    pub title: String,
+    ///URI of the source, if available. Example: the https:// URL of a site.standard.publication record.
+    pub uri: String,
+}
+pub type ViewExternalSource = crate::types::Object<ViewExternalSourceData>;
+///The theme colors of an external source, such as a site.standard.publication. These colors may be used when rendering an embed from that source.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ViewExternalSourceThemeData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub accent_foreground_rgb: core::option::Option<ColorRgb>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub accent_rgb: core::option::Option<ColorRgb>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub background_rgb: core::option::Option<ColorRgb>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub foreground_rgb: core::option::Option<ColorRgb>,
+}
+pub type ViewExternalSourceTheme = crate::types::Object<ViewExternalSourceThemeData>;

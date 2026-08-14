@@ -11,6 +11,9 @@ pub struct InputData {
     pub external_id: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub mod_tool: core::option::Option<crate::tools::ozone::moderation::defs::ModTool>,
+    ///Optional report-level targeting. If provided, this event will be linked to specific reports and reporters may be notified.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub report_action: core::option::Option<ReportAction>,
     pub subject: crate::types::Union<InputSubjectRefs>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub subject_blob_cids: core::option::Option<Vec<crate::types::string::Cid>>,
@@ -43,6 +46,24 @@ impl std::fmt::Display for Error {
         Ok(())
     }
 }
+///Target specific reports when emitting a moderation event
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ReportActionData {
+    ///Target ALL reports on the subject
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub all: core::option::Option<bool>,
+    ///Target specific report IDs
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub ids: core::option::Option<Vec<i64>>,
+    ///Note to send to reporter(s) when actioning their report
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub note: core::option::Option<String>,
+    ///Target reports matching these report types on the subject (fully qualified NSIDs)
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub types: core::option::Option<Vec<String>>,
+}
+pub type ReportAction = crate::types::Object<ReportActionData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]
 pub enum InputEventRefs {
@@ -71,7 +92,9 @@ pub enum InputEventRefs {
         Box<crate::tools::ozone::moderation::defs::ModEventReport>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#modEventMute")]
-    ToolsOzoneModerationDefsModEventMute(Box<crate::tools::ozone::moderation::defs::ModEventMute>),
+    ToolsOzoneModerationDefsModEventMute(
+        Box<crate::tools::ozone::moderation::defs::ModEventMute>,
+    ),
     #[serde(rename = "tools.ozone.moderation.defs#modEventUnmute")]
     ToolsOzoneModerationDefsModEventUnmute(
         Box<crate::tools::ozone::moderation::defs::ModEventUnmute>,
@@ -101,15 +124,21 @@ pub enum InputEventRefs {
         Box<crate::tools::ozone::moderation::defs::ModEventDivert>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#modEventTag")]
-    ToolsOzoneModerationDefsModEventTag(Box<crate::tools::ozone::moderation::defs::ModEventTag>),
+    ToolsOzoneModerationDefsModEventTag(
+        Box<crate::tools::ozone::moderation::defs::ModEventTag>,
+    ),
     #[serde(rename = "tools.ozone.moderation.defs#accountEvent")]
-    ToolsOzoneModerationDefsAccountEvent(Box<crate::tools::ozone::moderation::defs::AccountEvent>),
+    ToolsOzoneModerationDefsAccountEvent(
+        Box<crate::tools::ozone::moderation::defs::AccountEvent>,
+    ),
     #[serde(rename = "tools.ozone.moderation.defs#identityEvent")]
     ToolsOzoneModerationDefsIdentityEvent(
         Box<crate::tools::ozone::moderation::defs::IdentityEvent>,
     ),
     #[serde(rename = "tools.ozone.moderation.defs#recordEvent")]
-    ToolsOzoneModerationDefsRecordEvent(Box<crate::tools::ozone::moderation::defs::RecordEvent>),
+    ToolsOzoneModerationDefsRecordEvent(
+        Box<crate::tools::ozone::moderation::defs::RecordEvent>,
+    ),
     #[serde(rename = "tools.ozone.moderation.defs#modEventPriorityScore")]
     ToolsOzoneModerationDefsModEventPriorityScore(
         Box<crate::tools::ozone::moderation::defs::ModEventPriorityScore>,
@@ -122,9 +151,21 @@ pub enum InputEventRefs {
     ToolsOzoneModerationDefsAgeAssuranceOverrideEvent(
         Box<crate::tools::ozone::moderation::defs::AgeAssuranceOverrideEvent>,
     ),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssurancePurgeEvent")]
+    ToolsOzoneModerationDefsAgeAssurancePurgeEvent(
+        Box<crate::tools::ozone::moderation::defs::AgeAssurancePurgeEvent>,
+    ),
     #[serde(rename = "tools.ozone.moderation.defs#revokeAccountCredentialsEvent")]
     ToolsOzoneModerationDefsRevokeAccountCredentialsEvent(
         Box<crate::tools::ozone::moderation::defs::RevokeAccountCredentialsEvent>,
+    ),
+    #[serde(rename = "tools.ozone.moderation.defs#scheduleTakedownEvent")]
+    ToolsOzoneModerationDefsScheduleTakedownEvent(
+        Box<crate::tools::ozone::moderation::defs::ScheduleTakedownEvent>,
+    ),
+    #[serde(rename = "tools.ozone.moderation.defs#cancelScheduledTakedownEvent")]
+    ToolsOzoneModerationDefsCancelScheduledTakedownEvent(
+        Box<crate::tools::ozone::moderation::defs::CancelScheduledTakedownEvent>,
     ),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]

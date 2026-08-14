@@ -22,6 +22,8 @@ pub enum MainMediaRefs {
     AppBskyEmbedImagesMain(Box<crate::app::bsky::embed::images::Main>),
     #[serde(rename = "app.bsky.embed.video")]
     AppBskyEmbedVideoMain(Box<crate::app::bsky::embed::video::Main>),
+    #[serde(rename = "app.bsky.embed.gallery")]
+    AppBskyEmbedGalleryMain(Box<crate::app::bsky::embed::gallery::Main>),
     #[serde(rename = "app.bsky.embed.external")]
     AppBskyEmbedExternalMain(Box<crate::app::bsky::embed::external::Main>),
 }
@@ -32,6 +34,8 @@ pub enum ViewMediaRefs {
     AppBskyEmbedImagesView(Box<crate::app::bsky::embed::images::View>),
     #[serde(rename = "app.bsky.embed.video#view")]
     AppBskyEmbedVideoView(Box<crate::app::bsky::embed::video::View>),
+    #[serde(rename = "app.bsky.embed.gallery#view")]
+    AppBskyEmbedGalleryView(Box<crate::app::bsky::embed::gallery::View>),
     #[serde(rename = "app.bsky.embed.external#view")]
     AppBskyEmbedExternalView(Box<crate::app::bsky::embed::external::View>),
 }

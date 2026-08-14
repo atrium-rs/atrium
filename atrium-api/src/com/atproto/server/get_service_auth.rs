@@ -4,8 +4,8 @@ pub const NSID: &str = "com.atproto.server.getServiceAuth";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ParametersData {
-    ///The DID of the service that the token will be used to authenticate with
-    pub aud: crate::types::string::Did,
+    ///The DID or `did#serviceId` reference of the service that the token will be used to authenticate with.
+    pub aud: String,
     ///The time in Unix Epoch seconds that the JWT expires. Defaults to 60 seconds in the future. The service may enforce certain time bounds on tokens depending on the requested scope.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub exp: core::option::Option<i64>,

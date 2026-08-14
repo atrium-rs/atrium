@@ -51,6 +51,11 @@ pub struct NotificationData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub reason_subject: core::option::Option<String>,
     pub record: crate::types::Unknown,
+    ///The starter pack associated with this notification. Present when the notification is for a follow originating from a starter pack.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub starter_pack: core::option::Option<
+        crate::app::bsky::graph::defs::StarterPackViewBasic,
+    >,
     pub uri: String,
 }
 pub type Notification = crate::types::Object<NotificationData>;

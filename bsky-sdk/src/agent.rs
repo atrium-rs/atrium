@@ -151,9 +151,6 @@ where
                     if let Some(v) = &p.sort {
                         pref.sort = v.clone();
                     }
-                    if let Some(v) = p.prioritize_followed_users {
-                        pref.prioritize_followed_users = v;
-                    }
                     prefs.thread_view_prefs = Object {
                         data: pref,
                         extra_data: p.extra_data, // pass through extra data

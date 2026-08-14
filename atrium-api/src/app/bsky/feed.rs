@@ -23,6 +23,7 @@ pub mod post;
 pub mod postgate;
 pub mod repost;
 pub mod search_posts;
+pub mod search_posts_v2;
 pub mod send_interactions;
 pub mod threadgate;
 #[derive(Debug)]
