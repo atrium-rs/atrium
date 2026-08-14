@@ -205,19 +205,17 @@ pub(crate) fn generate_modules(
             let collections = names
                 .iter()
                 .filter_map(|name| {
-                    let nsid = format!("{}.{}", ns, name);
                     schemas
                         .iter()
                         .find(|schema| {
-                            schema
-                                .defs
-                                .get("main")
-                                .map(|def| {
-                                    schema.id == nsid && matches!(def, LexUserType::Record(_))
-                                })
-                                .unwrap_or(false)
+                            // The file stem is the snake_case'd NSID leaf, so match on that
+                            // instead of reconstructing the NSID -- a camelCase leaf such as
+                            // `contentVisibilityDeclaration` would never compare equal.
+                            schema.id.rsplit_once('.').is_some_and(|(prefix, leaf)| {
+                                prefix == ns && leaf.to_snake_case() == *name
+                            }) && matches!(schema.defs.get("main"), Some(LexUserType::Record(_)))
                         })
-                        .map(|_| collection(name, &nsid))
+                        .map(|schema| collection(name, &schema.id))
                 })
                 .collect_vec();
             (quote!(#![doc = #doc]), collections)
