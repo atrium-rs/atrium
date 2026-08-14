@@ -585,7 +585,8 @@ fn unknown_type(unknown: &LexUnknown) -> Result<(TokenStream, TokenStream)> {
 }
 
 fn description(description: &Option<String>) -> TokenStream {
-    if let Some(description) = description {
+    // An empty description would emit an empty doc comment, which trips `clippy::empty_docs`.
+    if let Some(description) = description.as_deref().filter(|s| !s.is_empty()) {
         quote!(#[doc = #description])
     } else {
         quote!()

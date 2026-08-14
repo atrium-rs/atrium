@@ -62,7 +62,9 @@ pub(crate) fn generate_schemas(
 
         let documentation = {
             let doc = format!("Definitions for the `{}` namespace.", schema.id);
-            let description = if let Some(description) = &schema.description {
+            let description = if let Some(description) =
+                schema.description.as_deref().filter(|s| !s.is_empty())
+            {
                 quote!(#![doc = #description])
             } else {
                 quote!()
