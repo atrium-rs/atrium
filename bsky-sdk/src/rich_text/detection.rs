@@ -70,8 +70,11 @@ pub fn detect_facets(text: &str) -> Vec<FacetWithoutResolution> {
             };
             let mut index = ByteSliceData { byte_end: m.end(), byte_start: m.start() };
             // strip ending punctuation
-            if (re_ending_punctuation.is_match(&uri)) || (uri.ends_with(')') && !uri.contains('('))
-            {
+            if re_ending_punctuation.is_match(&uri) {
+                uri.pop();
+                index.byte_end -= 1;
+            }
+            if uri.ends_with(')') && !uri.contains('(') {
                 uri.pop();
                 index.byte_end -= 1;
             }
