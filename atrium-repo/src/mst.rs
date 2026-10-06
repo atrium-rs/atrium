@@ -623,6 +623,51 @@ fn leading_zeroes(key: &[u8]) -> usize {
     zeroes
 }
 
+/// The most subtree links a walk follows down from the root.
+///
+/// A key's layer is half the leading zero bits of its SHA-256 hash (see
+/// [`leading_zeroes`]), so it is at most 128, and each subtree link goes down
+/// exactly one layer. No path in a well-formed MST is longer.
+const MAX_DEPTH: usize = 128;
+
+/// Keeps a walk to the shape of a well-formed MST.
+///
+/// Verified blocks rule out cycles, but not one subtree reached from many
+/// places. A tree whose every level links to the level below twice makes a
+/// walk take time exponential in its depth. In a well-formed MST, keys
+/// strictly increase in walk order and no path is deeper than [`MAX_DEPTH`].
+/// A walk that revisits a subtree either repeats a key, which
+/// [`WalkGuard::key`] refuses, or passes no keys there and follows a single
+/// path, which [`WalkGuard::depth`] bounds. So a walk's work is linear in the
+/// keys it passes.
+#[derive(Default)]
+struct WalkGuard {
+    last_key: Option<String>,
+}
+
+impl WalkGuard {
+    /// Refuses a key that does not sort after the one before it.
+    fn key(&mut self, key: &str) -> Result<(), Error> {
+        if let Some(last) = &self.last_key {
+            if key <= last.as_str() {
+                return Err(Error::KeyOutOfOrder(key.to_string()));
+            }
+        }
+        let last = self.last_key.get_or_insert_with(String::new);
+        last.clear();
+        last.push_str(key);
+        Ok(())
+    }
+
+    /// Refuses a node further below the root than any well-formed MST goes.
+    fn depth(depth: usize) -> Result<(), Error> {
+        if depth > MAX_DEPTH {
+            return Err(Error::TooDeep);
+        }
+        Ok(())
+    }
+}
+
 /// A merkle search tree data structure, backed by storage implementing
 /// [AsyncBlockStoreRead] and optionally [AsyncBlockStoreWrite].
 ///
@@ -681,12 +726,14 @@ impl<S: AsyncBlockStoreRead + AsyncBlockStoreWrite> Tree<S> {
 
     /// Add a new key with the specified value to the tree.
     pub async fn add(&mut self, key: &str, value: Cid) -> Result<(), Error> {
+        check_key_len(key)?;
         self.root = algos::add(&mut self.storage, self.root, key, value).await?;
         Ok(())
     }
 
     /// Update an existing key with a new value.
     pub async fn update(&mut self, key: &str, value: Cid) -> Result<(), Error> {
+        check_key_len(key)?;
         self.root = algos::update(&mut self.storage, self.root, key, value).await?;
         Ok(())
     }
@@ -719,29 +766,40 @@ impl<S: AsyncBlockStoreRead> Tree<S> {
     }
 
     /// Returns a stream of all CIDs in the tree or referenced by the tree.
+    ///
+    /// A tree whose keys are out of order, or that is deeper than a well-formed
+    /// MST can be, ends the stream with an error.
     pub fn export(&mut self) -> impl Stream<Item = Result<Cid, Error>> + '_ {
         // Start from the root of the tree.
-        let mut stack = vec![Located::InSubtree(self.root)];
+        let mut stack = vec![(Located::InSubtree(self.root), 0)];
+        let mut guard = WalkGuard::default();
 
         try_stream! {
-            while let Some(e) = stack.pop() {
+            while let Some((e, depth)) = stack.pop() {
                 match e {
                     Located::InSubtree(cid) => {
+                        WalkGuard::depth(depth)?;
                         let node = Node::read_from(&mut self.storage, cid).await?;
                         yield cid;
 
                         for entry in node.entries.iter().rev() {
                             match entry {
                                 NodeEntry::Tree(entry) => {
-                                    stack.push(Located::InSubtree(*entry));
+                                    stack.push((Located::InSubtree(*entry), depth + 1));
                                 }
                                 NodeEntry::Leaf(entry) => {
-                                    stack.push(Located::Entry(entry.value));
+                                    stack.push((
+                                        Located::Entry((entry.key.clone(), entry.value)),
+                                        depth,
+                                    ));
                                 }
                             }
                         }
                     }
-                    Located::Entry(value) => yield value,
+                    Located::Entry((key, value)) => {
+                        guard.key(&key)?;
+                        yield value;
+                    }
                 }
             }
         }
@@ -751,27 +809,38 @@ impl<S: AsyncBlockStoreRead> Tree<S> {
     ///
     /// This function will _not_ work with a partial MST, such as one received from
     /// a firehose record.
+    ///
+    /// A tree whose keys are out of order, or that is deeper than a well-formed
+    /// MST can be, ends the stream with an error.
     pub fn entries(&mut self) -> impl Stream<Item = Result<(String, Cid), Error>> + '_ {
         // Start from the root of the tree.
-        let mut stack = vec![Located::InSubtree(self.root)];
+        let mut stack = vec![(Located::InSubtree(self.root), 0)];
+        let mut guard = WalkGuard::default();
 
         try_stream! {
-            while let Some(e) = stack.pop() {
+            while let Some((e, depth)) = stack.pop() {
                 match e {
                     Located::InSubtree(cid) => {
+                        WalkGuard::depth(depth)?;
                         let node = Node::read_from(&mut self.storage, cid).await?;
                         for entry in node.entries.iter().rev() {
                             match entry {
                                 NodeEntry::Tree(entry) => {
-                                    stack.push(Located::InSubtree(*entry));
+                                    stack.push((Located::InSubtree(*entry), depth + 1));
                                 }
                                 NodeEntry::Leaf(entry) => {
-                                    stack.push(Located::Entry((entry.key.clone(), entry.value)));
+                                    stack.push((
+                                        Located::Entry((entry.key.clone(), entry.value)),
+                                        depth,
+                                    ));
                                 }
                             }
                         }
                     }
-                    Located::Entry((key, value)) => yield (key, value),
+                    Located::Entry((key, value)) => {
+                        guard.key(&key)?;
+                        yield (key, value);
+                    }
                 }
             }
         }
@@ -781,30 +850,41 @@ impl<S: AsyncBlockStoreRead> Tree<S> {
     ///
     /// This function will _not_ work with a partial MST, such as one received from
     /// a firehose record.
+    ///
+    /// A tree whose keys are out of order, or that is deeper than a well-formed
+    /// MST can be, ends the stream with an error.
     pub fn entries_prefixed<'a>(
         &'a mut self,
         prefix: &'a str,
     ) -> impl Stream<Item = Result<(String, Cid), Error>> + 'a {
         // Start from the root of the tree.
-        let mut stack = vec![Located::InSubtree(self.root)];
+        let mut stack = vec![(Located::InSubtree(self.root), 0)];
+        let mut guard = WalkGuard::default();
 
         try_stream! {
-            while let Some(e) = stack.pop() {
+            while let Some((e, depth)) = stack.pop() {
                 match e {
                     Located::InSubtree(cid) => {
+                        WalkGuard::depth(depth)?;
                         let node = Node::read_from(&mut self.storage, cid).await?;
                         for entry in node.entries_with_prefix(prefix).rev() {
                             match entry {
                                 NodeEntry::Tree(entry) => {
-                                    stack.push(Located::InSubtree(entry));
+                                    stack.push((Located::InSubtree(entry), depth + 1));
                                 }
                                 NodeEntry::Leaf(entry) => {
-                                    stack.push(Located::Entry((entry.key.clone(), entry.value)));
+                                    stack.push((
+                                        Located::Entry((entry.key.clone(), entry.value)),
+                                        depth,
+                                    ));
                                 }
                             }
                         }
                     }
-                    Located::Entry((key, value)) => yield (key, value),
+                    Located::Entry((key, value)) => {
+                        guard.key(&key)?;
+                        yield (key, value);
+                    }
                 }
             }
         }
@@ -910,6 +990,10 @@ impl Node {
     pub fn parse(bytes: &[u8]) -> Result<Self, Error> {
         let node: schema::Node = serde_ipld_dagcbor::from_slice(bytes)?;
 
+        // Checked before any key is rebuilt, so a node can never cost more
+        // than `MAX_KEY_BYTES_PER_BLOCK_BYTE` times its own length in keys.
+        check_node_keys(&node, bytes.len())?;
+
         let mut entries = vec![];
         if let Some(left) = &node.left {
             entries.push(NodeEntry::Tree(*left));
@@ -980,6 +1064,11 @@ impl Node {
         }
 
         let bytes = serde_ipld_dagcbor::to_vec(&node).unwrap();
+        // Refuse to write a node `Node::parse` would refuse to read back. The
+        // limit's derivation assumes SHA-256 values, but `Tree::add` accepts
+        // any `Cid`, so without this a caller's values could leave a tree
+        // this crate can no longer open.
+        check_node_keys(&node, bytes.len())?;
         Ok(bs.write_block(DAG_CBOR, SHA2_256, &bytes).await?)
     }
 
@@ -1098,8 +1187,77 @@ struct TreeEntry {
     value: Cid,
 }
 
+/// The longest MST key the reference implementation accepts
+/// (`isValidMstKey` in `@atproto/repo`). Real repo paths stay well under it.
+const MAX_KEY_LEN: usize = 1024;
+
+/// Refuse a key on the write path that [`TreeEntry::parse`] would refuse to
+/// read back, so an oversized key never leaves a tree this crate cannot open.
+fn check_key_len(key: &str) -> Result<(), Error> {
+    if key.len() > MAX_KEY_LEN {
+        return Err(Error::KeyTooLong(key.len()));
+    }
+    Ok(())
+}
+
+/// The most key bytes an MST node may rebuild per byte of its block.
+///
+/// Prefix compression lets each entry reuse all but one byte of the key
+/// before it, so a node can rebuild far more key bytes than it stores: a
+/// 23-byte entry pointing at a tiny identity-hash value can rebuild a
+/// 1023-byte key, about 45 times its size, and a node full of them costs
+/// that multiple of its block in memory.
+///
+/// 20 is derived, not measured, so no honest node can reach it. A key is at
+/// most [`MAX_KEY_LEN`] (1024) bytes, and every honest entry stores its
+/// record's full SHA-256 CID, so the smallest an honest entry can be is 53
+/// bytes: the map header and three one-letter keys (7), `p` (3), a suffix of
+/// at least one byte, since keys are distinct and in order (2), and the
+/// 41-byte CID link, with `t` left out. The spec calls `t` nullable, and
+/// this crate and `@atproto/repo` both write it, but nothing stops a writer
+/// omitting it. No honest entry, and so no honest node, rebuilds more than
+/// 1024 / 53 ≈ 19.3 key bytes per block byte. Real repo paths are shorter
+/// still, at most 830 bytes (a 317-byte NSID, `/`, and a 512-byte record
+/// key), so about 15.7.
+///
+/// This bounds the keys a node rebuilds, not all it costs to parse. Parsing
+/// also builds a struct per entry, about 20 times a minimal entry's size, so
+/// a node can cost about 40 times its block in all. That is still
+/// proportional to the input, which is what matters.
+const MAX_KEY_BYTES_PER_BLOCK_BYTE: usize = 20;
+
+/// Refuse a node whose keys would rebuild to more than
+/// `MAX_KEY_BYTES_PER_BLOCK_BYTE` times its block. [`Node::parse`] checks this
+/// before reading a node, and [`Node::serialize_into`] before writing one, so
+/// this crate never writes a tree it would refuse to read.
+fn check_node_keys(node: &schema::Node, block_len: usize) -> Result<(), Error> {
+    let key_bytes = key_bytes(node);
+    if key_bytes > MAX_KEY_BYTES_PER_BLOCK_BYTE.saturating_mul(block_len) {
+        return Err(Error::NodeKeysTooLarge { key_bytes, block_len });
+    }
+    Ok(())
+}
+
+/// The key bytes a node rebuilds: the sum, over its entries, of the prefix
+/// each reuses and the suffix each stores. Computed without rebuilding any
+/// key, so it is safe to call on a node before deciding to parse it.
+fn key_bytes(node: &schema::Node) -> usize {
+    node.entries
+        .iter()
+        .map(|e| e.prefix_len.saturating_add(e.key_suffix.len()))
+        .fold(0, usize::saturating_add)
+}
+
 impl TreeEntry {
     fn parse(entry: schema::TreeEntry, prev_key: &[u8]) -> Result<Self, Error> {
+        // Checked before the key is rebuilt. Prefix compression lets each entry
+        // reuse the whole previous key, so without a cap a node of n entries can
+        // rebuild keys totalling about n²/2 bytes from a block far smaller.
+        let len = entry.prefix_len.saturating_add(entry.key_suffix.len());
+        if len > MAX_KEY_LEN {
+            return Err(Error::KeyTooLong(len));
+        }
+
         let key = if entry.prefix_len == 0 {
             entry.key_suffix
         } else if prev_key.len() < entry.prefix_len {
@@ -1131,6 +1289,18 @@ pub enum Error {
     BlockStore(#[from] crate::blockstore::Error),
     #[error("serde_ipld_dagcbor decoding error: {0}")]
     Parse(#[from] serde_ipld_dagcbor::DecodeError<Infallible>),
+    #[error("MST key {0:?} does not sort after the key before it")]
+    KeyOutOfOrder(String),
+    #[error("MST is more than {} levels deep", MAX_DEPTH)]
+    TooDeep,
+    #[error("MST key of {0} bytes exceeds the {max}-byte limit", max = MAX_KEY_LEN)]
+    KeyTooLong(usize),
+    #[error(
+        "MST node rebuilds {key_bytes} key bytes from a {block_len}-byte block, over the \
+         {max}x limit",
+        max = MAX_KEY_BYTES_PER_BLOCK_BYTE
+    )]
+    NodeKeysTooLarge { key_bytes: usize, block_len: usize },
 }
 
 #[cfg(test)]
@@ -1520,5 +1690,284 @@ mod test {
                 "com.example.bbcd/2222222222224",
             ]
         );
+    }
+
+    /// Counts the blocks read through it.
+    struct CountingStore {
+        inner: MemoryBlockStore,
+        reads: usize,
+    }
+
+    impl AsyncBlockStoreRead for CountingStore {
+        async fn read_block_into(
+            &mut self,
+            cid: Cid,
+            contents: &mut Vec<u8>,
+        ) -> Result<(), crate::blockstore::Error> {
+            self.reads += 1;
+            self.inner.read_block_into(cid, contents).await
+        }
+    }
+
+    /// Writes a node exactly as given, hashed with SHA-256 as `CarStore`
+    /// requires, without checking that it belongs in a well-formed MST.
+    async fn put_node(
+        bs: &mut MemoryBlockStore,
+        left: Option<Cid>,
+        entries: &[(&str, Option<Cid>)],
+    ) -> Cid {
+        let node = schema::Node {
+            left,
+            entries: entries
+                .iter()
+                .map(|(key, tree)| schema::TreeEntry {
+                    prefix_len: 0,
+                    key_suffix: key.as_bytes().to_vec(),
+                    value: value_cid(),
+                    tree: *tree,
+                })
+                .collect(),
+        };
+        let bytes = serde_ipld_dagcbor::to_vec(&node).unwrap();
+        bs.write_block(DAG_CBOR, SHA2_256, &bytes).await.unwrap()
+    }
+
+    /// A path of `levels` key-less nodes above a node holding one key.
+    async fn keyless_path(levels: usize) -> (Cid, MemoryBlockStore) {
+        let mut bs = MemoryBlockStore::new();
+        let mut node = put_node(&mut bs, None, &[("com.example.record/a", None)]).await;
+        for _ in 0..levels {
+            node = put_node(&mut bs, Some(node), &[]).await;
+        }
+        (node, bs)
+    }
+
+    #[tokio::test]
+    async fn walks_refuse_a_subtree_reached_twice() {
+        // 40 levels, each linking to the one below twice: 2^40 node visits
+        // for a walk that does not notice the repeated keys.
+        let mut bs = MemoryBlockStore::new();
+        let mut below = None;
+        for level in 0..40 {
+            let key = format!("com.example.record/{level:02}");
+            below = Some(put_node(&mut bs, below, &[(&key, below)]).await);
+        }
+        let mut tree = Tree::open(CountingStore { inner: bs, reads: 0 }, below.unwrap());
+
+        let items: Vec<_> = tree.entries().collect().await;
+        assert!(matches!(items.last(), Some(Err(Error::KeyOutOfOrder(_)))), "{items:?}");
+        assert!(tree.storage.reads <= 2 * 40, "{} reads", tree.storage.reads);
+
+        tree.storage.reads = 0;
+        let items: Vec<_> = tree.entries_prefixed("com.example.record/").collect().await;
+        assert!(matches!(items.last(), Some(Err(Error::KeyOutOfOrder(_)))), "{items:?}");
+        assert!(tree.storage.reads <= 2 * 40, "{} reads", tree.storage.reads);
+
+        tree.storage.reads = 0;
+        let items: Vec<_> = tree.export().collect().await;
+        assert!(matches!(items.last(), Some(Err(Error::KeyOutOfOrder(_)))), "{items:?}");
+        assert!(tree.storage.reads <= 2 * 40, "{} reads", tree.storage.reads);
+    }
+
+    #[tokio::test]
+    async fn walks_refuse_a_tree_deeper_than_any_mst() {
+        let (root, bs) = keyless_path(MAX_DEPTH + 1).await;
+        let mut tree = Tree::open(bs, root);
+
+        let items: Vec<_> = tree.entries().collect().await;
+        assert!(matches!(items.as_slice(), [Err(Error::TooDeep)]), "{items:?}");
+        let items: Vec<_> = tree.entries_prefixed("com.example.record/").collect().await;
+        assert!(matches!(items.as_slice(), [Err(Error::TooDeep)]), "{items:?}");
+        let items: Vec<_> = tree.export().collect().await;
+        assert!(matches!(items.last(), Some(Err(Error::TooDeep))), "{items:?}");
+    }
+
+    #[tokio::test]
+    async fn walks_follow_the_deepest_path_an_mst_can_have() {
+        let (root, bs) = keyless_path(MAX_DEPTH).await;
+        let mut tree = Tree::open(bs, root);
+
+        let keys = tree.keys().try_collect::<Vec<_>>().await.unwrap();
+        assert_eq!(keys, ["com.example.record/a"]);
+        let keys = tree.keys_prefixed("com.example.record/").try_collect::<Vec<_>>().await.unwrap();
+        assert_eq!(keys, ["com.example.record/a"]);
+        let cids = tree.export().try_collect::<Vec<_>>().await.unwrap();
+        assert_eq!(cids.len(), MAX_DEPTH + 2);
+    }
+
+    #[tokio::test]
+    async fn a_keyless_node_reached_twice_is_walked() {
+        // The walks do not refuse every node reached twice, only repeated keys
+        // and impossible depths.
+        let mut bs = MemoryBlockStore::new();
+        let empty = put_node(&mut bs, None, &[]).await;
+        let root = put_node(&mut bs, Some(empty), &[("com.example.record/a", Some(empty))]).await;
+        let mut tree = Tree::open(bs, root);
+
+        let keys = tree.keys().try_collect::<Vec<_>>().await.unwrap();
+        assert_eq!(keys, ["com.example.record/a"]);
+        let cids = tree.export().try_collect::<Vec<_>>().await.unwrap();
+        assert_eq!(cids, [root, empty, value_cid(), empty]);
+    }
+
+    /// A node whose first key is `first` bytes long and whose second entry
+    /// reuses all of it as a prefix, adding `suffix` more bytes.
+    fn node_with_keys(first: usize, suffix: usize) -> Vec<u8> {
+        let entry = |prefix_len, key_suffix| schema::TreeEntry {
+            prefix_len,
+            key_suffix,
+            value: value_cid(),
+            tree: None,
+        };
+        let node = schema::Node {
+            left: None,
+            entries: vec![entry(0, vec![b'a'; first]), entry(first, vec![b'b'; suffix])],
+        };
+        serde_ipld_dagcbor::to_vec(&node).unwrap()
+    }
+
+    #[test]
+    fn node_with_a_1024_byte_key_parses() {
+        let node = Node::parse(&node_with_keys(1000, 24)).unwrap();
+        assert_eq!(node.leaves().last().unwrap().key.len(), MAX_KEY_LEN);
+    }
+
+    #[test]
+    fn node_with_a_key_over_1024_bytes_is_refused() {
+        // Before the cap, an entry could reuse the whole previous key as its
+        // prefix, so keys grew by one byte per entry with no limit.
+        let err = Node::parse(&node_with_keys(1000, 25)).unwrap_err();
+        assert!(matches!(err, Error::KeyTooLong(1025)), "{err:?}");
+    }
+
+    #[tokio::test]
+    async fn adding_or_updating_a_key_over_1024_bytes_is_refused_before_writing() {
+        let mut tree = Tree::create(MemoryBlockStore::new()).await.unwrap();
+        let root = tree.root;
+        let long = format!("com.example.record/{}", "a".repeat(2000));
+
+        let err = tree.add(&long, value_cid()).await.unwrap_err();
+        assert!(matches!(err, Error::KeyTooLong(2019)), "{err:?}");
+        let err = tree.update(&long, value_cid()).await.unwrap_err();
+        assert!(matches!(err, Error::KeyTooLong(2019)), "{err:?}");
+        assert_eq!(tree.root, root, "nothing was written");
+
+        // The tree is still readable and writable.
+        tree.add("com.example.record/b", value_cid()).await.unwrap();
+        assert_eq!(tree.get("com.example.record/b").await.unwrap(), Some(value_cid()));
+    }
+
+    /// An identity-hash CID with an empty digest, the smallest link an entry
+    /// can carry. A parse never fetches a value, so nothing checks it.
+    fn tiny_cid() -> Cid {
+        Cid::new_v1(0x55, Multihash::wrap(0x00, &[]).unwrap())
+    }
+
+    /// A node of one 1,000-byte key, then one entry per `ps` that reuses
+    /// that many bytes of the key before it and adds one more.
+    fn node_reusing(ps: &[usize]) -> Vec<u8> {
+        let entry = |prefix_len, key_suffix| schema::TreeEntry {
+            prefix_len,
+            key_suffix,
+            value: tiny_cid(),
+            tree: None,
+        };
+        let mut entries = vec![entry(0, vec![b'a'; 1000])];
+        entries.extend(ps.iter().map(|p| entry(*p, vec![b'b'])));
+        serde_ipld_dagcbor::to_vec(&schema::Node { left: None, entries }).unwrap()
+    }
+
+    /// Prefixes for `n` entries that make `node_reusing` rebuild exactly
+    /// `MAX_KEY_BYTES_PER_BLOCK_BYTE` times its own length. Each stays
+    /// between 256 and 1,000, so it encodes in three bytes whatever its
+    /// value, and the block's length does not move as they change. They
+    /// never rise, so each fits within the key before it.
+    fn prefixes_at_the_limit(n: usize) -> Vec<usize> {
+        let len = node_reusing(&vec![256; n]).len();
+        let sum = MAX_KEY_BYTES_PER_BLOCK_BYTE * len - 1000 - n;
+        let (each, rest) = (sum / n, sum % n);
+        let ps: Vec<usize> = (0..n).map(|i| each + usize::from(i < rest)).collect();
+        assert!(ps.iter().all(|p| (256..1000).contains(p)), "{ps:?}");
+        ps
+    }
+
+    #[test]
+    fn a_node_at_exactly_the_key_bytes_limit_parses() {
+        let node = node_reusing(&prefixes_at_the_limit(200));
+        let schema: schema::Node = serde_ipld_dagcbor::from_slice(&node).unwrap();
+        assert_eq!(key_bytes(&schema), MAX_KEY_BYTES_PER_BLOCK_BYTE * node.len());
+        assert_eq!(Node::parse(&node).unwrap().leaves().count(), 201);
+    }
+
+    #[test]
+    fn a_node_one_key_byte_over_the_limit_is_refused() {
+        // Before the limit nothing refused this node, nor one with longer
+        // prefixes rebuilding about 45 times its length in keys.
+        let mut ps = prefixes_at_the_limit(200);
+        ps[0] += 1;
+        let node = node_reusing(&ps);
+        let over = MAX_KEY_BYTES_PER_BLOCK_BYTE * node.len() + 1;
+        let err = Node::parse(&node).unwrap_err();
+        assert!(
+            matches!(err, Error::NodeKeysTooLarge { key_bytes, block_len }
+                if key_bytes == over && block_len == node.len()),
+            "{err:?}"
+        );
+    }
+
+    /// 300 keys a caller may legally write: 1000 bytes long, sharing a 992-byte prefix, and all
+    /// at layer 0, so they share one node.
+    fn long_layer_0_keys() -> Vec<String> {
+        let prefix = format!("com.example.record/{}", "a".repeat(992 - 19));
+        (0..10_000)
+            .map(|i| format!("{prefix}{i:08}"))
+            .filter(|key| leading_zeroes(key.as_bytes()) == 0)
+            .take(300)
+            .collect()
+    }
+
+    /// With the smallest value CID, those keys rebuild more than 20 times their node's length.
+    /// Without the write-path check, the 35th `add` wrote a node at 19.3x that every later `get`
+    /// and `add` then refused to read.
+    #[tokio::test]
+    async fn add_refuses_a_node_over_the_key_bytes_limit_and_leaves_the_tree_usable() {
+        let keys = long_layer_0_keys();
+        let mut tree = Tree::create(MemoryBlockStore::new()).await.unwrap();
+        let mut added = 0;
+        let err = loop {
+            assert!(added < keys.len(), "the limit never tripped");
+            let root = tree.root;
+            match tree.add(&keys[added], tiny_cid()).await {
+                Ok(()) => added += 1,
+                Err(err) => {
+                    assert_eq!(tree.root, root, "nothing was written");
+                    break err;
+                }
+            }
+        };
+        assert!(matches!(err, Error::NodeKeysTooLarge { .. }), "{err:?}");
+
+        // The tree is still readable and writable.
+        for key in &keys[..added] {
+            assert_eq!(tree.get(key).await.unwrap(), Some(tiny_cid()));
+        }
+        tree.add("com.example.record/b", value_cid()).await.unwrap();
+        assert_eq!(tree.get("com.example.record/b").await.unwrap(), Some(value_cid()));
+    }
+
+    /// The same 300 keys with an honest SHA-256 value each: every `add` succeeds, because no
+    /// entry carrying a full CID can rebuild 20 times its length.
+    #[tokio::test]
+    async fn add_writes_long_shared_prefix_keys_with_honest_values() {
+        let mut tree = Tree::create(MemoryBlockStore::new()).await.unwrap();
+        for key in long_layer_0_keys() {
+            tree.add(&key, value_cid()).await.unwrap();
+        }
+        let root = tree.storage.read_block(tree.root).await.unwrap();
+        let node: schema::Node = serde_ipld_dagcbor::from_slice(&root).unwrap();
+        assert_eq!(node.entries.len(), 300, "one node holds every key");
+        // About 16.8x: as close as an honest node gets, and still under 20.
+        let (key_bytes, block_len) = (key_bytes(&node), root.len());
+        assert!(key_bytes > 16 * block_len, "{key_bytes} key bytes, {block_len}-byte block");
     }
 }
