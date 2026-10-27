@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.25.9](https://github.com/atrium-rs/atrium/compare/atrium-api-v0.25.8...atrium-api-v0.25.9) - 2026-10-27
+
+### Added
+
+- Update API, based on the latest lexicon schemas ([#346](https://github.com/atrium-rs/atrium/pull/346))
+
+### Other
+
+- add codegen fidelity tests for generated structs ([#347](https://github.com/atrium-rs/atrium/pull/347))
+
 ## [0.25.8](https://github.com/atrium-rs/atrium/compare/atrium-api-v0.25.7...atrium-api-v0.25.8) - 2026-03-25
 
 ### Other
