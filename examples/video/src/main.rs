@@ -234,6 +234,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     alt: Some(String::from("alt text")),
                     aspect_ratio: None,
                     captions: None,
+                    presentation: None,
                     video,
                 }
                 .into(),

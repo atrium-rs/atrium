@@ -5,6 +5,12 @@
 pub enum KnownRecord {
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
     #[cfg(feature = "namespace-appbsky")]
+    #[serde(rename = "app.bsky.actor.contentVisibilityDeclaration")]
+    AppBskyActorContentVisibilityDeclaration(
+        Box<crate::app::bsky::actor::content_visibility_declaration::Record>,
+    ),
+    #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+    #[cfg(feature = "namespace-appbsky")]
     #[serde(rename = "app.bsky.actor.profile")]
     AppBskyActorProfile(Box<crate::app::bsky::actor::profile::Record>),
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
@@ -70,13 +76,37 @@ pub enum KnownRecord {
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
     #[cfg(feature = "namespace-appbsky")]
     #[serde(rename = "app.bsky.notification.declaration")]
-    AppBskyNotificationDeclaration(Box<crate::app::bsky::notification::declaration::Record>),
+    AppBskyNotificationDeclaration(
+        Box<crate::app::bsky::notification::declaration::Record>,
+    ),
     #[cfg_attr(docsrs, doc(cfg(feature = "namespace-chatbsky")))]
     #[cfg(feature = "namespace-chatbsky")]
     #[serde(rename = "chat.bsky.actor.declaration")]
     ChatBskyActorDeclaration(Box<crate::chat::bsky::actor::declaration::Record>),
     #[serde(rename = "com.atproto.lexicon.schema")]
     ComAtprotoLexiconSchema(Box<crate::com::atproto::lexicon::schema::Record>),
+}
+#[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+#[cfg(feature = "namespace-appbsky")]
+impl From<crate::app::bsky::actor::content_visibility_declaration::Record>
+for KnownRecord {
+    fn from(
+        record: crate::app::bsky::actor::content_visibility_declaration::Record,
+    ) -> Self {
+        KnownRecord::AppBskyActorContentVisibilityDeclaration(Box::new(record))
+    }
+}
+#[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
+#[cfg(feature = "namespace-appbsky")]
+impl From<crate::app::bsky::actor::content_visibility_declaration::RecordData>
+for KnownRecord {
+    fn from(
+        record_data: crate::app::bsky::actor::content_visibility_declaration::RecordData,
+    ) -> Self {
+        KnownRecord::AppBskyActorContentVisibilityDeclaration(
+            Box::new(record_data.into()),
+        )
+    }
 }
 #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
 #[cfg(feature = "namespace-appbsky")]
@@ -312,7 +342,9 @@ impl From<crate::app::bsky::notification::declaration::Record> for KnownRecord {
 #[cfg_attr(docsrs, doc(cfg(feature = "namespace-appbsky")))]
 #[cfg(feature = "namespace-appbsky")]
 impl From<crate::app::bsky::notification::declaration::RecordData> for KnownRecord {
-    fn from(record_data: crate::app::bsky::notification::declaration::RecordData) -> Self {
+    fn from(
+        record_data: crate::app::bsky::notification::declaration::RecordData,
+    ) -> Self {
         KnownRecord::AppBskyNotificationDeclaration(Box::new(record_data.into()))
     }
 }

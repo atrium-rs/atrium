@@ -105,6 +105,8 @@ impl TestUser {
             } else {
                 None
             },
+            muted_only_quoteposts: None,
+            muted_only_reposts: None,
         }
         .into()
     }

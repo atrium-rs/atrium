@@ -5,6 +5,12 @@ pub const NSID: &str = "app.bsky.graph.muteActor";
 #[serde(rename_all = "camelCase")]
 pub struct InputData {
     pub actor: crate::types::string::AtIdentifier,
+    ///Restrict the mute to the account's quote posts. See onlyReposts.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub only_quoteposts: core::option::Option<bool>,
+    ///Restrict the mute to the account's reposts. When any 'only' scope is set, just the scoped content is muted; when none are set, the account is fully muted. Repeat calls replace the stored scope rather than adding to it.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub only_reposts: core::option::Option<bool>,
 }
 pub type Input = crate::types::Object<InputData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]

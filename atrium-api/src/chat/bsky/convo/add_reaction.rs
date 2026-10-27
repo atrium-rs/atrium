@@ -18,6 +18,9 @@ pub type Output = crate::types::Object<OutputData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "error", content = "message")]
 pub enum Error {
+    InvalidConvo(Option<String>),
+    ///Indicates that reactions are not allowed on this message, e.g. because it is a system message.
+    ReactionNotAllowed(Option<String>),
     ///Indicates that the message has been deleted and reactions can no longer be added/removed.
     ReactionMessageDeleted(Option<String>),
     ///Indicates that the message has the maximum number of reactions allowed for a single user, and the requested reaction wasn't yet present. If it was already present, the request will not fail since it is idempotent.
@@ -28,6 +31,18 @@ pub enum Error {
 impl std::fmt::Display for Error {
     fn fmt(&self, _f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
+            Error::InvalidConvo(msg) => {
+                write!(_f, "InvalidConvo")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::ReactionNotAllowed(msg) => {
+                write!(_f, "ReactionNotAllowed")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
             Error::ReactionMessageDeleted(msg) => {
                 write!(_f, "ReactionMessageDeleted")?;
                 if let Some(msg) = msg {

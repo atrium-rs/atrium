@@ -3,6 +3,7 @@
 pub mod communication;
 pub mod hosting;
 pub mod moderation;
+pub mod queue;
 pub mod report;
 pub mod safelink;
 pub mod server;

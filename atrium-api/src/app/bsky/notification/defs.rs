@@ -7,6 +7,7 @@ pub struct ActivitySubscriptionData {
     pub reply: bool,
 }
 pub type ActivitySubscription = crate::types::Object<ActivitySubscriptionData>;
+///Deprecated: use chat.bsky.notification preferences instead. This will only return a default value.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ChatPreferenceData {
@@ -32,6 +33,7 @@ pub type Preference = crate::types::Object<PreferenceData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct PreferencesData {
+    ///Deprecated: use chat.bsky.notification preferences instead. This will only return a default value.
     pub chat: ChatPreference,
     pub follow: FilterablePreference,
     pub like: FilterablePreference,
@@ -58,4 +60,6 @@ pub struct SubjectActivitySubscriptionData {
     pub activity_subscription: ActivitySubscription,
     pub subject: crate::types::string::Did,
 }
-pub type SubjectActivitySubscription = crate::types::Object<SubjectActivitySubscriptionData>;
+pub type SubjectActivitySubscription = crate::types::Object<
+    SubjectActivitySubscriptionData,
+>;

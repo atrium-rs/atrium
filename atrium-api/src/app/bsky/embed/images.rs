@@ -14,6 +14,7 @@ pub struct ImageData {
     pub alt: String,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub aspect_ratio: core::option::Option<crate::app::bsky::embed::defs::AspectRatio>,
+    ///The raw image file. May be up to 2 MB, formerly limited to 1 MB.
     pub image: crate::types::BlobRef,
 }
 pub type Image = crate::types::Object<ImageData>;

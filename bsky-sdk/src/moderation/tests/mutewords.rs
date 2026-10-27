@@ -67,6 +67,8 @@ fn viewer_state(following: Option<String>) -> ViewerState {
         known_followers: None,
         muted: None,
         muted_by_list: None,
+        muted_only_quoteposts: None,
+        muted_only_reposts: None,
     }
     .into()
 }

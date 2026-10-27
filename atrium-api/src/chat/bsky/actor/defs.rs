@@ -2,23 +2,63 @@
 //!Definitions for the `chat.bsky.actor.defs` namespace.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
+pub struct DirectConvoMemberData {}
+pub type DirectConvoMember = crate::types::Object<DirectConvoMemberData>;
+///A current group convo member.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct GroupConvoMemberData {
+    ///Who added this member. Only present if the member was added (instead of joining via link).
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub added_by: core::option::Option<ProfileViewBasic>,
+    ///The member's role within this conversation. Only present in group conversation member lists.
+    pub role: MemberRole,
+}
+pub type GroupConvoMember = crate::types::Object<GroupConvoMemberData>;
+pub type MemberRole = String;
+///A past group convo member.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct PastGroupConvoMemberData {}
+pub type PastGroupConvoMember = crate::types::Object<PastGroupConvoMemberData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct ProfileViewBasicData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub associated: core::option::Option<crate::app::bsky::actor::defs::ProfileAssociated>,
+    pub associated: core::option::Option<
+        crate::app::bsky::actor::defs::ProfileAssociated,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub avatar: core::option::Option<String>,
     ///Set to true when the actor cannot actively participate in conversations
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub chat_disabled: core::option::Option<bool>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub created_at: core::option::Option<crate::types::string::Datetime>,
     pub did: crate::types::string::Did,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub display_name: core::option::Option<String>,
     pub handle: crate::types::string::Handle,
+    ///Union field that has data specific to different kinds of convos.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub kind: core::option::Option<crate::types::Union<ProfileViewBasicKindRefs>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub labels: core::option::Option<Vec<crate::com::atproto::label::defs::Label>>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub verification: core::option::Option<crate::app::bsky::actor::defs::VerificationState>,
+    pub verification: core::option::Option<
+        crate::app::bsky::actor::defs::VerificationState,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub viewer: core::option::Option<crate::app::bsky::actor::defs::ViewerState>,
 }
 pub type ProfileViewBasic = crate::types::Object<ProfileViewBasicData>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(tag = "$type")]
+pub enum ProfileViewBasicKindRefs {
+    #[serde(rename = "chat.bsky.actor.defs#directConvoMember")]
+    DirectConvoMember(Box<DirectConvoMember>),
+    #[serde(rename = "chat.bsky.actor.defs#groupConvoMember")]
+    GroupConvoMember(Box<GroupConvoMember>),
+    #[serde(rename = "chat.bsky.actor.defs#pastGroupConvoMember")]
+    PastGroupConvoMember(Box<PastGroupConvoMember>),
+}

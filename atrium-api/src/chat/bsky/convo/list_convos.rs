@@ -6,10 +6,17 @@ pub const NSID: &str = "chat.bsky.convo.listConvos";
 pub struct ParametersData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub cursor: core::option::Option<String>,
+    ///Filter by conversation kind.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub kind: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub limit: core::option::Option<crate::types::LimitedNonZeroU8<100u8>>,
+    ///Filter by conversation lock status. Values follow chat.bsky.convo.defs#convoLockStatus.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub lock_status: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub read_state: core::option::Option<String>,
+    ///Filter convos by their status. It is discouraged to call with "request" and preferred to call chat.bsky.convo.listConvoRequests, which also includes group join requests made by the user.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub status: core::option::Option<String>,
 }

@@ -10,6 +10,12 @@ pub struct OutputData {
     pub did: crate::types::string::Did,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub did_doc: core::option::Option<crate::types::Unknown>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub email: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub email_auth_factor: core::option::Option<bool>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub email_confirmed: core::option::Option<bool>,
     pub handle: crate::types::string::Handle,
     pub refresh_jwt: String,
     ///Hosting status of the account. If not specified, then assume 'active'.
@@ -21,12 +27,26 @@ pub type Output = crate::types::Object<OutputData>;
 #[serde(tag = "error", content = "message")]
 pub enum Error {
     AccountTakedown(Option<String>),
+    InvalidToken(Option<String>),
+    ExpiredToken(Option<String>),
 }
 impl std::fmt::Display for Error {
     fn fmt(&self, _f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             Error::AccountTakedown(msg) => {
                 write!(_f, "AccountTakedown")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::InvalidToken(msg) => {
+                write!(_f, "InvalidToken")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::ExpiredToken(msg) => {
+                write!(_f, "ExpiredToken")?;
                 if let Some(msg) = msg {
                     write!(_f, ": {msg}")?;
                 }

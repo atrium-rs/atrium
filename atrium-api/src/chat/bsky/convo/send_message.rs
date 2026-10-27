@@ -11,9 +11,33 @@ pub type Input = crate::types::Object<InputData>;
 pub type Output = crate::chat::bsky::convo::defs::MessageView;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "error", content = "message")]
-pub enum Error {}
+pub enum Error {
+    ConvoLocked(Option<String>),
+    InvalidConvo(Option<String>),
+    ReplyTargetNotFound(Option<String>),
+}
 impl std::fmt::Display for Error {
     fn fmt(&self, _f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Error::ConvoLocked(msg) => {
+                write!(_f, "ConvoLocked")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::InvalidConvo(msg) => {
+                write!(_f, "InvalidConvo")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::ReplyTargetNotFound(msg) => {
+                write!(_f, "ReplyTargetNotFound")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+        }
         Ok(())
     }
 }

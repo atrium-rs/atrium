@@ -50,10 +50,30 @@ pub struct AccountStatsData {
     pub takedown_count: core::option::Option<i64>,
 }
 pub type AccountStats = crate::types::Object<AccountStatsData>;
+///Strike information for an account
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct AccountStrikeData {
+    ///Current number of active strikes (excluding expired strikes)
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub active_strike_count: core::option::Option<i64>,
+    ///Timestamp of the first strike received
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub first_strike_at: core::option::Option<crate::types::string::Datetime>,
+    ///Timestamp of the most recent strike received
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub last_strike_at: core::option::Option<crate::types::string::Datetime>,
+    ///Total number of strikes ever received (including expired strikes)
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub total_strike_count: core::option::Option<i64>,
+}
+pub type AccountStrike = crate::types::Object<AccountStrikeData>;
 ///Age assurance info coming directly from users. Only works on DID subjects.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct AgeAssuranceEventData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub access: core::option::Option<crate::app::bsky::ageassurance::defs::Access>,
     ///The unique identifier for this instance of the age assurance flow, in UUID format.
     pub attempt_id: String,
     ///The IP address used when completing the AA flow.
@@ -62,6 +82,9 @@ pub struct AgeAssuranceEventData {
     ///The user agent used when completing the AA flow.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub complete_ua: core::option::Option<String>,
+    ///The ISO 3166-1 alpha-2 country code provided when beginning the Age Assurance flow.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub country_code: core::option::Option<String>,
     ///The date and time of this write operation.
     pub created_at: crate::types::string::Datetime,
     ///The IP address used when initiating the AA flow.
@@ -70,7 +93,10 @@ pub struct AgeAssuranceEventData {
     ///The user agent used when initiating the AA flow.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub init_ua: core::option::Option<String>,
-    ///The status of the age assurance process.
+    ///The ISO 3166-2 region code provided when beginning the Age Assurance flow.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub region_code: core::option::Option<String>,
+    ///The status of the Age Assurance process.
     pub status: String,
 }
 pub type AgeAssuranceEvent = crate::types::Object<AgeAssuranceEventData>;
@@ -78,12 +104,22 @@ pub type AgeAssuranceEvent = crate::types::Object<AgeAssuranceEventData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct AgeAssuranceOverrideEventData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub access: core::option::Option<crate::app::bsky::ageassurance::defs::Access>,
     ///Comment describing the reason for the override.
     pub comment: String,
     ///The status to be set for the user decided by a moderator, overriding whatever value the user had previously. Use reset to default to original state.
     pub status: String,
 }
 pub type AgeAssuranceOverrideEvent = crate::types::Object<AgeAssuranceOverrideEventData>;
+///Purges all age assurance events for the subject. Only works on DID subjects. Moderator-only.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct AgeAssurancePurgeEventData {
+    ///Comment describing the reason for the purge.
+    pub comment: String,
+}
+pub type AgeAssurancePurgeEvent = crate::types::Object<AgeAssurancePurgeEventData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct BlobViewData {
@@ -97,6 +133,23 @@ pub struct BlobViewData {
     pub size: i64,
 }
 pub type BlobView = crate::types::Object<BlobViewData>;
+///Logs cancellation of a scheduled takedown action for an account.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct CancelScheduledTakedownEventData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub comment: core::option::Option<String>,
+}
+pub type CancelScheduledTakedownEvent = crate::types::Object<
+    CancelScheduledTakedownEventData,
+>;
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ConvoViewData {
+    pub convo_id: String,
+    pub did: crate::types::string::Did,
+}
+pub type ConvoView = crate::types::Object<ConvoViewData>;
 ///Logs identity related events on a repo subject. Normally captured by automod from the firehose and emitted to ozone for historical tracking.
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -158,6 +211,21 @@ pub struct ModEventEmailData {
     ///The content of the email sent to the user.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub content: core::option::Option<String>,
+    ///Indicates whether the email was successfully delivered to the user's inbox.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub is_delivered: core::option::Option<bool>,
+    ///Names/Keywords of the policies that necessitated the email.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub policies: core::option::Option<Vec<String>>,
+    ///Severity level of the violation. Normally 'sev-1' that adds strike on repeat offense
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub severity_level: core::option::Option<String>,
+    ///Number of strikes to assign to the user for this violation. Normally 0 as an indicator of a warning and only added as a strike on a repeat offense.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub strike_count: core::option::Option<i64>,
+    ///When the strike should expire. If not provided, the strike never expires.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub strike_expires_at: core::option::Option<crate::types::string::Datetime>,
     ///The subject line of the email sent to the user.
     pub subject_line: String,
 }
@@ -240,6 +308,15 @@ pub struct ModEventReverseTakedownData {
     ///Describe reasoning behind the reversal.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub comment: core::option::Option<String>,
+    ///Names/Keywords of the policy infraction for which takedown is being reversed.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub policies: core::option::Option<Vec<String>>,
+    ///Severity level of the violation. Usually set from the last policy infraction's severity.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub severity_level: core::option::Option<String>,
+    ///Number of strikes to subtract from the user's strike count. Usually set from the last policy infraction's severity.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub strike_count: core::option::Option<i64>,
 }
 pub type ModEventReverseTakedown = crate::types::Object<ModEventReverseTakedownData>;
 ///Add/Remove a tag on a subject
@@ -251,6 +328,9 @@ pub struct ModEventTagData {
     ///Additional comment about added/removed tags.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub comment: core::option::Option<String>,
+    ///Indicates how long the tags being added should remain before automatically being removed. Only applies to tags being added.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub duration_in_hours: core::option::Option<i64>,
     ///Tags to be removed to the subject. Ignores a tag If it doesn't exist, won't be duplicated.
     pub remove: Vec<String>,
 }
@@ -270,6 +350,18 @@ pub struct ModEventTakedownData {
     ///Names/Keywords of the policies that drove the decision.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub policies: core::option::Option<Vec<String>>,
+    ///Severity level of the violation (e.g., 'sev-0', 'sev-1', 'sev-2', etc.).
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub severity_level: core::option::Option<String>,
+    ///Number of strikes to assign to the user for this violation.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub strike_count: core::option::Option<i64>,
+    ///When the strike should expire. If not provided, the strike never expires.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub strike_expires_at: core::option::Option<crate::types::string::Datetime>,
+    ///List of services where the takedown should be applied. If empty or not provided, takedown is applied on all configured services.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub target_services: core::option::Option<Vec<String>>,
 }
 pub type ModEventTakedown = crate::types::Object<ModEventTakedownData>;
 ///Unmute action on a subject
@@ -450,8 +542,9 @@ pub struct RepoViewData {
     pub moderation: Moderation,
     pub related_records: Vec<crate::types::Unknown>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub threat_signatures:
-        core::option::Option<Vec<crate::com::atproto::admin::defs::ThreatSignature>>,
+    pub threat_signatures: core::option::Option<
+        Vec<crate::com::atproto::admin::defs::ThreatSignature>,
+    >,
 }
 pub type RepoView = crate::types::Object<RepoViewData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -471,7 +564,9 @@ pub struct RepoViewDetailData {
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub invited_by: core::option::Option<crate::com::atproto::server::defs::InviteCode>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub invites: core::option::Option<Vec<crate::com::atproto::server::defs::InviteCode>>,
+    pub invites: core::option::Option<
+        Vec<crate::com::atproto::server::defs::InviteCode>,
+    >,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub invites_disabled: core::option::Option<bool>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
@@ -479,8 +574,9 @@ pub struct RepoViewDetailData {
     pub moderation: ModerationDetail,
     pub related_records: Vec<crate::types::Unknown>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
-    pub threat_signatures:
-        core::option::Option<Vec<crate::com::atproto::admin::defs::ThreatSignature>>,
+    pub threat_signatures: core::option::Option<
+        Vec<crate::com::atproto::admin::defs::ThreatSignature>,
+    >,
 }
 pub type RepoViewDetail = crate::types::Object<RepoViewDetailData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -526,7 +622,68 @@ pub struct RevokeAccountCredentialsEventData {
     ///Comment describing the reason for the revocation.
     pub comment: String,
 }
-pub type RevokeAccountCredentialsEvent = crate::types::Object<RevokeAccountCredentialsEventData>;
+pub type RevokeAccountCredentialsEvent = crate::types::Object<
+    RevokeAccountCredentialsEventData,
+>;
+///Logs a scheduled takedown action for an account.
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ScheduleTakedownEventData {
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub comment: core::option::Option<String>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub execute_after: core::option::Option<crate::types::string::Datetime>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub execute_at: core::option::Option<crate::types::string::Datetime>,
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub execute_until: core::option::Option<crate::types::string::Datetime>,
+}
+pub type ScheduleTakedownEvent = crate::types::Object<ScheduleTakedownEventData>;
+///View of a scheduled moderation action
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct ScheduledActionViewData {
+    ///Type of action to be executed
+    pub action: String,
+    ///When the scheduled action was created
+    pub created_at: crate::types::string::Datetime,
+    ///DID of the user who created this scheduled action
+    pub created_by: crate::types::string::Did,
+    ///Subject DID for the action
+    pub did: crate::types::string::Did,
+    ///Serialized event object that will be propagated to the event when performed
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub event_data: core::option::Option<crate::types::Unknown>,
+    ///Earliest time to execute the action (for randomized scheduling)
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub execute_after: core::option::Option<crate::types::string::Datetime>,
+    ///Exact time to execute the action
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub execute_at: core::option::Option<crate::types::string::Datetime>,
+    ///Latest time to execute the action (for randomized scheduling)
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub execute_until: core::option::Option<crate::types::string::Datetime>,
+    ///ID of the moderation event created when action was successfully executed
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub execution_event_id: core::option::Option<i64>,
+    ///Auto-incrementing row ID
+    pub id: i64,
+    ///When the action was last attempted to be executed
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub last_executed_at: core::option::Option<crate::types::string::Datetime>,
+    ///Reason for the last execution failure
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub last_failure_reason: core::option::Option<String>,
+    ///Whether execution time should be randomized within the specified range
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub randomize_execution: core::option::Option<bool>,
+    ///Current status of the scheduled action
+    pub status: String,
+    ///When the scheduled action was last updated
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub updated_at: core::option::Option<crate::types::string::Datetime>,
+}
+pub type ScheduledActionView = crate::types::Object<ScheduledActionViewData>;
 pub type SubjectReviewState = String;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -534,6 +691,9 @@ pub struct SubjectStatusViewData {
     ///Statistics related to the account subject
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub account_stats: core::option::Option<AccountStats>,
+    ///Strike information for the account (account-level only)
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub account_strike: core::option::Option<AccountStrike>,
     ///Current age assurance state of the subject.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub age_assurance_state: core::option::Option<String>,
@@ -605,11 +765,9 @@ pub type SubjectView = crate::types::Object<SubjectViewData>;
 ///Moderation event timeline event for a PLC create operation
 pub const TIMELINE_EVENT_PLC_CREATE: &str = "tools.ozone.moderation.defs#timelineEventPlcCreate";
 ///Moderation event timeline event for generic PLC operation
-pub const TIMELINE_EVENT_PLC_OPERATION: &str =
-    "tools.ozone.moderation.defs#timelineEventPlcOperation";
+pub const TIMELINE_EVENT_PLC_OPERATION: &str = "tools.ozone.moderation.defs#timelineEventPlcOperation";
 ///Moderation event timeline event for a PLC tombstone operation
-pub const TIMELINE_EVENT_PLC_TOMBSTONE: &str =
-    "tools.ozone.moderation.defs#timelineEventPlcTombstone";
+pub const TIMELINE_EVENT_PLC_TOMBSTONE: &str = "tools.ozone.moderation.defs#timelineEventPlcTombstone";
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct VideoDetailsData {
@@ -671,8 +829,14 @@ pub enum ModEventViewDetailEventRefs {
     AgeAssuranceEvent(Box<AgeAssuranceEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#ageAssuranceOverrideEvent")]
     AgeAssuranceOverrideEvent(Box<AgeAssuranceOverrideEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssurancePurgeEvent")]
+    AgeAssurancePurgeEvent(Box<AgeAssurancePurgeEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#revokeAccountCredentialsEvent")]
     RevokeAccountCredentialsEvent(Box<RevokeAccountCredentialsEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#scheduleTakedownEvent")]
+    ScheduleTakedownEvent(Box<ScheduleTakedownEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#cancelScheduledTakedownEvent")]
+    CancelScheduledTakedownEvent(Box<CancelScheduledTakedownEvent>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]
@@ -685,6 +849,8 @@ pub enum ModEventViewDetailSubjectRefs {
     RecordView(Box<RecordView>),
     #[serde(rename = "tools.ozone.moderation.defs#recordViewNotFound")]
     RecordViewNotFound(Box<RecordViewNotFound>),
+    #[serde(rename = "tools.ozone.moderation.defs#convoView")]
+    ConvoView(Box<ConvoView>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]
@@ -731,8 +897,14 @@ pub enum ModEventViewEventRefs {
     AgeAssuranceEvent(Box<AgeAssuranceEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#ageAssuranceOverrideEvent")]
     AgeAssuranceOverrideEvent(Box<AgeAssuranceOverrideEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#ageAssurancePurgeEvent")]
+    AgeAssurancePurgeEvent(Box<AgeAssurancePurgeEvent>),
     #[serde(rename = "tools.ozone.moderation.defs#revokeAccountCredentialsEvent")]
     RevokeAccountCredentialsEvent(Box<RevokeAccountCredentialsEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#scheduleTakedownEvent")]
+    ScheduleTakedownEvent(Box<ScheduleTakedownEvent>),
+    #[serde(rename = "tools.ozone.moderation.defs#cancelScheduledTakedownEvent")]
+    CancelScheduledTakedownEvent(Box<CancelScheduledTakedownEvent>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]
@@ -743,6 +915,8 @@ pub enum ModEventViewSubjectRefs {
     ComAtprotoRepoStrongRefMain(Box<crate::com::atproto::repo::strong_ref::Main>),
     #[serde(rename = "chat.bsky.convo.defs#messageRef")]
     ChatBskyConvoDefsMessageRef(Box<crate::chat::bsky::convo::defs::MessageRef>),
+    #[serde(rename = "chat.bsky.convo.defs#convoRef")]
+    ChatBskyConvoDefsConvoRef(Box<crate::chat::bsky::convo::defs::ConvoRef>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]
@@ -761,6 +935,8 @@ pub enum SubjectStatusViewSubjectRefs {
     ComAtprotoRepoStrongRefMain(Box<crate::com::atproto::repo::strong_ref::Main>),
     #[serde(rename = "chat.bsky.convo.defs#messageRef")]
     ChatBskyConvoDefsMessageRef(Box<crate::chat::bsky::convo::defs::MessageRef>),
+    #[serde(rename = "chat.bsky.convo.defs#convoRef")]
+    ChatBskyConvoDefsConvoRef(Box<crate::chat::bsky::convo::defs::ConvoRef>),
 }
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "$type")]

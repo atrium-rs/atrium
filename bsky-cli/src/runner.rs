@@ -196,6 +196,7 @@ impl Runner {
                             actor: args.actor.unwrap_or(self.handle().await?.into()),
                             cursor: None,
                             limit: Some(limit),
+                            sort: None,
                         }
                         .into(),
                     )
@@ -213,6 +214,7 @@ impl Runner {
                             actor: args.actor.unwrap_or(self.handle().await?.into()),
                             cursor: None,
                             limit: Some(limit),
+                            sort: None,
                         }
                         .into(),
                     )
@@ -312,7 +314,9 @@ impl Runner {
                     .list_convos(
                         api::chat::bsky::convo::list_convos::ParametersData {
                             cursor: None,
+                            kind: None,
                             limit: Some(limit),
+                            lock_status: None,
                             read_state: None,
                             status: None,
                         }
@@ -367,6 +371,7 @@ impl Runner {
                                 message: api::chat::bsky::convo::defs::MessageInputData {
                                     embed: None,
                                     facets: None,
+                                    reply_to: None,
                                     text: args.text,
                                 }
                                 .into(),

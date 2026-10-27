@@ -390,8 +390,7 @@ mod tests {
             .server
             .get_service_auth(
                 atrium_api::com::atproto::server::get_service_auth::ParametersData {
-                    aud: Did::new(String::from("did:fake:handle.test"))
-                        .expect("did should be valid"),
+                    aud: String::from("did:fake:handle.test"),
                     exp: None,
                     lxm: None,
                 }
@@ -556,8 +555,7 @@ mod tests {
             .server
             .get_service_auth(
                 atrium_api::com::atproto::server::get_service_auth::ParametersData {
-                    aud: Did::new(String::from("did:fake:handle.test"))
-                        .expect("did should be valid"),
+                    aud: String::from("did:fake:handle.test"),
                     exp: None,
                     lxm: None,
                 }
@@ -588,8 +586,7 @@ mod tests {
             .server
             .get_service_auth(
                 atrium_api::com::atproto::server::get_service_auth::ParametersData {
-                    aud: Did::new(String::from("did:fake:handle.test"))
-                        .expect("did should be valid"),
+                    aud: String::from("did:fake:handle.test"),
                     exp: None,
                     lxm: None,
                 }
@@ -639,8 +636,7 @@ mod tests {
                     .server
                     .get_service_auth(
                         atrium_api::com::atproto::server::get_service_auth::ParametersData {
-                            aud: Did::new(String::from("did:fake:handle.test"))
-                                .expect("did should be valid"),
+                            aud: String::from("did:fake:handle.test"),
                             exp: None,
                             lxm: None,
                         }

@@ -15,9 +15,54 @@ pub struct OutputData {
 pub type Output = crate::types::Object<OutputData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(tag = "error", content = "message")]
-pub enum Error {}
+pub enum Error {
+    AccountSuspended(Option<String>),
+    BlockedActor(Option<String>),
+    BlockedSubject(Option<String>),
+    MessagesDisabled(Option<String>),
+    NotFollowedBySender(Option<String>),
+    RecipientNotFound(Option<String>),
+}
 impl std::fmt::Display for Error {
     fn fmt(&self, _f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Error::AccountSuspended(msg) => {
+                write!(_f, "AccountSuspended")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::BlockedActor(msg) => {
+                write!(_f, "BlockedActor")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::BlockedSubject(msg) => {
+                write!(_f, "BlockedSubject")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::MessagesDisabled(msg) => {
+                write!(_f, "MessagesDisabled")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::NotFollowedBySender(msg) => {
+                write!(_f, "NotFollowedBySender")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+            Error::RecipientNotFound(msg) => {
+                write!(_f, "RecipientNotFound")?;
+                if let Some(msg) = msg {
+                    write!(_f, ": {msg}")?;
+                }
+            }
+        }
         Ok(())
     }
 }

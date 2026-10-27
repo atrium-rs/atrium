@@ -6,6 +6,9 @@ pub const NSID: &str = "com.atproto.server.describeServer";
 pub struct OutputData {
     ///List of domain suffixes that can be used in account handles.
     pub available_user_domains: Vec<String>,
+    ///Maximum size of a blob that can be uploaded via com.atproto.repo.uploadBlob, in bytes.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub blob_upload_limit: core::option::Option<i64>,
     ///Contact information
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub contact: core::option::Option<Contact>,

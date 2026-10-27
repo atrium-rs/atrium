@@ -36,6 +36,9 @@ where
         subject: impl Into<KnownRecord>,
     ) -> Result<create_record::Output> {
         match subject.into() {
+            KnownRecord::AppBskyActorContentVisibilityDeclaration(record) => {
+                record.data.create(self).await
+            }
             KnownRecord::AppBskyActorProfile(record) => record.data.create(self).await,
             KnownRecord::AppBskyFeedGenerator(record) => record.data.create(self).await,
             KnownRecord::AppBskyFeedLike(record) => record.data.create(self).await,

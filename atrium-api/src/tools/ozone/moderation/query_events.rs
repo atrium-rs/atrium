@@ -58,12 +58,15 @@ pub struct ParametersData {
     pub sort_direction: core::option::Option<String>,
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub subject: core::option::Option<String>,
-    ///If specified, only events where the subject is of the given type (account or record) will be returned. When this is set to 'account' the 'collections' parameter will be ignored. When includeAllUserRecords or subject is set, this will be ignored.
+    ///If specified, only events where the subject is of the given type (account, record, or conversation) will be returned. When this is set to 'account' the 'collections' parameter will be ignored. When includeAllUserRecords or subject is set, this will be ignored.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub subject_type: core::option::Option<String>,
     ///The types of events (fully qualified string in the format of tools.ozone.moderation.defs#modEvent<name>) to filter by. If not specified, all events are returned.
     #[serde(skip_serializing_if = "core::option::Option::is_none")]
     pub types: core::option::Option<Vec<String>>,
+    ///If specified, only events where strikeCount value is set are returned.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub with_strike: core::option::Option<bool>,
 }
 pub type Parameters = crate::types::Object<ParametersData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]

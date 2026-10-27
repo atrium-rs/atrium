@@ -200,6 +200,11 @@ record_impl!(
     atrium_api::com::atproto::lexicon::schema::RecordData
 );
 record_impl!(
+    atrium_api::app::bsky::actor::ContentVisibilityDeclaration,
+    atrium_api::app::bsky::actor::content_visibility_declaration::Record,
+    atrium_api::app::bsky::actor::content_visibility_declaration::RecordData
+);
+record_impl!(
     atrium_api::app::bsky::actor::Profile,
     atrium_api::app::bsky::actor::profile::Record,
     atrium_api::app::bsky::actor::profile::RecordData
@@ -416,6 +421,7 @@ mod tests {
         let output = atrium_api::app::bsky::graph::follow::RecordData {
             created_at: Datetime::now(),
             subject: "did:fake:handle.test".parse().expect("invalid did"),
+            via: None,
         }
         .create(&agent)
         .await?;

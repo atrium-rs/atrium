@@ -14,6 +14,9 @@ pub type Parameters = crate::types::Object<ParametersData>;
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct OutputData {
+    ///Snowflake for this recommendation, use when submitting recommendation events.
+    #[serde(skip_serializing_if = "core::option::Option::is_none")]
+    pub rec_id_str: core::option::Option<String>,
     pub trends: Vec<crate::app::bsky::unspecced::defs::SkeletonTrend>,
 }
 pub type Output = crate::types::Object<OutputData>;

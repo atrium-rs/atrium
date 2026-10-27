@@ -26,6 +26,7 @@ pub mod mute_actor;
 pub mod mute_actor_list;
 pub mod mute_thread;
 pub mod search_starter_packs;
+pub mod search_starter_packs_v2;
 pub mod starterpack;
 pub mod unmute_actor;
 pub mod unmute_actor_list;

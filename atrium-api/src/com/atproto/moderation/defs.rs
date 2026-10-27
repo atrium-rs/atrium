@@ -4,7 +4,7 @@
 pub const REASON_APPEAL: &str = "com.atproto.moderation.defs#reasonAppeal";
 ///Misleading identity, affiliation, or content. Prefer new lexicon definition `tools.ozone.report.defs#reasonMisleadingOther`.
 pub const REASON_MISLEADING: &str = "com.atproto.moderation.defs#reasonMisleading";
-///Reports not falling under another report category. Prefer new lexicon definition `tools.ozone.report.defs#reasonRuleOther`.
+///Reports not falling under another report category. Prefer new lexicon definition `tools.ozone.report.defs#reasonOther`.
 pub const REASON_OTHER: &str = "com.atproto.moderation.defs#reasonOther";
 ///Rude, harassing, explicit, or otherwise unwelcoming behavior. Prefer new lexicon definition `tools.ozone.report.defs#reasonHarassmentOther`.
 pub const REASON_RUDE: &str = "com.atproto.moderation.defs#reasonRude";
