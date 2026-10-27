@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.8](https://github.com/atrium-rs/atrium/compare/atrium-oauth-v0.1.7...atrium-oauth-v0.1.8) - 2026-10-27
+## [0.2.0](https://github.com/atrium-rs/atrium/compare/atrium-oauth-v0.1.7...atrium-oauth-v0.2.0) - 2026-10-27
 
 ### Added
 
 - Update API, based on the latest lexicon schemas ([#346](https://github.com/atrium-rs/atrium/pull/346))
+
+### Changed
+
+- [**breaking**] Update `atrium-api` to 0.26 and `atrium-identity` to 0.2, whose types are part of this crate's public API
 
 ## [0.1.7](https://github.com/atrium-rs/atrium/compare/atrium-oauth-v0.1.6...atrium-oauth-v0.1.7) - 2026-03-25
 
