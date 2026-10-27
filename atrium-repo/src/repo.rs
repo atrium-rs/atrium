@@ -63,7 +63,10 @@ async fn read_record<T: DeserializeOwned>(
     mut db: impl AsyncBlockStoreRead,
     cid: Cid,
 ) -> Result<T, Error> {
-    assert_eq!(cid.codec(), crate::blockstore::DAG_CBOR);
+    // The CID comes from an MST leaf, which is untrusted input.
+    if cid.codec() != crate::blockstore::DAG_CBOR {
+        return Err(Error::UnsupportedCodec(cid.codec()));
+    }
 
     let data = db.read_block(cid).await?;
     let parsed: T = serde_ipld_dagcbor::from_reader(&data[..])?;
@@ -496,6 +499,8 @@ pub enum Error {
     Mst(#[from] mst::Error),
     #[error("serde_ipld_dagcbor decoding error: {0}")]
     Parse(#[from] serde_ipld_dagcbor::DecodeError<std::io::Error>),
+    #[error("record codec {0:#x} is not DAG-CBOR")]
+    UnsupportedCodec(u64),
 }
 
 #[cfg(test)]
@@ -701,5 +706,18 @@ mod test {
             let mut repo2 = Repository::open(&mut bs2, repo.root()).await.unwrap();
             assert!(repo2.get::<bsky::feed::Post>(record.clone()).await.is_ok());
         }
+    }
+
+    #[tokio::test]
+    async fn record_under_a_non_dag_cbor_cid_is_an_error() {
+        // A raw-codec (0x55) leaf value. Before the fix, read_record asserted
+        // the codec and panicked.
+        let digest =
+            ipld_core::cid::multihash::Multihash::wrap(crate::blockstore::SHA2_256, &[0; 32]);
+        let raw = Cid::new_v1(0x55, digest.unwrap());
+
+        let err =
+            read_record::<ipld_core::ipld::Ipld>(MemoryBlockStore::new(), raw).await.unwrap_err();
+        assert!(matches!(err, Error::UnsupportedCodec(0x55)), "{err:?}");
     }
 }
