@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.38](https://github.com/atrium-rs/atrium/compare/bsky-cli-v0.1.37...bsky-cli-v0.1.38) - 2026-10-27
+
+### Added
+
+- Update API, based on the latest lexicon schemas ([#346](https://github.com/atrium-rs/atrium/pull/346))
+
 ## [0.1.37](https://github.com/atrium-rs/atrium/compare/bsky-cli-v0.1.36...bsky-cli-v0.1.37) - 2026-03-25
 
 ### Other

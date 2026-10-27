@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0](https://github.com/atrium-rs/atrium/compare/bsky-sdk-v0.1.24...bsky-sdk-v0.2.0) - 2026-10-27
+
+### Added
+
+- Update API, based on the latest lexicon schemas ([#346](https://github.com/atrium-rs/atrium/pull/346))
+
+### Changed
+
+- [**breaking**] Update `atrium-api` to 0.26, re-exported as `bsky_sdk::api`
+- [**breaking**] Remove `prioritize_followed_users` from `ThreadViewPreferenceData`, as the lexicon no longer has `prioritizeFollowedUsers` ([#346](https://github.com/atrium-rs/atrium/pull/346))
+
 ## [0.1.24](https://github.com/atrium-rs/atrium/compare/bsky-sdk-v0.1.23...bsky-sdk-v0.1.24) - 2026-03-25
 
 ### Other
