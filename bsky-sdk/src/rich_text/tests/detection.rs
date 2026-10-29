@@ -250,6 +250,15 @@ async fn detect_facets_mentions_and_links() -> Result<()> {
             ],
         ),
         (
+            "parenthentical with commas (https://foo.com), knowing that https://bar.com",
+            vec![
+                ("parenthentical with commas (", None),
+                ("https://foo.com", Some("https://foo.com")),
+                ("), knowing that ", None),
+                ("https://bar.com", Some("https://bar.com")),
+            ],
+        ),
+        (
             "except for https://foo.com/thing_(cool)",
             vec![
                 ("except for ", None),
