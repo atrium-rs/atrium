@@ -307,28 +307,26 @@ mod algos {
         })
         .await?;
 
-        // If the node was split into two, walk back up the path chain and split all parents.
+        // Walk back up the path chain and split all parents.
         for (mut parent, i) in node_path.into_iter().rev() {
             // Remove the tree entry at the partition point.
             parent.entries.remove(i);
-            let (e_left, e_right) = parent.entries.split_at(i);
+            let parent_right = parent.entries.split_off(i);
+            let mut e_left = parent.entries;
+            let mut e_right = vec![];
 
-            if let Some(left) = left.as_mut() {
-                let left_cid = left.serialize_into(&mut bs).await?;
-                *left = Node {
-                    entries: e_left.iter().cloned().chain([NodeEntry::Tree(left_cid)]).collect(),
-                };
+            // N.B: Keep the entries of the parent on each side, even if the child has no
+            // entries on that side. If not, the keys in those entries are lost.
+            if let Some(left) = left {
+                e_left.push(NodeEntry::Tree(left.serialize_into(&mut bs).await?));
             }
+            if let Some(right) = right {
+                e_right.push(NodeEntry::Tree(right.serialize_into(&mut bs).await?));
+            }
+            e_right.extend(parent_right);
 
-            if let Some(right) = right.as_mut() {
-                let right_cid = right.serialize_into(&mut bs).await?;
-                *right = Node {
-                    entries: [NodeEntry::Tree(right_cid)]
-                        .into_iter()
-                        .chain(e_right.iter().cloned())
-                        .collect::<Vec<_>>(),
-                };
-            }
+            left = (!e_left.is_empty()).then_some(Node { entries: e_left });
+            right = (!e_right.is_empty()).then_some(Node { entries: e_right });
         }
 
         // Serialize the two new subtrees.
@@ -1164,6 +1162,28 @@ mod test {
         )
     }
 
+    /// Returns a Cid derived from the SHA-256 hash of `seed`.
+    fn hashed_cid(seed: &str) -> Cid {
+        let digest = sha2::Sha256::digest(seed.as_bytes());
+
+        Cid::new_v1(DAG_CBOR, Multihash::wrap(SHA2_256, digest.as_slice()).unwrap())
+    }
+
+    /// Returns `count` keys that have the shape of a Cid. The keys are not in lexicographic order.
+    fn hashed_keys(salt: &str, count: usize) -> Vec<String> {
+        (0..count).map(|i| hashed_cid(&format!("{salt}-entry-{i}")).to_string()).collect()
+    }
+
+    /// Returns the root of a new tree that contains `keys`, added in the given order.
+    async fn root_of(keys: &[&str]) -> Cid {
+        let mut tree = Tree::create(MemoryBlockStore::new()).await.unwrap();
+        for key in keys {
+            tree.add(key, value_cid()).await.unwrap();
+        }
+
+        tree.root
+    }
+
     #[test]
     fn test_prefix() {
         assert_eq!(
@@ -1470,6 +1490,118 @@ mod test {
         tree.delete("com.example.record/3jqfcqzm3fx2j").await.unwrap(); // B; level 2
 
         assert_eq!(tree.root, root00);
+    }
+
+    #[tokio::test]
+    async fn mst_split_keeps_left_entries() {
+        let bs = MemoryBlockStore::new();
+        let mut tree = Tree::create(bs).await.unwrap();
+
+        /*
+         *
+         *    *     ->     *
+         *  __|__        __|__
+         * |     |      |  |  |
+         * d     *      *  f  *
+         *       |      |     |
+         *       g      d     *
+         *                    |
+         *                    g
+         *
+         */
+        tree.add("com.example.record/3jqfcqzm3fs2j", value_cid()).await.unwrap(); // D; level 1
+        tree.add("com.example.record/3jqfcqzm3fz2j", value_cid()).await.unwrap(); // G; level 0
+
+        // insert F. The subtree with G moves to the right of F, and D must stay on the left.
+        tree.add("com.example.record/3jqfcqzm3fx2j", value_cid()).await.unwrap(); // F; level 2
+
+        assert_eq!(tree.get("com.example.record/3jqfcqzm3fs2j").await.unwrap(), Some(value_cid()));
+        assert_eq!(tree.get("com.example.record/3jqfcqzm3fx2j").await.unwrap(), Some(value_cid()));
+        assert_eq!(tree.get("com.example.record/3jqfcqzm3fz2j").await.unwrap(), Some(value_cid()));
+
+        // The same keys with the top level entry inserted first must give the same tree.
+        assert_eq!(
+            tree.root,
+            root_of(&[
+                "com.example.record/3jqfcqzm3fx2j", // F; level 2
+                "com.example.record/3jqfcqzm3fs2j", // D; level 1
+                "com.example.record/3jqfcqzm3fz2j", // G; level 0
+            ])
+            .await
+        );
+    }
+
+    #[tokio::test]
+    async fn mst_split_keeps_right_entries() {
+        let bs = MemoryBlockStore::new();
+        let mut tree = Tree::create(bs).await.unwrap();
+
+        /*
+         *
+         *    *     ->     *
+         *  __|__        __|__
+         * |     |      |  |  |
+         * *     i      *  f  *
+         * |            |     |
+         * e            *     i
+         *              |
+         *              e
+         *
+         */
+        tree.add("com.example.record/3jqfcqzm3ft2j", value_cid()).await.unwrap(); // E; level 0
+        tree.add("com.example.record/3jqfcqzm4fd2j", value_cid()).await.unwrap(); // I; level 1
+
+        // insert F. The subtree with E moves to the left of F, and I must stay on the right.
+        tree.add("com.example.record/3jqfcqzm3fx2j", value_cid()).await.unwrap(); // F; level 2
+
+        assert_eq!(tree.get("com.example.record/3jqfcqzm3ft2j").await.unwrap(), Some(value_cid()));
+        assert_eq!(tree.get("com.example.record/3jqfcqzm3fx2j").await.unwrap(), Some(value_cid()));
+        assert_eq!(tree.get("com.example.record/3jqfcqzm4fd2j").await.unwrap(), Some(value_cid()));
+
+        // The same keys with the top level entry inserted first must give the same tree.
+        assert_eq!(
+            tree.root,
+            root_of(&[
+                "com.example.record/3jqfcqzm3fx2j", // F; level 2
+                "com.example.record/3jqfcqzm3ft2j", // E; level 0
+                "com.example.record/3jqfcqzm4fd2j", // I; level 1
+            ])
+            .await
+        );
+    }
+
+    #[tokio::test]
+    async fn mst_add_unordered_keys() {
+        // Keys that have the shape of a Cid do not arrive in lexicographic order, unlike TIDs.
+        for salt in 0..50 {
+            let keys = hashed_keys(&format!("salt-{salt}"), 20);
+            let mut sorted = keys.iter().map(String::as_str).collect::<Vec<_>>();
+            sorted.sort();
+
+            let bs = MemoryBlockStore::new();
+            let mut tree = Tree::create(bs).await.unwrap();
+
+            for (i, key) in keys.iter().enumerate() {
+                tree.add(key, value_cid()).await.unwrap();
+
+                // Ensure all keys added so far are still present.
+                for prior in &keys[..=i] {
+                    assert_eq!(
+                        tree.get(prior).await.unwrap(),
+                        Some(value_cid()),
+                        "salt-{salt}: key {prior} was lost after {} insertions",
+                        i + 1
+                    );
+                }
+            }
+
+            // Ensure keys are returned in lexicographic order.
+            let listed = tree.keys().try_collect::<Vec<_>>().await.unwrap();
+            assert_eq!(listed, sorted);
+
+            // The order of insertion must not change the tree.
+            assert_eq!(tree.root, root_of(&sorted).await, "salt-{salt}");
+        }
     }
 
     #[tokio::test]
