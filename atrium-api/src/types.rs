@@ -276,7 +276,7 @@ where
         //
         // For the time being, until this problem is resolved, use the workaround of serializing once to a json string and then deserializing it.
         let json = serde_json::to_vec(&value).unwrap();
-        Ok(serde_json::from_slice(&json).unwrap())
+        Ok(serde_json::from_slice(&json)?)
     }
 }
 
